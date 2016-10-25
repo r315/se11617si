@@ -1,6 +1,7 @@
 CC = arm-none-eabi-gcc
 AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
+DBG = arm-none-eabi-insight
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
@@ -23,5 +24,9 @@ init.o: ../../bsp/init.S
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
-	rm -f init.o delay.o led.o led.axf
+	rm -f init.o delay.o led.o led.axf led.map
+
+debug:  led.axf
+	@$(DBG) led.axf
+
 

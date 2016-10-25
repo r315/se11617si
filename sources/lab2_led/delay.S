@@ -4,21 +4,23 @@
 **/
 	.global delay
 
-	.section .text
+	.section .data
 
 one_ms_clks:
-	.word 14745
+	.word 14745	/* one milisecond reload value for r1 */
+
+	.section .text
+
 
 delay: 
-	str	lr,[sp,#-4]!
+	str	lr,[sp,#-4]!	/* decrement sp and save lr */
 
-dl_ms:
+dl_ms:	bl	one_ms
+	subs    r0,r0,#1	
+	bne     dl_ms	
 
-	
-
-	
-	add	sp,sp,#4
-	ldr	pc,[sp]
+	ldr	lr,[sp],#4	/* restore ls and increment sp */
+	mov	pc,lr		/* return to caller */
 	
 	
 
@@ -26,39 +28,14 @@ dl_ms:
 one_ms:
 	str	lr,[sp,#-4]!
 
-	ldr	pc,[sp,#4]!
-/*
-
-dm:
-
-	mov	ip, sp
-	stmfd	sp!, {fp, ip, lr, pc}
-	sub	fp, ip, #4
-
-	sub	sp, sp, #8
-
-	str	r0, [fp, #-16]
-	
-	sub	sp, fp, #12
-	ldmfd	sp, {fp, sp, lr}
-	bx	lr
-
-
-
-*/	
-
-
-/*
-
-subs    r0,r0,#1	
-	bne     dl_ms	
-
-
 	ldr 	r1,=one_ms_clks
 	ldr	r1,[r1]
 loop:
 	subs 	r1,r1,#1
 	bne	loop
-*/
+
+	ldr	lr,[sp],#4
+	mov	pc,lr
+	
 	.end
 
