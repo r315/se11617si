@@ -2,4 +2,5 @@ docs/
 *.o
 *.map
 *.axf
-.gdbtkinit
+*.7z
+*.gdbtkinit
