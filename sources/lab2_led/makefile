@@ -2,6 +2,8 @@ CC = arm-none-eabi-gcc
 AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
 DBG = arm-none-eabi-insight
+AR = arm-none-eabi-ar
+
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
@@ -28,5 +30,9 @@ clean:
 
 debug:  led.axf
 	@$(DBG) led.axf
+	
+lib: delay.o
+	$(AR) rcs libdelay.a delay.o
+#$(CC) -shared -Wl,-soname,libdelay.so -o libdelay.so delay.o
 
 
