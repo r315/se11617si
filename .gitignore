@@ -4,3 +4,4 @@ docs/
 *.axf
 *.7z
 *.gdbtkinit
+schematic/
