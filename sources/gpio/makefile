@@ -11,7 +11,7 @@ CFLAGS= -g -mapcs
 LFLAGS= -g
 LDSCRIPT= -T ../../bsp/ldscript_ram
 LIBS =
-#SYMBOLS = -D__NEWLIB__
+SYMBOLS = -D__NEWLIB__
 
 
 TARGET = gpio
