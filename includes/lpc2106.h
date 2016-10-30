@@ -23,7 +23,7 @@
 
 #define GPIO0_BASE      (0xE0028000UL)                     /*!< GPIO Port 0                      */
 #define GPIO0           ((GPIO_Type *)GPIO0_BASE)          /*!< GPIO Port 0                      */
-
+#pragma anon_unions
 typedef struct{
 	union{
 		__IO    uint32_t    DIR;           /*!< Offset: 0x00 Direction Control Register              */
@@ -38,7 +38,7 @@ typedef struct{
 			__IO uint8_t	DIR3;
 		};
 	};	
-	        uint32_t    Reserved[3];
+	uint32_t    Reserved[3];
 	union{
 		__IO    uint32_t    MASK;          /*!< Offset: 0x10 Pin Value Register                      */
 		struct{
@@ -253,31 +253,9 @@ typedef struct {
     __IO    uint32_t    PLLCFG;        /*!< Offset: 0x084 PLL Config Register                    */
     __I     uint32_t    PLLSTAT;       /*!< Offset: 0x088 PLL Status Register                    */
     __O     uint32_t    PLLFEED;       /*!< Offset: 0x08c PLL Feed Register                      */
-            uint32_t      Reserved_36_47[11];
-	union{
-		__IO    uint32_t    PCON;          /*!< Offset: 0x0c0 Power Control Register                 */
-		struct{
-			uint8_t IDL: 1;
-			uint8_t PD : 1;
-		}PCON_BITS;
-	};
-	union{
-		__IO    uint32_t    PCONP;         /*!< Offset: 0x0c4 Power Control for Peripherals          */
-		struct{
-			uint32_t	reserved1 : 1;
-			uint32_t	PCTIM0   : 1;
-			uint32_t	PCTIM1   : 1;
-			uint32_t	PCUART0  : 1;
-			uint32_t	PCUART1  : 1;
-			uint32_t	PCPWM0   : 1;
-			uint32_t	reserved2 : 1;
-			uint32_t	PCI2C    : 1;
-			uint32_t	PCSPI    : 1;
-			uint32_t	PCRTC    : 1;
-			uint32_t	reserved3 : 10;
-			uint32_t	PCSSP    : 1;
-		}PCONP_BITS;	
-	};			
+            uint32_t      Reserved_36_47[12];
+    __IO    uint32_t    PCON;          /*!< Offset: 0x0c0 Power Control Register                 */
+    __IO    uint32_t    PCONP;         /*!< Offset: 0x0c4 Power Control for Peripherals          */		
             uint32_t      Reserved_50_63[14];
     __IO    uint32_t    APBDIV;        /*!< Offset: 0x100 APB Divider Control                    */
             uint32_t      Reserved_65_79[15];

@@ -7,10 +7,13 @@
 #define IN  (1<<0)
 
 
-int main(int argc, char *argv[]){	
+
+int main(int argc, char *argv[]){
+
+
+	GPIO0->DIR = LED;  /* legacy version :( */
+
 	
-	GPIO0->DIR = LED;
-	GPIO0->CLR = LED;
 
 	while(1){ 
 		if(GPIO0->PIN & IN)
