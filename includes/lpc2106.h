@@ -23,85 +23,12 @@
 
 #define GPIO0_BASE      (0xE0028000UL)                     /*!< GPIO Port 0                      */
 #define GPIO0           ((GPIO_Type *)GPIO0_BASE)          /*!< GPIO Port 0                      */
-#pragma anon_unions
-typedef struct{
-	union{
-		__IO    uint32_t    DIR;           /*!< Offset: 0x00 Direction Control Register              */
-		struct{
-			__IO uint16_t	DIRL;
-			__IO uint16_t	DIRU;
-		};
-		struct{
-			__IO uint8_t	DIR0;
-			__IO uint8_t	DIR1;
-			__IO uint8_t	DIR2;
-			__IO uint8_t	DIR3;
-		};
-	};	
-	uint32_t    Reserved[3];
-	union{
-		__IO    uint32_t    MASK;          /*!< Offset: 0x10 Pin Value Register                      */
-		struct{
-			__IO uint16_t	MASKL;
-			__IO uint16_t	MASKU;
-		};
-		struct{
-			__IO uint8_t	MASK0;
-			__IO uint8_t	MASK1;
-			__IO uint8_t	MASK2;
-			__IO uint8_t	MASK3;
-		};
-	};	
-	union{
-		__IO    uint32_t    PIN;           /*!< Offset: 0x14 Pin Value Register                      */
-		struct{
-			__IO uint16_t	PINL;
-			__IO uint16_t	PINU;
-		};
-		struct{
-			__IO uint8_t	PIN0;
-			__IO uint8_t	PIN1;
-			__IO uint8_t	PIN2;
-			__IO uint8_t	PIN3;
-		};
-	};	
-	union{
-		__IO    uint32_t    SET;           /*!< Offset: 0x18 Output Set Register                     */    
-		struct{
-			__IO uint16_t	SETL;
-			__IO uint16_t	SETU;
-		};
-		struct{
-			__IO uint8_t	SET0;
-			__IO uint8_t	SET1;
-			__IO uint8_t	SET2;
-			__IO uint8_t	SET3;
-		};
-	};
-    union{
-		__IO    uint32_t    CLR;           /*!< Offset: 0x1C Output Clear Register                   */  
-		struct{
-			__IO uint16_t	CLRL;
-			__IO uint16_t	CLRU;
-		};
-		struct{
-			__IO uint8_t	CLR0;
-			__IO uint8_t	CLR1;
-			__IO uint8_t	CLR2;
-			__IO uint8_t	CLR3;
-		};
-	};
-    
-}FIO_Type;
-
-#define FIO0_BASE       (0x3FFFC000UL)                       /*!< Fast IO Port 0                   */
-#define FIO0            ((FIO_Type *)FIO0_BASE)             /*!< Fast IO Port 0                   */
 
 typedef struct {
 	union{
 		__IO    uint32_t    SPCR;            /*!< Offset: 0x00 Control Register                        */
 		struct{
-			uint32_t rsv : 1;
+			uint32_t rsv : 2;
 			uint32_t BitEnable : 1;
 			uint32_t CPHA : 1;
 			uint32_t CPOL : 1;
