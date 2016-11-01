@@ -35,7 +35,11 @@ typedef struct{
  */
 uint32_t readKeys(void);
 
+uint32_t readCurrentKey(void);
+
 uint32_t readLastKey(void);
+
+uint32_t isKeyHold(void);
 
 #endif
 

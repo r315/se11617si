@@ -15,6 +15,7 @@ SYMBOLS = -D__NEWLIB__
 
 
 TARGET = keys
+LIBTARGET = keys
 
 OBJS = init.o $(TARGET).o
 
@@ -36,8 +37,9 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 	
-lib: $(TARGET).o
-	$(AR) rcs lib$(TARGET).a $(TARGET).o
+lib:
+	$(CC) -mapcs $(SYMBOLS) -I../../includes -c $(LIBTARGET).c -o $(LIBTARGET).o
+	$(AR) rcs ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
