@@ -1,32 +1,22 @@
 #include <lpc2106.h>
+#include <spi.h>
 
-#define ON 1
-#define OFF 0
+/**
+*	default init 8-bit transfer
+*   master, mode 3, clk = PCLK/4
+**/
+void SPI_Init(void){
 
-#define SPI_ON
+	SC->PCONP &= ~(SSP0_ON | SPI0_ON);	
 
-#define SPI_EN (1<<2)
-#define SPI_MSTR (1<<5)
-#define SPI_SCK (1<<4)
-#define SPI_MOSI (1<<6)
-#define SPI_MISO (1<<5)
-#define SPI_SSEL  (1<<7)
+	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
+	SPI0->SPCCR = 4;	
 
-int main(int argc, char *argv[]){
-
-	SC->PCONP_BITS.PCSSP = ON;
-	SC->PCONP_BITS.PCSPI = OFF;
-	
-	PINCON->PINSEL0 = SPI_SCK | SPI_MOSI | SPI_MISO | SPI_SSEL;
-	
-	SPI0->SPCCR = 16; /* PCLK/16 */
-	SPI0->SPCR = SPI_EN | SPI_MSTR;
-	
-	
-	
-	while(1){ 
-		SPI0->SPDR = 'U';
-	}
-	return 0;
+	SC->PCONP |= SPI0_ON;
 }
- 
+
+uint32_t SPI_Send(uint32_t data){
+	SPI0->SPDR = data;
+	while(!(SPI0->SPSR & SPI0_SPIF));
+return SPI->SPDR;
+}	
