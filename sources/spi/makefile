@@ -10,11 +10,12 @@ AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
 LDSCRIPT= -T ../../bsp/ldscript_ram
-LIBS = -lLED
+LIBS = -lgpio
 SYMBOLS = -D__NEWLIB__
 
 
-TARGET = spi
+TARGET = spiTest
+LIBTARGET = spi
 
 OBJS = init.o $(TARGET).o
 
@@ -35,11 +36,15 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 	
-lib: $(TARGET).o
-	$(AR) rcs lib$(TARGET).a $(TARGET).o
+lib:
+	$(CC) $(CFLAGS) $(SYMBOLS) -I../../includes -c $(LIBTARGET).c -o $(LIBTARGET).o
+	$(AR) rcs ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
+
+.o.S:
+
 	
 #$(CC) -shared -Wl,-soname,libdelay.so -o libdelay.so delay.o
 
