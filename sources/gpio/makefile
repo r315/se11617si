@@ -10,11 +10,12 @@ AFLAGS= -g
 CFLAGS= -g -mapcs
 LFLAGS= -g
 LDSCRIPT= -T ../../bsp/ldscript_ram
-LIBS =
+LIBS = -lgpio
 SYMBOLS = -D__NEWLIB__
 
 
-TARGET = gpio
+TARGET = gpioTest
+LIBTARGET = gpio
 
 OBJS = init.o $(TARGET).o
 
@@ -31,13 +32,15 @@ init.o: ../../bsp/init.S
 
 
 clean:
-	rm -f init.o $(TARGET).o $(TARGET).axf 
+	rm -f *.o $(TARGET).axf 
 	
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 	
-lib: $(TARGET).o
-	$(AR) rcs lib$(TARGET).a $(TARGET).o
+lib:
+	$(CC) -mapcs $(SYMBOLS) -I../../includes -c $(LIBTARGET).c -o $(LIBTARGET).o
+#$(AS) $(AFLAGS) $(LIBTARGET).S -o $(LIBTARGET).o
+	$(AR) rcs ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
