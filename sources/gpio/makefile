@@ -4,6 +4,7 @@ LD = arm-none-eabi-ld
 DBG = arm-none-eabi-insight
 AR = arm-none-eabi-ar
 OBJDUMP = arm-none-eabi-objdump
+OBJCOPY = arm-none-eabi-objcopy
 
 
 AFLAGS= -g
@@ -44,6 +45,9 @@ lib:
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
+	
+hex: $(TARGET).axf
+	$(OBJCOPY) --set-start 0x40001000 -O ihex $(TARGET).axf $(TARGET).hex
 	
 #$(CC) -shared -Wl,-soname,libdelay.so -o libdelay.so delay.o
 
