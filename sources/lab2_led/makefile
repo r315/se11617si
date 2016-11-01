@@ -3,8 +3,9 @@ AS = arm-none-eabi-as
 LD = arm-none-eabi-ld
 DBG = arm-none-eabi-insight
 AR = arm-none-eabi-ar
+OBJCOPY = arm-none-eabi-objcopy
 
-
+TARGET= led
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS=
@@ -34,5 +35,6 @@ debug:  led.axf
 lib: delay.o
 	$(AR) rcs libdelay.a delay.o
 #$(CC) -shared -Wl,-soname,libdelay.so -o libdelay.so delay.o
-
+hex: $(TARGET).axf
+	$(OBJCOPY) --set-start 0x40000000 -O ihex $(TARGET).axf $(TARGET).hex
 
