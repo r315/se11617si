@@ -20,10 +20,8 @@
 /* status register bits */
 #define SPI0_SPIF	  (1<<7)
 
-#define SPI0_SCK (1<<4)
-#define SPI0_MOSI (1<<6)
-#define SPI0_MISO (1<<5)
-#define SPI0_SSEL  (1<<7)
+/* pincon function select */
+#define SPI0_PINS (0x15<<8)
 
 void SPI_Init(void);
 
