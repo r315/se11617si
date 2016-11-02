@@ -24,24 +24,13 @@
 #define GPIO0_BASE      (0xE0028000UL)                     /*!< GPIO Port 0                      */
 #define GPIO0           ((GPIO_Type *)GPIO0_BASE)          /*!< GPIO Port 0                      */
 
-typedef struct {
-	union{
-		__IO    uint32_t    SPCR;            /*!< Offset: 0x00 Control Register                        */
-		struct{
-			uint32_t rsv : 2;
-			uint32_t BitEnable : 1;
-			uint32_t CPHA : 1;
-			uint32_t CPOL : 1;
-			uint32_t MSTR : 1;
-			uint32_t LSBF : 1;
-			uint32_t SPIE : 1;
-			uint32_t BITS : 4;
-		}SPCR_BITS;
-	};			
-    __I     uint32_t    SPSR;            /*!< Offset: 0x04 Status Register                         */
-    __IO    uint32_t    SPDR;            /*!< Offset: 0x08 Data Register                           */
-    __IO    uint32_t    SPCCR;           /*!< Offset: 0x0c Clock Counter Register                  */
-    __IO    uint32_t    SPINT;           /*!< Offset: 0x10 Interrupt Flag Register                 */
+typedef struct {	
+	__IO    uint32_t    SPCR;            /*!< Offset: 0x00 Control Register                      */
+    __I     uint32_t    SPSR;            /*!< Offset: 0x04 Status Register                       */
+    __IO    uint32_t    SPDR;            /*!< Offset: 0x08 Data Register                         */
+    __IO    uint32_t    SPCCR;           /*!< Offset: 0x0c Clock Counter Register                */
+	uint32_t reserved[4];
+    __IO    uint32_t    SPINT;           /*!< Offset: 0x1C Interrupt Flag Register               */
 } SPI_Type;
 
 #define SPI0_BASE       (0xe0020000UL)                     /*!< SPI Interface 0                  */
