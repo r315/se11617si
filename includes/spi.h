@@ -21,11 +21,15 @@
 #define SPI0_SPIF	  (1<<7)
 
 /* pincon function select */
-#define SPI0_PINS (0x15<<8)
+/*Remark: LPC2104/05/06 and LPC2104/05/06/00 configured to operate as a SPI master MUST
+select SSEL functionality on P0.7 and have HIGH level on this pin in order to act as a master.*/
+#define SPI0_PINS (0x55<<8)
 
-void SPI_Init(void);
+#define SPCCR_MIN 8		//min pckl divider
 
-uint32_t SPI_Send(uint32_t data);
+void SPI_Init(uint8_t clk);
+
+uint32_t SPI_Send(uint16_t data);
 
 
 #endif

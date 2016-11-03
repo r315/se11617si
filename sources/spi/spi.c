@@ -6,19 +6,18 @@
 *   master, mode 3, clk = PCLK/16
 *   Note default pclk = cclk/4
 **/
-void SPI_Init(void){
-
-	SC->PCONP &= ~(SSP0_ON | SPI0_ON);	
-
-	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
-	SPI0->SPCCR = 16;	
-
+void SPI_Init(uint8_t clk){	
 	SC->PCONP |= SPI0_ON;
+	PINCON->PINSEL0 = SPI0_PINS;
+	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
+	if(clk < SPCCR_MIN)
+		clk = SPCCR_MIN;
+	SPI0->SPCCR = clk;	
 }
 
-uint32_t SPI_Send(uint32_t data){
-	if(SPI0->SPSR & SPI0_SPIF)
-		SPI0->SPDR = data;
-	//while((SPI0->SPSR & SPI0_SPIF));
+uint32_t SPI_Send(uint16_t data){
+	SPI0->SPDR = data;
+	while(!(SPI0->SPSR & SPI0_SPIF));
 return SPI0->SPDR;
-}	
+}
+				

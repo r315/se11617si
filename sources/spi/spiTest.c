@@ -1,7 +1,7 @@
 #include <spi.h>
 #include <gpio.h>
 
-#define LCD_CS (1<<12)
+#define DEV_CS (1<<3)
 
 void delayMs(uint32_t ms){
 volatile int dlms;
@@ -12,15 +12,16 @@ volatile int dlms;
 	}
 }
 
-void SPI_Init(void){
-	SC->PCONP &= ~(SSP0_ON);
-	SC->PCONP |=   SPI0_ON;
-	SPI0->SPCCR = 128;
+void SPI_Init(uint8_t clk){	
+	SC->PCONP |= SPI0_ON;
 	PINCON->PINSEL0 = SPI0_PINS;
-	SPI0->SPCR = SPI0_MSTR;// | SPI0_CPOL | SPI0_CPHA;	
+	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
+	if(clk < SPCCR_MIN)
+		clk = SPCCR_MIN;
+	SPI0->SPCCR = clk;	
 }
 
-uint32_t SPI_Send(uint32_t data){
+uint32_t SPI_Send(uint16_t data){
 	SPI0->SPDR = data;
 	while(!(SPI0->SPSR & SPI0_SPIF));
 return SPI0->SPDR;
@@ -29,15 +30,14 @@ return SPI0->SPDR;
 
 int main(int argc, char *argv[]){
 
-	//GPIO_Init(LCD_CS,LCD_CS);
-	SPI_Init();
-	//GPIO_ConfigPin(LCD_CS, GPIO_OUTPUT);
+	SPI_Init(16);
+	GPIO_ConfigPinMask(DEV_CS, GPIO_OUTPUT);
 	
 	while(1){ 
-		//GPIO_Clr(LCD_CS);
-		SPI_Send('U');
-		//delayMs(10);
-		//GPIO_Set(LCD_CS);		
+		GPIO_Clr(DEV_CS);
+		SPI_Send('U');		
+		GPIO_Set(DEV_CS);
+		delayMs(200);		
 	}
 	return 0;
 }

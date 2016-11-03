@@ -27,7 +27,7 @@ $(TARGET).axf: $(OBJS)
 $(TARGET).o: $(TARGET).c 
 	$(CC) $(CFLAGS) $(SYMBOLS) -I../../includes -c $(TARGET).c -o $(TARGET).o
 
-init.o: ../../bsp/init.S
+init.o:
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
