@@ -19,14 +19,20 @@
 #define GPIO_OUTPUT	1
 #define GPIO_INPUT	0
 
+#define P04_SCK  (1<<8)
+#define P05_MISO (1<<10)
+#define P06_MOSI (1<<12)
+
+
 
 /**
  * @brief	Initialyze Port indicating output pins ans their state. 
  *			bits as 1 are configured as outputs
  */
 void GPIO_Init(uint32_t output, uint32_t state);
-void GPIO_SetPin(uint8_t pin_number, uint8_t state);
-void GPIO_ConfigPin(uint32_t pin_number, uint32_t dir);
+void GPIO_SetPin(uint8_t bit_number, uint8_t state);
+void GPIO_ConfigPin(uint32_t bit_number, uint32_t dir); //configure pin using his bit number
+void GPIO_ConfigPinMask(uint32_t mask, uint32_t dir);	//configures pin using his mask
 
 #endif
 
