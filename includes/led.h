@@ -1,73 +1,39 @@
 /**
 * @file		led.h
-* @brief	Contains the LED API.
-*     		It is intended to be used in ISO C conforming development
-*     		environments and checks for this insofar as it is possible
-*     		to do so.
+* @brief	Contains the LED API header.
+*     		
 * @version	1.0
-* @date		10 Out. 2015
-* @author	PSampaio
-*
-* Copyright(C) 2015, PSampaio
-* All rights reserved.
-*
-***********************************************************************
-* Software that is described herein is for illustrative purposes only
-* which provides customers with programming information regarding the
-* products. This software is supplied "AS IS" without any warranties.
-* NXP Semiconductors assumes no responsibility or liability for the
-* use of the software, conveys no license or title under any patent,
-* copyright, or mask work right to the product. NXP Semiconductors
-* reserves the right to make changes in the software without
-* notification. NXP Semiconductors also make no representation or
-* warranty that such application will be suitable for the specified
-* use without further testing or modification.
+* @date		3 Nov. 2016
+* @author	Hugo Reis
 **********************************************************************/
 
 #ifndef _LED_H_
 #define _LED_H_
 
-/** @defgroup LED LED 
- * @ingroup LED
- * This package provides the core capabilities such as on / off the LED in
- * port P0.15 of the LPC2106.
- * @{
+#include <stdint.h>
+#include <lpc2106.h>
 
-/** @defgroup LED_Public_Functions LED Public Functions
- * @{
- */
+#define LED 12
+#define LED_ON  1
+#define LED_OFF 0
 
-/**
- * @brief	Initializes the LED API
- * @param	state	: State of the LED. The 0 indicate led off and 1 LED on.
- * @return	Nothing
- * @note	This function must be called prior to any other LED functions. The
- * LED will started in the value passed in the parameter.
- */
-void LED_Init(int state);
-
+/** 
+* @brief Faz a iniciação do sistema para permitir a manipulação do estado LED ligado
+*        bit pinId (bit) do GPIO. Deixa o LED apagado quando state toma o valor 0 ou aceso no
+*        caso contrário. 
+**/
+void LED_Init(int pinId, int state);
 
 /**
- * @brief	Get LED state. 
- * @return	status of LED. The 0 indicate led off and 1 LED on.
- */
+* @brief Devolve 0 se o LED está apagado e um valor diferente de zero no caso contrário. 
+**/
 int LED_GetState(void);
 
 /**
- * @brief	Set LED state.
- * @param	state	: State of the LED. The 0 indicate led off and 1 LED on.
- * @return	Nothing
- */
+* @brief Apaga o LED se state toma o valor 0 ou acende o LED no caso contrário.
+**/
 void LED_SetState(int state);
 
-/**
- * @}
- */
-
-
-/**
- * @}
- */
 
 #endif
 
