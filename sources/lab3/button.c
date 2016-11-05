@@ -50,7 +50,7 @@ uint32_t cur = BUTTON_Capture();
 	}
 	
 	//check for timeout and activate hold flag
-	if(TIMER0_Elapse(__buttons.timer) > BUTTON_HOLD_TIME){
+	if(TicksToMs(TIMER0_Elapse(__buttons.timer)) > BUTTON_HOLD_TIME){
 		__buttons.events = BUTTON_HOLD;
 	}
 	

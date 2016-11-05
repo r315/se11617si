@@ -29,6 +29,13 @@ typedef struct{
 #define BUTTON_RELEASED 2
 #define BUTTON_HOLD     3
 
+#define BUTTON_L (1<<11)
+#define BUTTON_R (1<<13)
+#define BUTTON_F (1<<12)
+#define BUTTON_S (1<<15)
+
+#define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
+
 
 /**
 * @brief Faz a iniciação do sistema para permitir o acesso aos botões
