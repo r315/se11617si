@@ -13,16 +13,14 @@
 BUTTON_Controller __buttons;
 
 uint32_t BUTTON_Capture(void){
-	return (~GPIO0->PIN) & __buttons.mask;  //common ground
+	return (~GPIO0->PIN) & BUTTON_MASK;  //common ground
 }
 
-void BUTTON_Init(uint32_t mask){
+void BUTTON_Init(){
 	__buttons.cur  = BUTTON_EMPTY;
 	__buttons.last = BUTTON_EMPTY;
 	__buttons.events = BUTTON_EMPTY;
-	__buttons.mask = mask;
-
-	GPIO0->DIR &= ~mask;
+	GPIO0->DIR &= ~BUTTON_MASK;
 }
 
 int BUTTON_Hit(void){

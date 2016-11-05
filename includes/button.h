@@ -18,7 +18,6 @@ typedef struct{
 	uint32_t last;
 	uint32_t timer;
 	uint32_t events;
-	uint32_t mask;
 }BUTTON_Controller;
 
 
@@ -41,7 +40,7 @@ typedef struct{
 * @brief Faz a iniciação do sistema para permitir o acesso aos botões
 * @param mask bitmap com os bits correspondentes aos pinos ligados nos botões
 **/
-void BUTTON_Init(uint32_t mask);
+void BUTTON_Init(void);
 
 /**
 * @brief Devolve o codigo (bitmap) do botão pressionado ou 0 no caso de não existir 

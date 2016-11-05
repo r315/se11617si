@@ -14,7 +14,7 @@ int main (void){
 
 	TIMER0_Init(MS_IN_1S);
 	LED_Init(LED,LED_OFF);
-	BUTTON_Init(BUTTON_MASK);
+	BUTTON_Init();
 
 	while(1){			
 		switch(BUTTON_Read()){
