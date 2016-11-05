@@ -22,9 +22,11 @@
 #define CCLK	14745600
 #define PCLK	CCLK / 4 //default
 
+#define MS_IN_1S 1000
+
 /**
 * @brief Faz a iniciação do sistema para permitir o acesso ao periférico Timer 0. O
-*	     timer deve ser iniciado em modo continuo e à frequência indicada no parâmetro.
+*	     timer deve ser iniciado em modo continuo e à frequência (Hz) indicada no parâmetro.
 */
 void TIMER0_Init(unsigned int frequency);
 
@@ -38,5 +40,16 @@ unsigned int TIMER0_GetValue(void);
 *        tempo corrente.
 **/
 unsigned int TIMER0_Elapse(unsigned int lastRead);
+
+/**
+* @brief Converte contagem de ticks em milisegundos
+**/
+unsigned int TicksToMs(unsigned int ticks);
+
+/**
+* @brief efectua uma pausa de ms passado como parametro
+**/
+
+void TIMER0_DelayMs(unsigned int ms);
 
 #endif

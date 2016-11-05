@@ -8,6 +8,16 @@
 **********************************************************************/
 #include <timer.h>
 
+uint32_t __freq;
+
+unsigned int getPclk(void){
+   switch(SC->APBDIV & 3){
+      default:
+      case 0: return CCLK / 4;
+      case 1: return CCLK;
+      case 2: return CCLK / 2;
+   }
+}
 
 void TIMER0_Init(unsigned int frequency){	
 
@@ -16,7 +26,9 @@ void TIMER0_Init(unsigned int frequency){
 	TIMER0->CTCR = 0; 		// Timer mode
 
 	if(!frequency) frequency = 1;
-	TIMER0->PR = (PCLK / frequency) - 1; // pr = pclk / frequency, pclk = cclk / vpdiv (default 4)
+	if(frequency > CCLK) frequency = CCLK;
+	__freq = frequency;
+	TIMER0->PR = (getPclk() / frequency) - 1; // pr = pclk / frequency, pclk = cclk / vpdiv (default 4)
 	
 	TIMER0->TCR = TIMER_CE;	//start timer
 }
@@ -30,5 +42,18 @@ unsigned int TIMER0_Elapse(unsigned int lastRead){
 	return TIMER0->TC - lastRead;
 }
 
+//PR+1  => 1000Ms
+//ticks => xMs
+unsigned int TicksToMs(unsigned int ticks){
+return (ticks * MS_IN_1S) / __freq;
+}
+
+//FIXME if ms < 1000/freq, the timer
+// has no precision to do a precise delay
+//workarrond avoid init timer0 with a frequency lower than 1kz
+void TIMER0_DelayMs(unsigned int ms){
+uint32_t ticks = TIMER0_GetValue();
+   while( TicksToMs(TIMER0_Elapse(ticks)) < ms);
+}
 
 
