@@ -13,7 +13,7 @@
 #include <stdint.h>
 #include <lpc2106.h>
 
-#define LED 12
+#define LED 16
 #define LED_ON  1
 #define LED_OFF 0
 
