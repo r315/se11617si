@@ -14,7 +14,7 @@ int __state;
 
 void LED_Init(int pinId, int state){
 	__pinmask = (1 << pinId);
-	GPIO0->DIR = __pinmask;
+	GPIO0->DIR |= __pinmask;
 	LED_SetState(state);
 }
 
