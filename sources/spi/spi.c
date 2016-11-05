@@ -20,4 +20,4 @@ uint32_t SPI_Send(uint16_t data){
 	while(!(SPI0->SPSR & SPI0_SPIF));
 return SPI0->SPDR;
 }
-				
+	

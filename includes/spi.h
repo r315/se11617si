@@ -1,3 +1,12 @@
+/**
+* @file		spi.h
+* @brief	Contains the spi API header.
+*     		
+* @version	1.0
+* @date		5 Nov. 2016
+* @author	Hugo Reis
+**********************************************************************/
+
 #ifndef _SPI_H_
 #define _SPI_H_
 
@@ -30,6 +39,5 @@ select SSEL functionality on P0.7 and have HIGH level on this pin in order to ac
 void SPI_Init(uint8_t clk);
 
 uint32_t SPI_Send(uint16_t data);
-
 
 #endif

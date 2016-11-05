@@ -10,7 +10,7 @@ AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
 LDSCRIPT= -T ../../bsp/ldscript_ram
-LIBS = -lgpio
+LIBS = -lspi
 SYMBOLS = -D__NEWLIB__
 
 
