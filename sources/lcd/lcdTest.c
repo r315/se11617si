@@ -1,13 +1,14 @@
 #include <timer.h>
-#include <led.h>
 #include <button.h>
 #include <display.h>
+#include <spi.h>
 
 int main(void){
 
 	TIMER0_Init(MS_IN_1S);	
 	BUTTON_Init();
-	SPI_Init(0);
+	SPI_Init(0);	
+	//SPI_SetBits(SPI_MAX_BITS);
 	LCD_Init();
 
 	LCD_OpenWrap(0,0,LCD_W,LCD_H);

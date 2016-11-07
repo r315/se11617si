@@ -11,10 +11,11 @@ void data8(uint8_t data){
 	CS1;	
 }
 
+
 void data16(uint16_t data){	
 	RS1;
 	CS0;
-	SPI_Send(data>>8);
+	//SPI_Send(data>>8);
 	SPI_Send(data);
 	CS1;
 }
@@ -23,7 +24,7 @@ void LCD_Fill(uint16_t data, uint32_t n){
 	RS1;
 	CS0;
 	while(n--){		
-		SPI_Send(data>>8);
+		//SPI_Send(data>>8);
 		SPI_Send(data);
 	}
 	CS1;
