@@ -35,9 +35,13 @@ select SSEL functionality on P0.7 and have HIGH level on this pin in order to ac
 #define SPI0_PINS (0x55<<8)
 
 #define SPCCR_MIN 8		//min pckl divider
+#define SPI_MIN_BITS 8
+#define SPI_MAX_BITS 0  // 0 => 16bit
 
 void SPI_Init(uint8_t clk);
 
 uint32_t SPI_Send(uint16_t data);
+
+void SPI_SetBits(uint8_t nbits);
 
 #endif
