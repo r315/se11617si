@@ -28,6 +28,13 @@ typedef struct{
 #define BUTTON_RELEASED 2
 #define BUTTON_HOLD     3
 
+/**
+* @brief Button connections
+*		P0.11  Left
+*		P0.12  Fire
+*		P0.13  Right
+*       P0.15  Save
+**/
 #define BUTTON_L (1<<11)
 #define BUTTON_R (1<<13)
 #define BUTTON_F (1<<12)

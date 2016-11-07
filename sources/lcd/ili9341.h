@@ -13,7 +13,17 @@
 #include <stdint.h>
 #include <lpc2106.h>
 
-/* Pin configuration */
+/**
+* @brief Lcd Pin configuration:
+*		P0.3  CS
+*		P0.4  SCK
+*		P0.5  SO
+*       P0.6  SI      
+*		P0.8  Backlight enable
+*		P0.9  C'/D
+*		p0.10 RST
+**/
+ 
 #define LCD_CS (1<<3)  //
 #define LCD_RS (1<<9)  //
 #define LCD_RST (1<<10) //
