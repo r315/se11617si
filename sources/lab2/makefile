@@ -5,20 +5,20 @@ DBG = arm-none-eabi-insight
 AR = arm-none-eabi-ar
 OBJCOPY = arm-none-eabi-objcopy
 
-TARGET= led
+TARGET= ledTest
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS=
 LDSCRIPT= -T ../../bsp/ldscript_ram
 LIBS = -lLED
 
-all: led.axf
+all: ledTest.axf
 
-led.axf: init.o led.o delay.o 
+ledTest.axf: init.o ledTest.o delay.o 
 	$(LD) $(LFLAGS) $(LDSCRIPT) -L../../libs led.o init.o delay.o -o led.axf $(LIBS)
 
-led.o: led.c 
-	$(CC) $(CFLAGS) -I../../includes -c led.c -o led.o
+ledTest.o: ledTest.c 
+	$(CC) $(CFLAGS) -I../../includes -c ledTest.c -o ledTest.o
 
 delay.o: delay.S
 	$(AS) $(AFLAGS) delay.S -o delay.o
@@ -29,12 +29,12 @@ init.o: ../../bsp/init.S
 clean:
 	rm -f init.o delay.o led.o led.axf led.map
 
-debug:  led.axf
-	@$(DBG) led.axf
+debug:  ledTest.axf
+	@$(DBG) ledTest.axf
 	
 lib: delay.o
 	$(AR) rcs libdelay.a delay.o
-#$(CC) -shared -Wl,-soname,libdelay.so -o libdelay.so delay.o
+	
 hex: $(TARGET).axf
 	$(OBJCOPY) --set-start 0x40000000 -O ihex $(TARGET).axf $(TARGET).hex
 

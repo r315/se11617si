@@ -1,8 +1,5 @@
 #include <led.h>
 
-#define ON 1
-#define OFF 0
-
 #define WAIT_200MS 200 //2,5Hz => T=400ms
 
 void delay(int time);
