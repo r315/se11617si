@@ -1,5 +1,5 @@
 #include <spi.h>
-#include <gpio.h>
+#include <led.h>
 
 #define DEV_CS (1<<3)
 
@@ -31,12 +31,12 @@ return SPI0->SPDR;
 int main(int argc, char *argv[]){
 
 	SPI_Init(16);
-	GPIO_ConfigPinMask(DEV_CS, GPIO_OUTPUT);
+	LED_Init(LED, LED_OFF);
 	
 	while(1){ 
-		GPIO_Clr(DEV_CS);
+		LED_SetState(LED_OFF);
 		SPI_Send('U');		
-		GPIO_Set(DEV_CS);
+		LED_SetState(LED_ON);
 		delayMs(200);		
 	}
 	return 0;

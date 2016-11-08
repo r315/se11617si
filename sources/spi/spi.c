@@ -9,9 +9,9 @@
 void SPI_Init(uint8_t clk){	
 	SC->PCONP |= SPI0_ON;
 	PINCON->PINSEL0 = SPI0_PINS;
-	SPI0->SPCR = SPI0_EN_NBITS | SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
-	if(clk < SPCCR_MIN)
-		clk = SPCCR_MIN;
+	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
+	if(clk < SPI_MAX_CLK)
+		clk = SPI_MAX_CLK;
 	SPI0->SPCCR = clk;	
 }
 
@@ -21,8 +21,4 @@ uint32_t SPI_Send(uint16_t data){
 return SPI0->SPDR;
 }
 
-void SPI_SetBits(uint8_t nbits){	
-	SPI0->SPCR &= (~0x0F << 8); 
-	SPI0->SPCR |= (nbits << 8);
-}
-	
+

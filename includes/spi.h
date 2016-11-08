@@ -34,14 +34,14 @@
 select SSEL functionality on P0.7 and have HIGH level on this pin in order to act as a master.*/
 #define SPI0_PINS (0x55<<8)
 
-#define SPCCR_MIN 8		//min pckl divider
-#define SPI_MIN_BITS 8
-#define SPI_MAX_BITS 0  // 0 => 16bit
+#define SPI_MAX_CLK 8		//min pckl divider
 
 void SPI_Init(uint8_t clk);
 
+/**
+* @brief initiates and 8bit data transfer
+*		 rev 00 only suports 8bit
+**/
 uint32_t SPI_Send(uint16_t data);
-
-void SPI_SetBits(uint8_t nbits);
 
 #endif
