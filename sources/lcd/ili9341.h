@@ -66,8 +66,8 @@
 
 
 void data16(uint16_t data);
-void data8(uint8_t data);
-void command(uint8_t data);
+void data8(uint16_t data);
+void command(uint16_t data);
 
 #endif
 
