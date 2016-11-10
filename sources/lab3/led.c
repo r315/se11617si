@@ -7,29 +7,27 @@
 * @author	Hugo Reis
 **********************************************************************/
 #include <led.h>
+#include <gpio.h>
 
-int __pinmask;
+int __pin;
 int __state;
 
-
 void LED_Init(int pinId, int state){
-	__pinmask = (1 << pinId);
-	GPIO0->DIR |= __pinmask;
-	LED_SetState(state);
+    __pin = pinId;
+    GPIO_SetOutput(__pin);
+    LED_SetState(state);
 }
-
 
 int LED_GetState(void){
-	return __state;
+    return __state;
 }
 
-
 void LED_SetState(int state){
-	__state = state & 1;
-
-	if(!__state)				// led is connected in common Anode configuration
-		GPIO0->SET = __pinmask;
-	else
-		GPIO0->CLR = __pinmask;
+    __state = state & 1;
+    
+    if(!__state)				// led is connected in common Anode configuration
+        GPIO_Set(__pin);
+    else
+        GPIO_Clr(__pin);
 }
 
