@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <lpc2106.h>
+#include <gpio.h>
 
 /**
 * @brief Lcd Pin configuration:
@@ -24,45 +25,49 @@
 *		p0.10 RST
 **/
  
-#define LCD_CS (1<<3)  //
-#define LCD_RS (1<<9)  //
-#define LCD_RST (1<<10) //
-#define LCD_BKL (1<<8)
+#define LCD_CS   3
+#define LCD_RS   9
+#define LCD_RST 10
+#define LCD_BKL  8
 
-#define CS0  GPIO0->CLR = LCD_CS
-#define CS1  GPIO0->SET = LCD_CS
-#define RS0  GPIO0->CLR = LCD_RS
-#define RS1  GPIO0->SET = LCD_RS
-#define RST0 GPIO0->CLR = LCD_RST
-#define RST1 GPIO0->SET = LCD_RST
-#define BKL0 GPIO0->CLR = LCD_BKL
-#define BKL1 GPIO0->SET = LCD_BKL
+#define CS0  GPIO_Clr(LCD_CS)
+#define CS1  GPIO_Set(LCD_CS)
+#define RS0  GPIO_Clr(LCD_RS)
+#define RS1  GPIO_Set(LCD_RS)
+#define RST0 GPIO_Clr(LCD_RST)
+#define RST1 GPIO_Set(LCD_RST)
+#define BKL0 GPIO_Clr(LCD_BKL)
+#define BKL1 GPIO_Set(LCD_BKL)
 
-#define PIN_INIT	GPIO0->DIR |= LCD_CS | LCD_RS | LCD_RST | LCD_BKL 
+#define LCD_PIN_INIT					\
+            GPIO_SetOutput(LCD_CS); 	\
+            GPIO_SetOutput(LCD_RS);		\
+            GPIO_SetOutput(LCD_RST);	\
+            GPIO_SetOutput(LCD_BKL);	\
 
-#define RDDID 0x04
+#define RDDID  0x04
 #define SLPIN  0x10
 #define SLPOUT 0x11
 #define DISPON 0x29
-#define CASET 0x2A
-#define PASET 0x2B
-#define RAMWR 0x2C
-#define MAC 0x36	// Memory Access Control 
+#define CASET  0x2A
+#define PASET  0x2B
+#define RAMWR  0x2C
+#define MAC    0x36	// Memory Access Control 
 #define COLMOD 0x3A // Pixel Format set
 #define FRCONN 0xB1	// Frame rate control Normal mode
 #define FRCONI 0xB2	// Frame rate control Idle mode
 #define FRCONP 0xB3	// Frame rate control Partial mode
-#define DFCTL 0xB6  // Display Function Control 
-#define PCON1 0xC0	// power control 1
-#define PCON2 0xC1	// power control 2
-#define VCOM1 0xC5	// VCOM control 1
-#define VCOM2 0xC7	// VCOM control 2
-#define PCONA 0xCB	// Power Control A
-#define PCONB 0xCF	// Power Control B
+#define DFCTL  0xB6  // Display Function Control 
+#define PCON1  0xC0	// power control 1
+#define PCON2  0xC1	// power control 2
+#define VCOM1  0xC5	// VCOM control 1
+#define VCOM2  0xC7	// VCOM control 2
+#define PCONA  0xCB	// Power Control A
+#define PCONB  0xCF	// Power Control B
 #define DTCONA 0xE8 // Driver Timming Control A
 #define DTCONB 0xEA // Driver Timming Control B
-#define PSCON 0xED  // Power on Sequence control
-#define PRCON 0xF7	// Pump ratio control
+#define PSCON  0xED  // Power on Sequence control
+#define PRCON  0xF7	// Pump ratio control
 
 
 void data16(uint16_t data);

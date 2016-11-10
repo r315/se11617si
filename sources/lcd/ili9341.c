@@ -1,38 +1,38 @@
+#include <spi.h>
+#include <timer.h>
 #include <display.h>
 #include "ili9341.h"
-#include <timer.h>
-#include <spi.h>
 
 #ifndef SPI_16
 void data8(uint16_t data){	
-	RS1;
-	CS0;
-	SPI_Send(data);	
-	CS1;	
+    RS1;
+    CS0;
+    SPI_Send(data);	
+    CS1;	
 }
 
 void data16(uint16_t data){	
-	RS1;
-	CS0;
-	SPI_Send(data>>8);
-	SPI_Send(data);
-	CS1;
+    RS1;
+    CS0;
+    SPI_Send(data>>8);
+    SPI_Send(data);
+    CS1;
 }
 
 void LCD_Fill(uint16_t data, uint32_t n){
-	RS1;
-	CS0;
-	while(n--){		
-		SPI_Send(data>>8);
-		SPI_Send(data);
-	}
-	CS1;
+    RS1;
+    CS0;
+    while(n--){		
+        SPI_Send(data>>8);
+        SPI_Send(data);
+    }
+    CS1;
 }
 void command(uint16_t data){
-	RS0;
-	CS0;
-	SPI_Send(data);
-	CS1;	
+    RS0;
+    CS0;
+    SPI_Send(data);
+    CS1;	
 }
 
 void LCD_OpenWrap(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
@@ -49,11 +49,11 @@ void LCD_OpenWrap(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
 
 void LCD_Init(void){
 
-		PIN_INIT;
+        LCD_PIN_INIT;
 
-		RST0;
-		TIMER0_DelayMs(10);
-		RST1;
+        RST0;
+        TIMER0_DelayMs(10);
+        RST1;
   
         command(PCONA);  
         data8(0x39); 
@@ -115,35 +115,35 @@ void LCD_Init(void){
 
         command(SLPOUT);    //Exit Sleep 
         TIMER0_DelayMs(120); 
-				
+                
         command(DISPON);    //Display on 
         command(RAMWR);  
 
-		BKL1; 
+        BKL1; 
 }
 #else
 
 void data16(uint16_t data){	
-	RS1;
-	CS0;
-	SPI_Send(data);
-	CS1;
+    RS1;
+    CS0;
+    SPI_Send(data);
+    CS1;
 }
 
 void LCD_Fill(uint16_t data, uint32_t n){
-	RS1;
-	CS0;
-	while(n--)		
-		SPI_Send(data);
-	CS1;
+    RS1;
+    CS0;
+    while(n--)		
+        SPI_Send(data);
+    CS1;
 }
 
 
 void command(uint16_t data){
-	RS0;
-	CS0;
-	SPI_Send(data);
-	CS1;	
+    RS0;
+    CS0;
+    SPI_Send(data);
+    CS1;	
 }
 
 void LCD_OpenWrap(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
@@ -159,11 +159,11 @@ void LCD_OpenWrap(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2){
 
 void LCD_Init(void){
 
-		PIN_INIT;
+        PIN_INIT;
 
-		RST0;
-		TIMER0_DelayMs(10);
-		RST1;
+        RST0;
+        TIMER0_DelayMs(10);
+        RST1;
   
         command(PCONA);  
         data16(0x39); 
@@ -225,16 +225,16 @@ void LCD_Init(void){
 
         command(SLPOUT);    //Exit Sleep 
         TIMER0_DelayMs(120); 
-				
+                
         command(DISPON);    //Display on 
         command(RAMWR);  
 
-		BKL1; 
+        BKL1; 
 }
 #endif
 void LCD_Bkl(uint32_t state){
-	if(state) BKL1;
-	else	BKL0;
+    if(state) BKL1;
+    else	BKL0;
 }
 
  
