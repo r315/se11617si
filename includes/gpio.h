@@ -12,27 +12,21 @@
 #include <stdint.h>
 #include <lpc2106.h>
 
-#define GPIO_Set(x) GPIO0->SET = x
-#define GPIO_Clr(x) GPIO0->CLR = x
+#define GPIO_Set(n) GPIO0->SET = (1 << n)  // change the state of only
+#define GPIO_Clr(n) GPIO0->CLR = (1 << n)  // one pin
+
+#define GPIO_SetN(x) GPIO0->SET = x			//change selected pins
+#define GPIO_ClrN(x) GPIO0->CLR = x
+
+#define GPIO_Write(x) GPIO0->PIN = x		//change all pins
 #define GPIO_Read() GPIO0->PIN
-#define GPIO_Write(x) GPIO0->PIN = x
-#define GPIO_OUTPUT	1
-#define GPIO_INPUT	0
 
-#define P04_SCK  (1<<8)
-#define P05_MISO (1<<10)
-#define P06_MOSI (1<<12)
+#define GPIO_SetOutput(n) GPIO0->DIR |= (1 << n) //affect single pin
+#define GPIO_SetInput(n)  GPIO0->DIR &= ~(1 << n)
 
+#define GPIO_SetOutputN(n) GPIO0->DIR |= n //affect multiple pin
 
-
-/**
- * @brief	Initialyze Port indicating output pins ans their state. 
- *			bits as 1 are configured as outputs
- */
-void GPIO_Init(uint32_t output, uint32_t state);
-void GPIO_SetPin(uint8_t bit_number, uint8_t state);
-void GPIO_ConfigPin(uint32_t bit_number, uint32_t dir); //configure pin using his bit number
-void GPIO_ConfigPinMask(uint32_t mask, uint32_t dir);	//configures pin using his mask
+#define GPIO_SetDir(n)  GPIO0->DIR = x //affect all pins
 
 #endif
 

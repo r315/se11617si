@@ -5,8 +5,8 @@
 void delay(int time);
 
 int main(int argc, char *argv[]){
-int state = OFF;
-	LED_Init(state);
+int state = LED_OFF;
+	LED_Init(LED, state);
 
 	while(1){
 		LED_SetState(state);
