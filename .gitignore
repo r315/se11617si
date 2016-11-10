@@ -4,5 +4,6 @@ docs/
 *.map
 *.axf
 *.7z
+*.zip
 *.gdbtkinit
 schematic/
