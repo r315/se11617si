@@ -12,11 +12,6 @@
 
 #include <stdint.h>
 
-/* lcd constants */
-#define LCD_W 240
-#define LCD_H 320
-#define LCD_SIZE (uint32_t)(LCD_W * LCD_H)
-
 /* basic color constants */
 #define RGB(r,g,b)  (int)((r<<11) | (g<<5) | b)
 #define RED (0x1F<<11)
@@ -29,8 +24,11 @@ void LCD_Init(void);
 
 void LCD_Bkl(uint32_t state);
 
-void LCD_OpenWrap(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2);
+void LCD_SetWrap(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
 
-void LCD_Fill(uint16_t data, uint32_t n);
+void LCD_Fill(uint16_t color, uint32_t n);
 
+void LCD_Rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+
+void LCD_Data(uint16_t color);
 #endif

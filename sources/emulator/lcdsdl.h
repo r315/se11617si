@@ -1,13 +1,14 @@
 #ifndef _lcdsdl_h_
 #define _lcdsdl_h_
 
-//Screen dimension constants 
-const int LCD_W = 320; 
-const int LCD_H = 240;
+/* lcd constants */
+#define LCD_W 128
+#define LCD_H 128
+#define LCD_SIZE (uint32_t)(LCD_W * LCD_H)
 
-const char windowTitle[] = {"lcd emulator"};
+static const char windowTitle[] = {"lcd emulator"};
 
-
-
+void LCD_Close(void);
+void LCD_Update(void);
 
 #endif
