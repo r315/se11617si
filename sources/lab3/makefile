@@ -6,23 +6,24 @@ GDB = arm-none-eabi-gdb
 AR = arm-none-eabi-ar
 OBJDUMP = arm-none-eabi-objdump
 
-
-TARGET = lab3Test
-LIBTARGET = 
-
-OBJS = init.o $(TARGET).o
-
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
-LIBS = -lled -ltimer -lbutton -lgcc
-LIBSPATH = -L../../libs -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3
+TARGET = lab3Test
+LIBTARGET = led.a timer.a button.a clock.a
+
+INCSDIR = ../../includes
+LIBSDIR = ../../libs
+
+OBJS = init.o $(TARGET).o
+
+LIBS = -lled -ltimer -lbutton -lgcc -lclock
+LIBSPATH = -L$(LIBSDIR) -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3
+INCSPATH = -I$(INCSDIR)
 
 SYMBOLS =
-
-INCSPATH = -I../../includes
 
 all: $(TARGET).axf
 
@@ -38,18 +39,19 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-lib: led.o timer.o button.o
-#$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $(LIBTARGET).c -o $(LIBTARGET).o
-#$(AR) -cr ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
-	$(AR) -cr ../../libs/libled.a led.o
-	$(AR) -cr ../../libs/libtimer.a timer.o
-	$(AR) -cr ../../libs/libbutton.a button.o
+lib: $($(LIBTARGET):.a=.o) $(LIBTARGET)
+
+LCLEAN = $(addprefix $(LIBSDIR)/lib, $(LIBTARGET))
+libclean: 
+	rm -f $(LCLEAN)
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
-	
+
+.o.a:
+	$(AR) -cr  $(LIBSDIR)/lib$(<:.o=.a) $<
 
 
