@@ -35,8 +35,27 @@ select SSEL functionality on P0.7 and have HIGH level on this pin in order to ac
 #define SPI0_PINS (0x55<<8)
 
 #define SPI_MAX_CLK 8		//min pckl divider
+/**
+* @brief Faz a iniciação do controlador, configurando os pinos, o ritmo de envio e o
+*        numero de bits de dados.
+*/
+void SPI_Init(int clk, int bitData);
 
-void SPI_Init(uint8_t clk);
+/**
+* @brief Coloca ativo o chip select do dispositivo slave
+*/
+void SPI_BeginTransfer(int csBitId);
+
+/**
+* @brief Coloca desativo o chip select do dispositivo slave
+**/
+void SPI_EndTransfer(int csBitId);
+
+/**
+* @brief Realiza uma transferencia. 
+**/
+void SPI_Transfer(unsigned short *txBuffer, unsigned short arxBuffer, int lenght);
+
 
 /**
 * @brief initiates and 8bit data transfer
