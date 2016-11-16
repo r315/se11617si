@@ -7,17 +7,9 @@
 * @author	Hugo Reis
 **********************************************************************/
 #include <timer.h>
+#include <clock.h>
 
-uint32_t __freq;
-
-unsigned int getPclk(void){
-   switch(SC->APBDIV & 3){
-      default:
-      case 0: return CCLK / 4;
-      case 1: return CCLK;
-      case 2: return CCLK / 2;
-   }
-}
+static uint32_t __freq;
 
 void TIMER0_Init(unsigned int frequency){	
 

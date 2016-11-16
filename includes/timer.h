@@ -19,9 +19,6 @@
 #define TIMER_CR	(1<<1)
 #define TIMER_CE	(1<<0)
 
-#define CCLK	14745600
-#define PCLK	CCLK / 4 //default
-
 #define MS_IN_1S 1000
 
 /**
