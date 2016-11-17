@@ -1,13 +1,17 @@
 #include <rtc.h>
+#include <clock.h>
 
 void RTC_Init(struct tm *dateTime){
 
 	RTC_PowerUp();
+	RTC->CCR = 2;	// stop clock and reset
+	RTC->PREINT = (getPclk() / RTC_DIVIDER) - 1;
+	RTC->PREFRAC = getPclk() - ((RTC->PREINT + 1) * RTC_DIVIDER);
+	RTC->ILR = 3;
+	RTC->ILR = 0;
+	RTC->CIIR = 0; /* Counter Increment Interrupt Disable */
+	RTC_DeactivateAlarm(RTC_ALARMS_OFF);
 	RTC_SetValue(dateTime);
-	
-//TODO setup clock divider
-	
-
 }
 
 void RTC_GetValue(struct tm *dateTime){
@@ -71,16 +75,16 @@ uint32_t RTC_HasAlarms(void){
 return RTC->ILR & RTC_RTCALF;
 }
 
-void RTC_ClearAlarms(uint32_t alarm){
+void RTC_ClearAlarms(void){
 	 RTC->ILR = RTC_RTCALF;
 }
 
 void RTC_ActivateAlarm(uint32_t alarm){
-	RTC->AMR |= alarm;
+	RTC->AMR &= ~alarm;
 }
 
 void RTC_DeactivateAlarm(uint32_t alarm){
-	RTC->AMR &= ~alarm;
+	RTC->AMR |= alarm;
 }
 
 

@@ -21,6 +21,10 @@
 
 #define RTC_PowerUp() SC->PCONP |= RTC_ON
 
+#define RTC_DIVIDER 32768
+
+#define RTC_ALARMS_OFF 0xFF
+
 /** 
 * @brief Faz a iniciação do sistema para permitir o acesso ao periférico RTC.
 *        O RTC é iniciado com os valores do parâmetro.
@@ -66,7 +70,7 @@ uint32_t RTC_HasAlarms(void);
 /** 
 * @brief clears any activated alarm
 **/
-void RTC_ClearAlarms(uint32_t alarm);
+void RTC_ClearAlarms(void);
 
 #endif
 
