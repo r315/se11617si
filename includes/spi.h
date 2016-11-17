@@ -23,7 +23,7 @@
 #define SPI0_LSBF	    (1<<6)
 #define SPI0_SPIE     (1<<7)
 
-#define SPI0_MIN_BITS 8
+#define SPI0_MIN_DIV 8
 
 /* status register bits */
 #define SPI0_SPIF	    (1<<7)
@@ -38,7 +38,7 @@ select SSEL functionality on P0.7 and have HIGH level on this pin in order to ac
 * @brief Faz a iniciação do controlador, configurando os pinos, o ritmo de envio e o
 *        numero de bits de dados.
 */
-void SPI_Init(int clk, int bitData);
+void SPI_Init(int frequency, int bitData);
 
 /**
 * @brief Coloca ativo o chip select do dispositivo slave

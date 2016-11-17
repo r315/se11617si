@@ -10,14 +10,14 @@ OBJDUMP = arm-none-eabi-objdump
 TARGET = spiTest
 LIBTARGET = spi
 
-OBJS = init.o $(TARGET).o $(LIBTARGET).o
+OBJS = init.o $(TARGET).o $(LIBTARGET).o ili9341.o
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
-LIBS = -lled -lgcc
+LIBS = -lled -ltimer -lbutton -lrtc -lclock -lgcc
 LIBSPATH = -L../../libs -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3
 
 SYMBOLS =
