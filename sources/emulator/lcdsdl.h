@@ -1,14 +1,13 @@
 #ifndef _lcdsdl_h_
 #define _lcdsdl_h_
 
-/* lcd constants */
-#define LCD_W 128
-#define LCD_H 128
-#define LCD_SIZE (uint32_t)(LCD_W * LCD_H)
-
 static const char windowTitle[] = {"lcd emulator"};
 
 void LCD_Close(void);
 void LCD_Update(void);
+
+void LCD_Data(uint16_t color);
+void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+void LCD_Fill(uint16_t color, uint32_t n);
 
 #endif

@@ -1,9 +1,8 @@
 //Using SDL and standard IO 
 #include <SDL2/SDL.h> 
 #include <stdio.h> 
-
+#include <lcd.h>
 #include "lcdsdl.h"
-#include <display.h>
 
 #define LCD_FISICAL_W 240
 #define LCD_FISICAL_H 320
@@ -61,32 +60,20 @@ void LCD_Update(void){
 	SDL_UpdateWindowSurface(lcd.window);
 }
 
-void LCD_Rect(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
-SDL_Rect rect;
-	rect.x=x;
-	rect.y=y;
-	rect.w=w;
-	rect.h=h;
-
-	SDL_FillRect(lcd.surface, 
-			&rect,
-			SDL_MapRGB( lcd.surface->format, 0xFF, 0xFF, 0xFF ) );     		
-}
-
 void LCD_Fill(uint16_t color, uint32_t n){
 	while(n--)
 		LCD_Data(color);
 }
 
-void LCD_SetWrap(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
 {
-	lcd.wx = x;
-    lcd.wy = y;
+   lcd.wx = x;
+   lcd.wy = y;
 	lcd.ww = x + (w-1);
-    lcd.wh = y + (h-1);	
+   lcd.wh = y + (h-1);	
 
 	lcd.mx = lcd.wx;
-    lcd.my = lcd.wy;   
+   lcd.my = lcd.wy;   
 }
 
 //-------------------------------------------------------------
