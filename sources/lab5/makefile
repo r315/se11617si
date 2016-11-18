@@ -10,7 +10,7 @@ OBJDUMP = arm-none-eabi-objdump
 TARGET = spiTest
 LIBTARGET = spi
 
-OBJS = init.o $(TARGET).o $(LIBTARGET).o ili9341.o
+OBJS = init.o $(TARGET).o $(LIBTARGET).o ili9341.o lcd.o font8x16.o
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs

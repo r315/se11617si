@@ -70,9 +70,23 @@
 #define PRCON  0xF7	// Pump ratio control
 
 
-void data16(uint16_t data);
-void data8(uint16_t data);
-void command(uint16_t data);
+/**
+* @brief Opens a frame for writing data, data can be send immediately
+*        after this call
+**/
+void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+
+/**
+* @brief Fills n pixels with the same color
+*         Note: LCD_OpenFrame must be called 
+*				setting a frame os n pixels
+**/
+void LCD_Fill(uint16_t color, uint32_t n);
+
+/**
+* @brief
+**/
+void LCD_Data16(uint16_t color);
 
 #endif
 
