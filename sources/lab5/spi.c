@@ -13,11 +13,14 @@ int spccr;
 
 	SC->PCONP |= SPI0_ON;
 	PINCON->PINSEL0 = SPI0_PINS;
-	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA;
+	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA | SPI0_EN_NBITS | (bitData << 8);
 	
-	spccr = getPclk() / frequency;
-
-	if(spccr < SPI_MAX_CLK)
+	if(frequency){
+		spccr = getPclk() / frequency;
+		if(spccr < SPI_MAX_CLK)
+			spccr = SPI_MAX_CLK;
+	}
+	else
 		spccr = SPI_MAX_CLK;
 		
 	SPI0->SPCCR = spccr & 0xFE;	// must be an even number
