@@ -18,3 +18,19 @@ uint32_t getCclk(void){
 	__cclkval = XTAL;
 	return __cclkval;
 }
+
+//TODO fix timer due to cclk change
+void PLL_Init(void){
+#define MSEL 4 // MSEL and PSEL for CCLK = 73.728Mhz
+#define PSEL 1
+	SC->PLLCON = 1; //enable pll
+	SC->PLLCFG = (PSEL<<5) | MSEL; 
+	SC->PLLFEED = 0xAA;		//write PLLCON sequence
+	SC->PLLFEED = 0x55;		//
+	while(!(SC->PLLSTAT & (1<<10))); //wait for stabilization
+
+	SC->PLLCON = 3; //connect pll to cclk
+	SC->PLLFEED = 0xAA;
+	SC->PLLFEED = 0x55;	
+}
+
