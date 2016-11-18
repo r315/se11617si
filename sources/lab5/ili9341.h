@@ -30,14 +30,14 @@
 #define LCD_RST 10
 #define LCD_BKL  8
 
-#define CS0  GPIO_Clr(LCD_CS)
-#define CS1  GPIO_Set(LCD_CS)
-#define RS0  GPIO_Clr(LCD_RS)
-#define RS1  GPIO_Set(LCD_RS)
-#define RST0 GPIO_Clr(LCD_RST)
-#define RST1 GPIO_Set(LCD_RST)
-#define BKL0 GPIO_Clr(LCD_BKL)
-#define BKL1 GPIO_Set(LCD_BKL)
+#define LCD_CS0  GPIO_Clr(LCD_CS)
+#define LCD_CS1  GPIO_Set(LCD_CS)
+#define LCD_RS0  GPIO_Clr(LCD_RS)
+#define LCD_RS1  GPIO_Set(LCD_RS)
+#define LCD_RST0 GPIO_Clr(LCD_RST)
+#define LCD_RST1 GPIO_Set(LCD_RST)
+#define LCD_BKL0 GPIO_Clr(LCD_BKL)
+#define LCD_BKL1 GPIO_Set(LCD_BKL)
 
 #define LCD_PIN_INIT					\
             GPIO_SetOutput(LCD_CS); 	\
@@ -45,29 +45,31 @@
             GPIO_SetOutput(LCD_RST);	\
             GPIO_SetOutput(LCD_BKL);	\
 
-#define RDDID  0x04
-#define SLPIN  0x10
-#define SLPOUT 0x11
-#define DISPON 0x29
-#define CASET  0x2A
-#define PASET  0x2B
-#define RAMWR  0x2C
-#define MAC    0x36	// Memory Access Control 
-#define COLMOD 0x3A // Pixel Format set
-#define FRCONN 0xB1	// Frame rate control Normal mode
-#define FRCONI 0xB2	// Frame rate control Idle mode
-#define FRCONP 0xB3	// Frame rate control Partial mode
-#define DFCTL  0xB6  // Display Function Control 
-#define PCON1  0xC0	// power control 1
-#define PCON2  0xC1	// power control 2
-#define VCOM1  0xC5	// VCOM control 1
-#define VCOM2  0xC7	// VCOM control 2
-#define PCONA  0xCB	// Power Control A
-#define PCONB  0xCF	// Power Control B
-#define DTCONA 0xE8 // Driver Timming Control A
-#define DTCONB 0xEA // Driver Timming Control B
-#define PSCON  0xED  // Power on Sequence control
-#define PRCON  0xF7	// Pump ratio control
+#define SWRST   0x01
+#define RDDID   0x04
+#define SLPIN   0x10
+#define SLPOUT  0x11
+#define DISPOFF 0x28
+#define DISPON  0x29
+#define CASET   0x2A
+#define PASET   0x2B
+#define RAMWR   0x2C
+#define MAC     0x36	// Memory Access Control 
+#define COLMOD  0x3A // Pixel Format set
+#define FRCONN  0xB1	// Frame rate control Normal mode
+#define FRCONI  0xB2	// Frame rate control Idle mode
+#define FRCONP  0xB3	// Frame rate control Partial mode
+#define DFCTL   0xB6 // Display Function Control 
+#define PCON1   0xC0	// power control 1
+#define PCON2   0xC1	// power control 2
+#define VCOM1   0xC5	// VCOM control 1
+#define VCOM2   0xC7	// VCOM control 2
+#define PCONA   0xCB	// Power Control A
+#define PCONB   0xCF	// Power Control B
+#define DTCONA  0xE8 // Driver Timming Control A
+#define DTCONB  0xEA // Driver Timming Control B
+#define PSCON   0xED // Power on Sequence control
+#define PRCON   0xF7	// Pump ratio control
 
 
 /**
@@ -86,7 +88,7 @@ void LCD_Fill(uint16_t color, uint32_t n);
 /**
 * @brief
 **/
-void LCD_Data16(uint16_t color);
+void LCD_Data16(uint16_t data);
 
 #endif
 
