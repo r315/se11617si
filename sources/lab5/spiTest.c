@@ -18,14 +18,22 @@ struct tm rtc;
 	rtc.tm_wday = 0;
    
     TIMER0_Init(MS_IN_1S);	
+
   	LED_Init(LED, LED_OFF);
+
   	BUTTON_Init();
+
   	RTC_Init(&rtc);
-	SPI_Init(1000, SPI_8BIT);
+
+	SPI_Init(1000, SPI_8BIT); // lcd must be initialyze with low speed and 8bit transfers
+
 	LCD_Init();
+
 	SPI_Init(SPI_MAX_FREQ, SPI_16BIT);
+
 	LCD_Clear(BLUE);
-	LCD_Colors(RED,BLUE);
+
+	LCD_SetColors(RED,BLUE);
 
 	while(1){
 		RTC_GetValue(&rtc);
