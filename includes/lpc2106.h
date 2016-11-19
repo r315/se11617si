@@ -24,6 +24,18 @@
 #define GPIO0_BASE      (0xE0028000UL)                     /*!< GPIO Port 0                      */
 #define GPIO0           ((GPIO_Type *)GPIO0_BASE)          /*!< GPIO Port 0                      */
 
+ typedef struct{
+	__IO    uint32_t    DIR;           /*!< Offset: 0x00 Direction Control Register              */           
+	uint32_t reserved[3];
+	__IO    uint32_t    MASK;          /*!< Offset: 0x10 Port Mask                               */
+    __IO    uint32_t    PIN;           /*!< Offset: 0x14 Pin Value Register                      */
+    __IO    uint32_t    SET;           /*!< Offset: 0x18 Output Set Register                     */
+    __IO    uint32_t    CLR;           /*!< Offset: 0x1C Output Clear Register                   */
+}FIO_Type;
+
+#define FIO0_BASE       (0x3FFFC000UL)                     /*!< GPIO Port 0                      */
+#define FIO0            ((FIO_Type *)FIO0_BASE)            /*!< GPIO Port 0                      */
+
 typedef struct {	
 	__IO    uint32_t    SPCR;            /*!< Offset: 0x00 Control Register                      */
     __I     uint32_t    SPSR;            /*!< Offset: 0x04 Status Register                       */
