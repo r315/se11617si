@@ -12,7 +12,7 @@ LFLAGS=
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
 TARGET = lab3Test
-LIBTARGET = led.a timer.a button.a clock.a
+LIBTARGET = timer.a button.a clock.a
 
 INCSDIR = ../../includes
 LIBSDIR = ../../libs
