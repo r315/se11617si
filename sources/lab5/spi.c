@@ -24,6 +24,7 @@ int spccr;
 		spccr = SPI_MAX_CLK;
 		
 	SPI0->SPCCR = spccr & 0xFE;	// must be an even number
+    SPI_Send(0xFF);             // read status reg and clear flags
 }
 
 uint16_t SPI_Send(uint16_t data){
