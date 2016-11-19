@@ -31,6 +31,9 @@ bss_clear_loop:
 	/* Initialise .data section */
 	/* In debug not necessary. */
 
+    mov     r0,#1
+    ldr     r2,=0xE01FC1A0      /* System control status */
+    str     r0,[r2]             /* Activate High speed GPIO */
 
 	mov		fp, #0
 	mov		r0, #0

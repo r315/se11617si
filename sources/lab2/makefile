@@ -20,6 +20,9 @@ lab2Test.axf: init.o lab2Test.o delay.o
 lab2Test.o: lab2Test.c 
 	$(CC) $(CFLAGS) -I../../includes -c lab2Test.c -o lab2Test.o
 
+led.o: led.c 
+	$(CC) $(CFLAGS) -I../../includes -c led.c -o led.o
+
 delay.o: delay.S
 	$(AS) $(AFLAGS) delay.S -o delay.o
 
@@ -27,13 +30,13 @@ init.o: ../../bsp/init.S
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
-	rm -f init.o delay.o lab2Test.o lab2Test.axf
+	rm -f init.o delay.o led.o lab2Test.o lab2Test.axf
 
 debug:  lab2Test.axf
 	@$(DBG) lab2Test.axf
 	
-lib: delay.o
-	$(AR) rcs libdelay.a delay.o 
+lib: led.o
+	$(AR) rcs ../../libs/libled.a led.o 
 	
 hex: $(TARGET).axf
 	$(OBJCOPY) --set-start 0x40000000 -O ihex $(TARGET).axf $(TARGET).hex

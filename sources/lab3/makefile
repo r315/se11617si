@@ -12,7 +12,7 @@ LFLAGS=
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
 TARGET = lab3Test
-LIBTARGET = led.a timer.a button.a clock.a
+LIBTARGET = timer.a button.a clock.a
 
 INCSDIR = ../../includes
 LIBSDIR = ../../libs
@@ -39,8 +39,11 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-lib: $($(LIBTARGET):.a=.o) $(LIBTARGET)
+libs: $($(LIBTARGET):.a=.o) $(LIBTARGET)
 
+libled: led.o
+	$(AR) -cr  $(LIBSDIR)/libled.a led.o
+	
 LCLEAN = $(addprefix $(LIBSDIR)/lib, $(LIBTARGET))
 libclean: 
 	rm -f $(LCLEAN)
