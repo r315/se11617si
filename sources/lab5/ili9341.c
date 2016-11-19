@@ -9,14 +9,7 @@ void LCD_Bkl(uint32_t state){
     else	LCD_BKL0;
 }
 
-void LCD_Data8(uint16_t data){	
-    LCD_RS1;
-    LCD_CS0;
-    SPI_Send(data);	
-    LCD_CS1;	
-}
-
-void LCD_Data16(uint16_t data){	
+void LCD_Data(uint16_t data){	
     LCD_RS1;
     LCD_CS0;
     SPI_Send(data);
@@ -40,12 +33,13 @@ void LCD_Command(uint16_t data){
 
 void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
     LCD_Command(CASET);  
-    LCD_Data16(x);   
-    LCD_Data16(x + w -1);
+    //LCD_Data((x<<8) | (x + w -1));   
+    LCD_Data(x);
+    LCD_Data(x + w -1);
   
     LCD_Command(PASET);
-    LCD_Data16(y);
-    LCD_Data16(y + h - 1);
+    LCD_Data(y);
+    LCD_Data(y + h - 1);
 
     LCD_Command(RAMWR);         				 
 }
@@ -63,67 +57,67 @@ void LCD_Init(void){
         LCD_Command(DISPOFF); 
         
         LCD_Command(PCONB);  
-        LCD_Data16(0x00); 
-        LCD_Data16(0XC1); 
-        LCD_Data16(0X30); 
+        LCD_Data(0x00); 
+        LCD_Data(0XC1); 
+        LCD_Data(0X30); 
         
         LCD_Command(PSCON);  
-        LCD_Data16(0x64); 
-        LCD_Data16(0x03); 
-        LCD_Data16(0X12); 
-        LCD_Data16(0X81); 
+        LCD_Data(0x64); 
+        LCD_Data(0x03); 
+        LCD_Data(0X12); 
+        LCD_Data(0X81); 
         
         LCD_Command(DTCONA);  
-        LCD_Data16(0x85); 
-        LCD_Data16(0x00); 
-        LCD_Data16(0x78);        
+        LCD_Data(0x85); 
+        LCD_Data(0x00); 
+        LCD_Data(0x78);        
   
         LCD_Command(PCONA);  
-        LCD_Data16(0x39); 
-        LCD_Data16(0x2C); 
-        LCD_Data16(0x00); 
-        LCD_Data16(0x34); 
-        LCD_Data16(0x02); 
+        LCD_Data(0x39); 
+        LCD_Data(0x2C); 
+        LCD_Data(0x00); 
+        LCD_Data(0x34); 
+        LCD_Data(0x02); 
 
         LCD_Command(PRCON);  
-        LCD_Data16(0x20);         
+        LCD_Data(0x20);         
 
         LCD_Command(DTCONB);  
-        LCD_Data16(0x00); 
-        LCD_Data16(0x00);         
+        LCD_Data(0x00); 
+        LCD_Data(0x00);         
         /* Power Control */
         LCD_Command(PCON1);    
-        LCD_Data16(0x23);      //VRH[5:0] 
+        LCD_Data(0x23);      //VRH[5:0] 
  
         LCD_Command(PCON2);
-        LCD_Data16(0x10);      //SAP[2:0];BT[3:0] 
+        LCD_Data(0x10);      //SAP[2:0];BT[3:0] 
         /* VCOM Control */
         LCD_Command(VCOM1);
-        LCD_Data16(0x3e);      //Contrast
-        LCD_Data16(0x28); 
+        LCD_Data(0x3e);      //Contrast
+        LCD_Data(0x28); 
  
         LCD_Command(VCOM2);
-        LCD_Data16(0x86);  
+        LCD_Data(0x86);  
         /* Memory Access Control */
         LCD_Command(MAC);      // Memory Access Control 
-        LCD_Data16(0x48);       //C8  //48 68??//28 E8 ??
+        LCD_Data(0x48);       //C8  //48 68??//28 E8 ??
 
         LCD_Command(COLMOD);    
-        LCD_Data16(0x55);       //16bit/pixel
+        LCD_Data(0x55);       //16bit/pixel
         /* frame rate */
         LCD_Command(FRCONN);    
-        LCD_Data16(0x00);  
-        LCD_Data16(0x18); 
+        LCD_Data(0x00);  
+        LCD_Data(0x18); 
         /* Gamma */
         
         /* ddram */
         
         /*  display  */
         LCD_Command(DFCTL);    // Display Function Control 
-        LCD_Data16(0x08); 
-        LCD_Data16(0x82);
-        LCD_Data16(0x27);
-        LCD_Data16(0x00);    
+        LCD_Data(0x08); 
+        LCD_Data(0x82);
+        LCD_Data(0x27);
+        LCD_Data(0x00);    
 
         LCD_Command(SLPOUT);    //Exit Sleep 
         TIMER0_DelayMs(120); 
@@ -134,82 +128,4 @@ void LCD_Init(void){
 
         LCD_BKL1; 
 }
-/*
-void LCD_Init8(void){
 
-        LCD_PIN_INIT;
-
-        RST0;
-        TIMER0_DelayMs(10);
-        RST1;
-  
-        LCD_Command(PCONA);  
-        LCD_Data8(0x39); 
-        LCD_Data8(0x2C); 
-        LCD_Data8(0x00); 
-        LCD_Data8(0x34); 
-        LCD_Data8(0x02); 
-
-        LCD_Command(PCONB);  
-        LCD_Data8(0x00); 
-        LCD_Data8(0XC1); 
-        LCD_Data8(0X30); 
-
-        LCD_Command(DTCONA);  
-        LCD_Data8(0x85); 
-        LCD_Data8(0x00); 
-        LCD_Data8(0x78); 
-
-        LCD_Command(DTCONB);  
-        LCD_Data8(0x00); 
-        LCD_Data8(0x00); 
- 
-        LCD_Command(PSCON);  
-        LCD_Data8(0x64); 
-        LCD_Data8(0x03); 
-        LCD_Data8(0X12); 
-        LCD_Data8(0X81); 
-
-        LCD_Command(PRCON);  
-        LCD_Data8(0x20); 
-  
-        LCD_Command(PCON1);    //Power control 
-        LCD_Data8(0x23);   //VRH[5:0] 
- 
-        LCD_Command(PCON2);    //Power control 
-        LCD_Data8(0x10);   //SAP[2:0];BT[3:0] 
-
-        LCD_Command(VCOM1);    //VCM control 
-        LCD_Data8(0x3e);   //Contrast
-        LCD_Data8(0x28); 
- 
-        LCD_Command(VCOM2);    //VCM control2 
-        LCD_Data8(0x86);   //--
- 
-        LCD_Command(MAC);    // Memory Access Control 
-        LCD_Data8(0x48);  //C8	   //48 68??//28 E8 ??
-
-        LCD_Command(COLMOD);    
-        LCD_Data8(0x55);   //16bit/pixel
-
-        LCD_Command(FRCONN);    
-        LCD_Data8(0x00);  
-        LCD_Data8(0x18); 
- 
-        LCD_Command(DFCTL);    // Display Function Control 
-        LCD_Data8(0x08); 
-        LCD_Data8(0x82);
-        LCD_Data8(0x27);  
-
-        LCD_Command(SLPOUT);    //Exit Sleep 
-        TIMER0_DelayMs(120); 
-                
-        LCD_Command(DISPON);    //Display on 
-        LCD_Command(RAMWR);  
-
-        BKL1; 
-}
-
- */
- 
- 

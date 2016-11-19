@@ -6,7 +6,7 @@ extern const unsigned char font8x16[97][16];
 static uint32_t _x, _y;
 static uint32_t _fColor, _bColor;
 
-void LCD_Colors(uint32_t fColor, uint32_t bColor){
+void LCD_SetColors(uint32_t fColor, uint32_t bColor){
 	_fColor = fColor;
 	_bColor = bColor;
 }
@@ -104,7 +104,7 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor) {
 //		pixelRow = *pChar--;
 //		for (colIndex = 0; colIndex < nCols / 2; colIndex++) {
 		for (colIndex = 0; colIndex < nCols; colIndex++) {
-			LCD_Data16(((pixelRow & 0x80) != 0) ? fColor : bColor);
+			LCD_Data(((pixelRow & 0x80) != 0) ? fColor : bColor);
 			pixelRow <<= 1;
 			/*pixel1 = ((pixelRow & 0x1) != 0) ? fColor : bColor;
 			pixelRow >>= 1;

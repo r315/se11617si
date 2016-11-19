@@ -48,7 +48,7 @@ void LCD_WriteString(char *str);
 /**
 * @brief Configura as cores a usar nos caracteres
 **/
-void LCD_Colors(uint32_t _fColor, uint32_t _bColor);
+void LCD_SetColors(uint32_t _fColor, uint32_t _bColor);
 
 /**
 * @brief Posiciona o cursor na linha x e coluna y do mostrador.
