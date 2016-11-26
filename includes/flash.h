@@ -13,6 +13,11 @@
 #include <stdint.h>
 #include <lpc2106.h>
 
+#define FLASH_BLOCK_SIZE 0x2000 //8k
+#define FLASH_LAST_SECTOR 0x0F
+
+#define FLASH_BOOT_BLOCK_BASE 0x7FFFE000
+
 /** 
 * @brief Apaga o conteúdo de um sector, ou de múltiplos sectores, da FLASH. Para apagar
 *        apenas um sector, deve usar-se o mesmo número de sector para os dois parâmetros.
@@ -37,6 +42,7 @@ unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size);
 *        bytes, com o conteúdo do bloco de dados referenciado por dstAddr.
 **/
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size);
+
 
 #endif
 

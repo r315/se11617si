@@ -15,7 +15,7 @@ LDSCRIPT= -T ../../bsp/ldscript_ram
 TARGET = flashTest
 LIBTARGET = flash
 
-OBJS = init.o $(TARGET).o 
+OBJS = init.o $(TARGET).o flash.o
 
 SYMBOLS =
 LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lgcc
