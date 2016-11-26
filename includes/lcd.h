@@ -37,10 +37,6 @@ void LCD_Init(void);
 void LCD_WriteChar(char ch);
 
 /**
-* @brief Escreve um valor de 16bit unsigned em decimal.
-**/
-void LCD_WriteDec(uint16_t val);
-/**
 * @brief Escreve uma string na posição corrente do cursor.
 **/
 void LCD_WriteString(char *str);
@@ -75,4 +71,13 @@ void LCD_Bkl(uint32_t state);
  */
 void LCD_PutChar(char c, int x, int y, int fColor, int bColor);
 
+/**
+* @brief Mostra um inteiro no lcd
+* @param value : valor a mostrar
+* @param base : base a qual o numero deve de ser representado
+*             : bits 15-8 contem o numero minimo de digitos
+**/
+void LCD_WriteInt(uint32_t value, uint32_t base);
+
 #endif
+
