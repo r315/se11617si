@@ -15,6 +15,8 @@
 #define SPI0_ON (1<<8)
 #define SSP0_ON (1<<21)
 
+#define SPI_PowerUp() SC->PCONP |= SPI0_ON
+
 /* Control bits */
 #define SPI0_EN_NBITS (1<<2)	//transfered bits selected by bits 11:8
 #define SPI0_CPHA     (1<<3)

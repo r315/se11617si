@@ -11,7 +11,7 @@
 void SPI_Init(int frequency, int bitData){
 int spccr;	
 
-	SC->PCONP |= SPI0_ON;
+	SPI_PowerUp();
 	PINCON->PINSEL0 = SPI0_PINS;
 	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA | SPI0_EN_NBITS | (bitData << 8);
 	
