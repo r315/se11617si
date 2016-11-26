@@ -6,7 +6,8 @@
 #include <rtc.h>
 #include <button.h>
 
-static out[20];
+#define TIME_FORMAT (2<<8) | 10  // representa em base decimal com um zero a esquerda 
+
 int main(int argc, char *argv[]){
 struct tm rtc;
 	rtc.tm_sec = 50;
@@ -38,12 +39,11 @@ struct tm rtc;
 	while(1){
 		RTC_GetValue(&rtc);
 		LCD_Goto(0,0);
-		LCD_WriteDec(rtc.tm_hour);
+		LCD_WriteInt(rtc.tm_hour,TIME_FORMAT);
 		LCD_WriteChar(':');
-		LCD_WriteDec(rtc.tm_min);
+		LCD_WriteInt(rtc.tm_min,TIME_FORMAT);
 		LCD_WriteChar(':');
-		LCD_WriteDec(rtc.tm_sec);
-		LCD_WriteString("    ");		
+		LCD_WriteInt(rtc.tm_sec,TIME_FORMAT);
 	}
 	return 0;
 }

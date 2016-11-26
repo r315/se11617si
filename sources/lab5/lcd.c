@@ -11,27 +11,40 @@ void LCD_SetColors(uint32_t fColor, uint32_t bColor){
 	_bColor = bColor;
 }
 
-void LCD_WriteDec(uint16_t val){
-uint16_t aux,div;
-uint8_t wrchar;
+
+void LCD_WriteInt(uint32_t value, uint32_t base){
+uint8_t digits[32];        //maximo de 32 digitos 
+uint8_t padding = base>>8;
+uint8_t digit, count;
 	
-	if(!val){
-		LCD_WriteChar('0');
+	if(!value){                    // se valor for zero
+        while(padding--)           // apenas se mosta um digito zero
+    		LCD_WriteChar('0');    // ou os especificados por padding
 		return;
 	}
 
-	div = 10000;
-	wrchar = 0;
-	while(div){
-		aux = (val / div) % 10;
-		if(aux){
-			wrchar = 1;			
-			LCD_WriteChar(aux + '0');
-		}
-		else if(wrchar)
-			LCD_WriteChar('0');
-		div /= 10;
+    count = 0;
+    base &= 0xFF;
+
+	while(value){
+		digit = value % base;       // obter o digito das unidades
+        if(digit > 9)             // se o valor for superior a 9
+            digit += ('A'-('9'+1)); // o offset para tabela ascii tem de ser ajustado
+        digit += '0';
+        digits[count++] = digit;    // guarda o digito e increnenta o contador de digitos
+        value = value/base;         // passa para o proximo digito
 	}
+
+    padding = (padding > count) ? padding-count : 0;  //verifica o numero minimo de digitos a mostrar
+
+    while(padding--){
+        LCD_WriteChar('0');
+    }
+
+    while(count--){
+        LCD_WriteChar(digits[count]);
+    }
+
 }
 
 void LCD_WriteChar(char ch){
