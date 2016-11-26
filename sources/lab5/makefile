@@ -10,14 +10,14 @@ OBJDUMP = arm-none-eabi-objdump
 TARGET = spiTest
 LIBTARGET = spi
 
-OBJS = init.o $(TARGET).o $(LIBTARGET).o ili9341.o lcd.o font8x16.o
+OBJS = init.o $(TARGET).o 
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
-LIBS = -lled -ltimer -lbutton -lrtc -lclock -lgcc
+LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lgcc
 LIBSPATH = -L../../libs -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3
 
 SYMBOLS =
@@ -38,14 +38,21 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-lib: $(LIBTARGET).o
-	$(AR) -cr ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
+libs: libspi liblcd
+
+libspi: spi.o
+	$(AR) -cr ../../libs/lib$(<:.o=.a) $<
+
+liblcd: lcd.o ili9341.o font8x16.o
+	$(AR) -cr ../../libs/liblcd.a lcd.o ili9341.o font8x16.o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
+
+
 	
 
 
