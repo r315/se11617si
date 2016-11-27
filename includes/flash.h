@@ -18,9 +18,29 @@
 
 #define FLASH_BOOT_BLOCK_BASE 0x7FFFE000
 
+#define FLASH_PREPARE_SECTOR 50
+#define FLASH_RAM_TO_FLASH   51
+#define FLASH_ERASE_SECTOR   52
+
+typedef enum {
+    CMD_SUCESS = 0,
+    INVALID_COMMAND,
+    SRC_ADDR_ERROR,
+    DST_ADDR_ERROR,
+    SRC_ADDR_NOT_MAPPED,
+    DST_ADDR_NOT_MAPPED,
+    COUNT_ERROR,
+    INVALID_SECTOR,
+    SECTOR_NOT_BLANK,
+    SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION,
+    COMPARE_ERROR,
+    BUSY
+};
+
 /** 
 * @brief Apaga o conteúdo de um sector, ou de múltiplos sectores, da FLASH. Para apagar
 *        apenas um sector, deve usar-se o mesmo número de sector para os dois parâmetros.
+* @return CMD_SUCCESS,SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION, INVALID_SECTOR
 **/
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector);
 

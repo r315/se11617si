@@ -12,7 +12,7 @@ LFLAGS=
 LDSCRIPT= -T ../../bsp/ldscript_ram
 
 
-TARGET = flashTest
+TARGET = lab6Test
 LIBTARGET = flash
 
 OBJS = init.o $(TARGET).o flash.o
