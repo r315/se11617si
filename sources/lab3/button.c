@@ -8,19 +8,20 @@
 **********************************************************************/
 #include <button.h>
 #include <timer.h>
+#include <gpio.h>
 
 
 BUTTON_Controller __buttons;
 
 uint32_t BUTTON_Capture(void){
-	return (~GPIO0->PIN) & BUTTON_MASK;  //common ground
+	return (~GPIO_Read()) & BUTTON_MASK;  //common ground
 }
 
 void BUTTON_Init(){
 	__buttons.cur  = BUTTON_EMPTY;
 	__buttons.last = BUTTON_EMPTY;
 	__buttons.events = BUTTON_EMPTY;
-	GPIO0->DIR &= ~BUTTON_MASK;
+	GPIO_SetInputN(BUTTON_MASK);
 }
 
 int BUTTON_Hit(void){
