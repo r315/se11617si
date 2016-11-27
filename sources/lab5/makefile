@@ -7,7 +7,7 @@ AR = arm-none-eabi-ar
 OBJDUMP = arm-none-eabi-objdump
 
 
-TARGET = spiTest
+TARGET = lab5Test
 LIBTARGET = spi
 
 OBJS = init.o $(TARGET).o 
