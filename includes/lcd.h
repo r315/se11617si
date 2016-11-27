@@ -47,9 +47,15 @@ void LCD_WriteString(char *str);
 void LCD_SetColors(uint32_t _fColor, uint32_t _bColor);
 
 /**
-* @brief Posiciona o cursor na linha x e coluna y do mostrador.
+* @brief Posiciona o cursor na linha y e coluna x do mostrador.
 **/
 void LCD_Goto(int x, int y);
+
+/**
+* @brief Posiciona o cursor na linha seguinte
+**/
+void LCD_NewLine(void);
+
 
 /**
 * @brief Limpa o visor com a cor especificada.

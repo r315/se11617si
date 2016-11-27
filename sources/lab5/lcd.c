@@ -61,6 +61,14 @@ void LCD_Goto(int x, int y){
 		_y = y;
 }
 
+void LCD_NewLine(void){
+uint8_t h = *((uint8_t*)font8x16+1);
+    _y += h;
+    if(_y > (LCD_H - h))
+        _y = 0;
+    _x = 0;
+}
+
 void LCD_Clear(int color){
 	LCD_OpenFrame(0,0,LCD_W,LCD_H);	
 	LCD_Fill(color, LCD_SIZE);	
