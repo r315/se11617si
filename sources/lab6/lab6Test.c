@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <spi.h>
 #include <led.h>
 #include <lcd.h>
@@ -6,13 +7,72 @@
 #include <rtc.h>
 #include <button.h>
 #include <flash.h>
+#include <time.h>
 
-#define MEM_BASE 16
-#define MEM_ADDRESS_FORMAT (4<<8) | MEM_BASE
-#define MEM_DATA_FORMAT (2<<8) | MEM_BASE
+#define SAVED_RTC (13*FLASH_SECTOR_SIZE)
+
+#define BASE_HEX 16
+#define MEM_ADDRESS_FORMAT (4<<8) | BASE_HEX
+#define MEM_DATA_FORMAT (2<<8) | BASE_HEX
 #define MEM_MAX_COLS 8
 
-void MEM_Dump(uint8_t *start, uint32_t len){
+#define BASE_DEC 10
+#define TIME_FORMAT (2<<8) | BASE_DEC
+typedef enum{
+   RTC_DATETIME,
+   RTC_TIME_HHMM,
+   RTC_TIME_HHMMSS,
+   RTC_DATE,
+}RTC_FORMATS;
+   
+
+
+void restoreRtc(struct tm *rtc){
+   memcpy((uint8_t*)rtc,(uint8_t *)SAVED_RTC,sizeof(struct tm));
+}
+
+void setRtc(struct tm *rtc){
+   
+}
+
+void PRINT_RtcTime(struct tm* rtc){
+    LCD_WriteInt(rtc->tm_hour, TIME_FORMAT);
+    LCD_WriteChar(':');
+    LCD_WriteInt(rtc->tm_min, TIME_FORMAT);
+}
+
+void PRINT_RtcDate(struct tm* rtc){
+    LCD_WriteInt(rtc->tm_mday, TIME_FORMAT);
+    LCD_WriteChar('-');
+    LCD_WriteInt(rtc->tm_mon, TIME_FORMAT);
+    LCD_WriteChar('-');
+    LCD_WriteInt(rtc->tm_year, (4<<8) | BASE_DEC);
+}
+
+void PRINT_Rtc(struct tm* rtc, uint8_t data){
+   
+   switch(data){      
+      case RTC_DATETIME:
+         PRINT_RtcTime(rtc);
+         LCD_WriteChar(' ');
+                  
+      case RTC_DATE:
+         PRINT_RtcDate(rtc);
+         break;     
+         
+      case RTC_TIME_HHMM:
+         PRINT_RtcTime(rtc);
+         break;
+      
+      case RTC_TIME_HHMMSS:
+         PRINT_RtcTime(rtc);
+         LCD_WriteChar(':');
+         LCD_WriteInt(rtc->tm_sec, TIME_FORMAT);
+         break;       
+   }   
+}
+
+void PRINT_Mem(uint8_t *start, uint32_t len){
 uint32_t i;   
 
     LCD_Goto(0,0);
@@ -36,19 +96,16 @@ void LED_Blink(uint32_t ms){
       LED_SetState(LED_OFF);
 }
 
-static out[20];
+void Acerto(void){
+   
+   
+}
+
 int main(int argc, char *argv[]){
 struct tm rtc;
-
-	rtc.tm_sec = 50;
-	rtc.tm_min = 25;
-	rtc.tm_hour = 01;
-	rtc.tm_mday = 10;
-	rtc.tm_mon = 11;
-	rtc.tm_year = 2016;
-	rtc.tm_wday = 0;
-   
-    TIMER0_Init(MS_IN_1S);	
+   restoreRtc(&rtc);
+	
+   TIMER0_Init(MS_IN_1S);	
 
   	LED_Init(LED, LED_ON);
 
@@ -67,18 +124,19 @@ struct tm rtc;
 	LCD_SetColors(GREEN,BLACK);      
 
 	while(1){
-        switch(BUTTON_Read()){
+      
+      switch(BUTTON_Read()){
 			case BUTTON_L:
 				LED_Blink(500);               
-                MEM_Dump((uint8_t *)0,128);
+                PRINT_Mem((uint8_t *)0,128);
 		  		break;
 			case BUTTON_R:
 				LED_Blink(1000);
-                MEM_Dump((uint8_t *)128,128);
+                PRINT_Mem((uint8_t *)128,128);
 		  		break;
 			case BUTTON_F:
 				LED_Blink(1500);
-                MEM_Dump((uint8_t *)256,128);
+                PRINT_Mem((uint8_t *)256,128);
 		  		break;
 			case BUTTON_S:
 				LED_Blink(2000);
@@ -92,8 +150,20 @@ struct tm rtc;
 				TIMER0_DelayMs(70);
 				LED_Blink(30);
 				break;		
-             
-         }	
+       }      
+      
+      switch(main_state){
+         
+         case ACERTO:
+            Acerto();            
+            break;
+         
+         case ALARM:
+            
+            break;
+         
+         default:         
+      }
 	}
 	return 0;
 }
