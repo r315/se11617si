@@ -11,7 +11,7 @@
 #include <gpio.h>
 
 
-BUTTON_Controller __buttons;
+static BUTTON_Controller __buttons;
 
 uint32_t BUTTON_Capture(void){
 	return (~GPIO_Read()) & BUTTON_MASK;  //common ground
