@@ -19,10 +19,10 @@ __attribute__ ((naked)) void iap_entry(uint32_t *command, uint32_t *result){
 * @brief prepares sector(s) for errase or write
 * @param start sector
 * @param end sector
-* @return CMD_SUCCESS, BUSY, INVALID_SECTOR
+* @return CMD_SUCCESS | BUSY | INVALID_SECTOR
 **/
 uint32_t prepare_sector(uint32_t start, uint32_t end){
-    __command[0] = FLASH_PREPARE_SECTOR;
+    __command[0] = FLASH_CMD_PREPARE_SECTOR;
     __command[1] = start;
     __command[2] = end;
     __command[3] = getCclk() / 1000;  //clock specified in Khz
@@ -30,27 +30,83 @@ uint32_t prepare_sector(uint32_t start, uint32_t end){
     return __result[0];
 }
 
+/**
+ * @return CMD_SUCCESS | BUSY | SECTOR_NOT_BLANK | INVALID_SECTOR
+ **/
+ uint32_t blank_check(uint32_t start, uint32_t end){
+    __command[0] = FLASH_CMD_BLANK_CHECK;
+    __command[1] = start;
+    __command[2] = end;    
+    iap_entry(__command,__result);
+    return __result[0];
+ }
+
 
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector){
-     if( prepare_sector(startSector,endSector) == CMD_SUCESS){
-        __command[0] = FLASH_ERASE_SECTOR;
+    if( prepare_sector(startSector,endSector) == CMD_SUCESS){
+        __command[0] = FLASH_CMD_ERASE_SECTOR;
         __command[1] = startSector;
         __command[2] = endSector;
         __command[3] = getCclk() / 1000;
         iap_entry(__command,__result);
-     }
+    }
+    return __result[0];
+}
+
+/**
+ * @return CMD_SUCCESS | SRC_ADDR_ERROR | DST_ADDR_ERROR | SRC_ADDR_NOT_MAPPED |
+ *         DST_ADDR_NOT_MAPPED | COUNT_ERROR | SECTOR_NOT_PREPARED_FOR_WRITE_OPERATIONm | BUSY.
+ * 
+ * */
+unsigned int FLASH_WriteBlock( void *dstAddr, void *srcAddr, unsigned int size){
+uint32_t startSector, endSector;
+   
+    startSector = (uint32_t)dstAddr / FLASH_SECTOR_SIZE;
+    endSector = ((uint32_t)dstAddr + size) / FLASH_SECTOR_SIZE;    
+        
+    if(prepare_sector(startSector,endSector) == CMD_SUCESS){
+       __command[0] = FLASH_CMD_RAM_TO_FLASH;
+       __command[1] = (uint32_t)dstAddr;
+       __command[2] = (uint32_t)srcAddr;
+       __command[3] = size;
+       __command[4] = getCclk() / 1000;
+       iap_entry(__command,__result);
+    }
+    
     return __result[0];
 }
 
 
-unsigned int FLASH_WriteBlock( void *dstAddr, void *srcAddr, unsigned int size){
-}
-
-
 unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size){
+uint32_t startSector, endSector;   
+   
+    startSector = (uint32_t)dstAddr / FLASH_SECTOR_SIZE;
+    endSector = ((uint32_t)dstAddr + size) / FLASH_SECTOR_SIZE;
+    
+    if( blank_check(startSector, endSector) != CMD_SUCESS ){
+       if( FLASH_EraseSectors(startSector, endSector) != CMD_SUCESS )
+         return __result[0];
+    }
+   
+    do{
+       if(FLASH_WriteBlock(dstAddr,srcAddr,FLASH_MIN_DATA_SIZE) != CMD_SUCESS)
+         break;
+       if(size > FLASH_MIN_DATA_SIZE)
+          size -= FLASH_MIN_DATA_SIZE;
+       else
+          size = 0;
+    }while(size);
+          
+    return __result[0];
 }
 
 
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
+    __command[0] = FLASH_CMD_VERIFY;
+    __command[1] = (uint32_t)dstAddr & 0xFFFFFFFC;
+    __command[2] = (uint32_t)srcAddr & 0xFFFFFFFC;
+    __command[3] = size & 0xFFFFFFFC;  //word bondary
+    iap_entry(__command,__result);
+    return __result[0];    
 }
 

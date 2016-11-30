@@ -13,14 +13,19 @@
 #include <stdint.h>
 #include <lpc2106.h>
 
-#define FLASH_BLOCK_SIZE 0x2000 //8k
+#define FLASH_SECTOR_SIZE 0x2000 //8k
 #define FLASH_LAST_SECTOR 0x0F
 
 #define FLASH_BOOT_BLOCK_BASE 0x7FFFE000
 
-#define FLASH_PREPARE_SECTOR 50
-#define FLASH_RAM_TO_FLASH   51
-#define FLASH_ERASE_SECTOR   52
+#define FLASH_CMD_PREPARE_SECTOR 50
+#define FLASH_CMD_RAM_TO_FLASH   51
+#define FLASH_CMD_ERASE_SECTOR   52
+#define FLASH_CMD_ERASE_SECTOR   52
+#define FLASH_CMD_BLANK_CHECK    53
+#define FLASH_CMD_VERIFY         56
+
+#define FLASH_MIN_DATA_SIZE      256
 
 typedef enum {
     CMD_SUCESS = 0,
@@ -35,7 +40,7 @@ typedef enum {
     SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION,
     COMPARE_ERROR,
     BUSY
-};
+}FLASH_ERRORS;
 
 /** 
 * @brief Apaga o conteúdo de um sector, ou de múltiplos sectores, da FLASH. Para apagar
