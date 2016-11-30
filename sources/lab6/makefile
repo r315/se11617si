@@ -9,7 +9,7 @@ OBJDUMP = arm-none-eabi-objdump
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
-LDSCRIPT= -T ../../bsp/ldscript_ram
+LDSCRIPT= -T ../../bsp/ldscript
 
 
 TARGET = lab6Test
@@ -18,8 +18,8 @@ LIBTARGET = flash
 OBJS = init.o $(TARGET).o flash.o
 
 SYMBOLS =
-LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lgcc
-LIBSPATH = -L../../libs -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3
+LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lgcc -lc
+LIBSPATH = -L../../libs -L/usr/local/arm-tools/arm-2009q1/lib/gcc/arm-none-eabi/4.3.3 -L/usr/local/arm-tools/arm-2009q1/arm-none-eabi/lib
 INCSPATH = -I../../includes
 
 all: $(TARGET).axf
@@ -42,6 +42,9 @@ libflash: $(LIBTARGET).o
 
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
+	
+lst:
+	$(OBJDUMP) -S --disassemble $(TARGET).axf > $(TARGET).lst
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
