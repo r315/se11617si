@@ -21,9 +21,19 @@ struct LCD{
 	uint32_t wh;			//wrap h
 	uint32_t mx;			//memory current x
 	uint32_t my;			//memory current y	
+    SDL_Thread *thread_update;
+    uint32_t update;
 }lcd;
 
 
+
+static int LCD_Update(void *ptr){    
+    while(lcd.update){
+    	SDL_UpdateWindowSurface(lcd.window);
+        SDL_Delay(10);
+    }
+    return 0;
+}
 
 void LCD_Init(void){
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) { 
@@ -47,17 +57,22 @@ void LCD_Init(void){
     	
     lcd.surface = SDL_GetWindowSurface( lcd.window ); 
 	fprintf(stdout,"Window size: %dx%d %dbpp\n",lcd.surface->w, lcd.surface->h, lcd.surface->format->BitsPerPixel);    		
-	SDL_FillRect(lcd.surface, NULL, SDL_MapRGB(lcd.surface->format, 0x30, 0x0A, 0x24 ) );     		
-    LCD_Update();	
+	SDL_FillRect(lcd.surface, NULL, SDL_MapRGB(lcd.surface->format, 0x30, 0x0A, 0x24 ) );
+    
+    lcd.update = 1;
+    lcd.thread_update = SDL_CreateThread(LCD_Update, "Lcd Update Thread", (void *)NULL);
+
+     if(lcd.thread_update == NULL)
+        fprintf(stderr, "Error creating update thread\n");
 }
 
 void LCD_Close(void){
+int tr;
+    lcd.update = 0;
+    SDL_WaitThread(lcd.thread_update, &tr);    
+    
 	SDL_DestroyWindow(lcd.window); 
 	SDL_Quit(); 
-}
-
-void LCD_Update(void){
-	SDL_UpdateWindowSurface(lcd.window);
 }
 
 void LCD_Fill(uint16_t color, uint32_t n){
