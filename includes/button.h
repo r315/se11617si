@@ -11,7 +11,6 @@
 #define _button_h_
 
 #include <stdint.h>
-#include <lpc2106.h>
 
 typedef struct{
 	uint32_t cur;
@@ -20,7 +19,7 @@ typedef struct{
 	uint32_t events;
 }BUTTON_Controller;
 
-
+//TODO: allow variable time
 #define BUTTON_HOLD_TIME 2000   //2 seconds
 
 #define BUTTON_EMPTY    0
@@ -41,6 +40,12 @@ typedef struct{
 #define BUTTON_S (1<<15)
 
 #define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
+
+#if defined(_EMU_)
+#define loop() BUTTON_GetButtonsEvents() != 113 //SDLK_q
+#else
+#define loop() 1
+#endif
 
 
 /**
