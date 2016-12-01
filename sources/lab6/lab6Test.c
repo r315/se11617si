@@ -25,10 +25,13 @@ typedef enum{
    RTC_DATE,
 }RTC_FORMATS;
    
-
+typedef enum{
+    ACERTO,
+    ALARM
+}STATES;
 
 void restoreRtc(struct tm *rtc){
-   memcpy((uint8_t*)rtc,(uint8_t *)SAVED_RTC,sizeof(struct tm));
+   //memcpy((uint8_t*)rtc, (uint8_t *)SAVED_RTC, sizeof(struct tm));
 }
 
 void setRtc(struct tm *rtc){
@@ -101,11 +104,14 @@ void Acerto(void){
    
 }
 
+#define SOME_MEM &rtc
+
 int main(int argc, char *argv[]){
 struct tm rtc;
-   restoreRtc(&rtc);
+int main_state  =0;
+    restoreRtc(&rtc);
 	
-   TIMER0_Init(MS_IN_1S);	
+    TIMER0_Init(MS_IN_1S);	
 
   	LED_Init(LED, LED_ON);
 
@@ -119,24 +125,26 @@ struct tm rtc;
 
 	SPI_Init(SPI_MAX_FREQ, SPI_16BIT);
 
-	LCD_Clear(BLACK);
+	//LCD_Clear(BLACK);
 
 	LCD_SetColors(GREEN,BLACK);      
 
-	while(1){
+	while(loop()){        
       
-      switch(BUTTON_Read()){
+      switch(BUTTON_Hit()){
 			case BUTTON_L:
-				LED_Blink(500);               
-                PRINT_Mem((uint8_t *)0,128);
+				LED_Blink(500);                
+                PRINT_Mem((uint8_t*)SOME_MEM,128);
 		  		break;
 			case BUTTON_R:
 				LED_Blink(1000);
-                PRINT_Mem((uint8_t *)128,128);
+                PRINT_Mem((uint8_t *)SOME_MEM+128,128);
 		  		break;
 			case BUTTON_F:
-				LED_Blink(1500);
-                PRINT_Mem((uint8_t *)256,128);
+				//LED_Blink(1500);  
+                //PRINT_Mem((uint8_t *)SOME_MEM+256,128);
+                RTC_GetValue(&rtc);
+                PRINT_Rtc(&rtc,RTC_TIME_HHMM);
 		  		break;
 			case BUTTON_S:
 				LED_Blink(2000);
@@ -152,7 +160,7 @@ struct tm rtc;
 				break;		
        }      
       
-      switch(main_state){
+     /* switch(main_state){
          
          case ACERTO:
             Acerto();            
@@ -162,8 +170,9 @@ struct tm rtc;
             
             break;
          
-         default:         
-      }
+         default:   
+            break;      
+      }*/
 	}
 	return 0;
 }

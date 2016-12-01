@@ -50,6 +50,16 @@ lst:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
 
 
+###############################################################
+GCC = gcc
+
+$(TARGET).o:
+	$(GCC)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).o
+	$(GCC)  $(TARGET).o -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
+
+emulator: $(TARGET).o
+	./$(TARGET)
+
 	
 
 
