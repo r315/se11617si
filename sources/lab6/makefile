@@ -31,7 +31,7 @@ init.o:
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
-	rm -f *.o $(TARGET).axf 
+	rm -f *.o $(TARGET).axf $(TARGET) $(TARGET).exe
 	
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
@@ -51,14 +51,31 @@ lst:
 
 
 ###############################################################
-GCC = gcc
+UNAME_S := $(shell uname -s)
+GPP = gcc
+ifeq ($(UNAME_S),Linux)
 
-$(TARGET).o:
-	$(GCC)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).o
-	$(GCC)  $(TARGET).o -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
-
-emulator: $(TARGET).o
+$(TARGET).o: $(TARGET).c
+	$(GPP)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).o
+	
+$(TARGET): $(TARGET).o
+	$(GPP)  $(TARGET).o -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
+	
+emulator: $(TARGET)
 	./$(TARGET)
+else
+
+COMPILER_FLAGS = -D_EMU_ -w -Wl,-subsystem,windows
+INCLUDES += -I"C:/tools/SDL2/include" -I"C:/tools/SDL2/include" -I../../includes
+LINKER_FLAGS = -L"C:/tools/SDL2/lib" -LC:/tools/MinGw/lib -L../emulator -lemu -lmingw32 -lSDL2main -lSDL2
+
+$(TARGET).exe: $(TARGET).c
+	$(GPP) -c $(TARGET).c $(INCLUDES) $(COMPILER_FLAGS) -o $(TARGET).o
+	$(GPP) $(TARGET).o $(LINKER_FLAGS) -o $(TARGET)
+	
+emulator: $(TARGET).exe
+	cmd /c $(TARGET).exe
+endif
 
 	
 
