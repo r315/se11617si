@@ -4,6 +4,7 @@
 #include <lcd.h>
 #include "lcdsdl.h"
 
+#define UPDATE_TIME 30 //33fps
 #define LCD_FISICAL_W 240
 #define LCD_FISICAL_H 320
 
@@ -21,21 +22,26 @@ struct LCD{
 	uint32_t wh;			//wrap h
 	uint32_t mx;			//memory current x
 	uint32_t my;			//memory current y	
-    SDL_Thread *thread_update;
-    uint32_t update;
+    //SDL_Thread *thread_update;
+    uint32_t auto_update;
 }lcd;
 
 
 
-static int LCD_Update(void *ptr){    
-    while(lcd.update){
+int LCD_Update(void *ptr){    
+/*    while(lcd.update){
     	SDL_UpdateWindowSurface(lcd.window);
         SDL_Delay(10);
-    }
+    }*/
+	
+	SDL_UpdateWindowSurface(lcd.window);
+    if(lcd.auto_update)
+		SDL_AddTimer(UPDATE_TIME, LCD_Update, (void*)NULL);
     return 0;
 }
 
 void LCD_Init(void){
+
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) { 
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
 		return; 
@@ -50,26 +56,34 @@ void LCD_Init(void){
 									LCD_FISICAL_W, 
 									LCD_FISICAL_H, 
 									SDL_WINDOW_SHOWN); 
-	if( lcd.window == NULL ) { 
+    if( lcd.window == NULL ) { 
     	printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
 		return;
    	}
     	
-    lcd.surface = SDL_GetWindowSurface( lcd.window ); 
-	fprintf(stdout,"Window size: %dx%d %dbpp\n",lcd.surface->w, lcd.surface->h, lcd.surface->format->BitsPerPixel);    		
-	SDL_FillRect(lcd.surface, NULL, SDL_MapRGB(lcd.surface->format, 0x30, 0x0A, 0x24 ) );
+    lcd.surface = SDL_GetWindowSurface( lcd.window );
+     
+    fprintf(stdout,"Window size: %dx%d %dbpp\n",lcd.surface->w, lcd.surface->h, lcd.surface->format->BitsPerPixel);    
     
-    lcd.update = 1;
-    lcd.thread_update = SDL_CreateThread(LCD_Update, "Lcd Update Thread", (void *)NULL);
 
-     if(lcd.thread_update == NULL)
-        fprintf(stderr, "Error creating update thread\n");
+	
+    if(LCD_FISICAL_W != LCD_W || LCD_FISICAL_H != LCD_H){
+        SDL_FillRect(lcd.surface, NULL, SDL_MapRGB(lcd.surface->format, 0x0, 0x0, 0 ) );        
+        fprintf(stdout,"Display size: %dx%d\n",(int)LCD_W,(int)LCD_H);
+    }else
+       SDL_FillRect(lcd.surface, NULL, SDL_MapRGB(lcd.surface->format, 0x30, 0x0A, 0x24 ) );    
+    
+    lcd.auto_update = 1;
+    //lcd.thread_update = SDL_CreateThread(LCD_Update, "Lcd Update Thread", (void *)NULL);
+
+     //if(lcd.thread_update == NULL)
+     //   fprintf(stderr, "Error creating update thread\n");
+	 LCD_Update((void*)NULL);
 }
 
 void LCD_Close(void){
-int tr;
-    lcd.update = 0;
-    SDL_WaitThread(lcd.thread_update, &tr);    
+    lcd.auto_update = 0;
+    //SDL_WaitThread(lcd.thread_update, &tr);    
     
 	SDL_DestroyWindow(lcd.window); 
 	SDL_Quit(); 

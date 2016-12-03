@@ -12,7 +12,7 @@
 int BUTTON_Read(void);
 int BUTTON_GetButtonsEvents(void);
 
-int main(void){
+int main(int argc, char *argv[]){
 
    LCD_Init();
    LCD_SetColors(GREEN,BLACK);
@@ -42,7 +42,7 @@ int main(void){
         }
     }
 
-   LCD_Close();
+   LCD_Close(); 
 
 return 0;
 }
