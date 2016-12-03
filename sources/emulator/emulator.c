@@ -67,7 +67,8 @@ int BUTTON_Filter(const Uint8 *ink){
         if(ink[SDL_SCANCODE_3])  __button |= BUTTON_R;
         if(ink[SDL_SCANCODE_4])  __button |= BUTTON_S;
         if(ink[SDL_SCANCODE_Q])  __button = SDLK_q;
-        DBG("key pressed %u\n",__button);
+        if(ink[SDL_SCANCODE_ESCAPE])  __button = SDLK_q;
+        //printf("key pressed %u\n",__button);
 return __button;
 }
 
@@ -76,6 +77,10 @@ void BUTTON_Init(void){}
 int BUTTON_Hit(void){
 static SDL_Event event;
     if(SDL_PollEvent(&event)){
+        if(event.type == SDL_QUIT){
+            __button = SDLK_q;
+	         return __button;
+		   }
         if(event.type == SDL_KEYDOWN){
             return BUTTON_Filter(SDL_GetKeyboardState(NULL));
         }
