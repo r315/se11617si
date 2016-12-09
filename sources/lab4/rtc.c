@@ -10,7 +10,7 @@ void RTC_Init(struct tm *dateTime){
 	RTC->ILR = 3;
 	RTC->ILR = 0;
 	RTC->CIIR = 0; /* Counter Increment Interrupt Disable */
-	RTC_DeactivateAlarm(RTC_ALARMS_OFF);
+	RTC_DeactivateAlarm(RTC_AMR_OFF);
 	RTC_SetValue(dateTime);
 }
 
@@ -71,12 +71,12 @@ void RTC_SetAlarmValue(struct tm *dateTime){
 	RTC->ALDOY = (dateTime->tm_yday > 1 && dateTime->tm_yday < 366)? dateTime->tm_yday : 1;
 }
 
-uint32_t RTC_HasAlarms(void){
-return RTC->ILR & RTC_RTCALF;
+uint32_t RTC_CheckAlarm(void){
+   return RTC->ILR & RTC_RTCALF;
 }
 
-void RTC_ClearAlarms(void){
-	 RTC->ILR = RTC_RTCALF;
+void RTC_ClearAlarm(void){
+	 RTC->ILR |= RTC_RTCALF;
 }
 
 void RTC_ActivateAlarm(uint32_t alarm){

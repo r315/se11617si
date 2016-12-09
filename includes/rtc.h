@@ -23,7 +23,18 @@
 
 #define RTC_DIVIDER 32768
 
-#define RTC_ALARMS_OFF 0xFF
+#define RTC_AMR_OFF 0xFF
+
+#define RTC_AMR_SEC 	(1<<0)
+#define RTC_AMR_MIN		(1<<1)
+#define RTC_AMR_HOUR	(1<<2)
+#define RTC_AMR_DOM 	(1<<3)
+#define RTC_AMR_DOW 	(1<<4)
+#define RTC_AMR_DOY		(1<<5)
+#define RTC_AMR_MON		(1<<6)
+#define RTC_AMR_YEAR	(1<<7)
+
+
 
 /** 
 * @brief Faz a iniciação do sistema para permitir o acesso ao periférico RTC.
@@ -65,12 +76,12 @@ void RTC_DeactivateAlarm(uint32_t alarm);
 * @brief Verifica se algum alarme foi gerado.
 * @return 1 = true
 **/
-uint32_t RTC_HasAlarms(void);
+uint32_t RTC_CheckAlarm(void);
 
 /** 
 * @brief clears any activated alarm
 **/
-void RTC_ClearAlarms(void);
+void RTC_ClearAlarm(void);
 
 #endif
 
