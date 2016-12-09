@@ -39,6 +39,7 @@ debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
 libs: libspi liblcd
+	rm -f *.o
 
 libspi: spi.o
 	$(AR) -cr ../../libs/lib$(<:.o=.a) $<

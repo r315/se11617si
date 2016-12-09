@@ -41,6 +41,7 @@ debug:  $(TARGET).axf
 lib: $(LIBTARGET).o
 	rm -f $(LIBSDIR)/lib$(LIBTARGET).a
 	$(AR) -cr $(LIBSDIR)/lib$(LIBTARGET).a $(LIBTARGET).o
+	rm -f $(LIBTARGET).o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
