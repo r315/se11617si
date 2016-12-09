@@ -15,7 +15,8 @@ uint32_t getPclk(void){
 }
 
 uint32_t getCclk(void){
-	__cclkval = XTAL;
+    if(!__cclkval)
+        __cclkval = XTAL;
 	return __cclkval;
 }
 
@@ -31,6 +32,7 @@ void PLL_Init(void){
 
 	SC->PLLCON = 3; //connect pll to cclk
 	SC->PLLFEED = 0xAA;
-	SC->PLLFEED = 0x55;	
+	SC->PLLFEED = 0x55;
+    __cclkval = 73728000;
 }
 

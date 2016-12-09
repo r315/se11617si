@@ -9,5 +9,6 @@
 
 uint32_t getPclk(void);
 uint32_t getCclk(void);
+void PLL_Init(void);
 
 #endif
