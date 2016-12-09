@@ -18,9 +18,9 @@ void TIMER0_Init(unsigned int frequency){
 	TIMER0->CTCR = 0; 		// Timer mode
 
 	if(!frequency) frequency = 1;
-	if(frequency > CCLK) frequency = CCLK;
+	if(frequency > getCclk()) frequency = getCclk();
 	__freq = frequency;
-	TIMER0->PR = (getPclk() / frequency) - 1; // pr = pclk / frequency, pclk = cclk / vpdiv (default 4)
+	TIMER0->PR = (getPclk() / frequency) - 1; // pr = (pclk / frequency) - 1, pclk = cclk / vpdiv (default 4)
 	
 	TIMER0->TCR = TIMER_CE;	//start timer
 }
