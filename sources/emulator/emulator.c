@@ -4,9 +4,9 @@
 #include <button.h>
 
 #if defined(DBG)
-#define DBG(x) printf(x)
+#define DBG printf
 #else
-#define DBG  printf
+#define DBG printf
 #endif
 
 //---------------------------------------------------------------------------
@@ -24,6 +24,8 @@ void LED_SetState(int state){ __led_state = state;}
 
 //---------------------------------------------------------------------------
 static struct tm __rtc;
+static struct tm __rtca;
+uint32_t __amr;
 void RTC_SetValue(struct tm *dateTime){	
 	__rtc.tm_sec = dateTime->tm_sec % 60;
 	__rtc.tm_min = dateTime->tm_min % 60;
@@ -34,28 +36,74 @@ void RTC_SetValue(struct tm *dateTime){
 	__rtc.tm_year = (dateTime->tm_year > 0 && dateTime->tm_year < 4096)? dateTime->tm_year : 1900;
 	__rtc.tm_yday = (dateTime->tm_yday > 1 && dateTime->tm_yday < 366)? dateTime->tm_yday : 1;	
 }
-void RTC_Init(struct tm *dateTime){ RTC_SetValue(dateTime);}
+
+uint32_t rtcinc(uint32_t interval, void*ptr){
+      __rtc.tm_sec = (__rtc.tm_sec == 59)? 0 : __rtc.tm_sec + 1;
+      //printf("sec: %u\n", __rtc.tm_sec);      
+      return interval;
+}
+
+void RTC_Init(struct tm *dateTime){ 
+   RTC_SetValue(dateTime);
+   __amr = 0;
+   SDL_AddTimer(1000, rtcinc,(void*)NULL);
+}
 
 void RTC_GetValue(struct tm *dateTime){
-time_t rawtime;
-   time ( &rawtime );
-   memcpy((uint8_t *)dateTime, (uint8_t *)localtime(&rawtime), sizeof(struct tm));
+//time_t rawtime;
+ //  time ( &rawtime );
+ //  memcpy((uint8_t *)dateTime, (uint8_t *)localtime(&rawtime), sizeof(struct tm));
+   memcpy((uint8_t *)dateTime, (uint8_t *)&__rtc, sizeof(struct tm));
 }
 
 void RTC_GetAlarmValue(struct tm *dateTime){
-	
+   memcpy((void*)dateTime, (void*)&__rtca, sizeof(struct tm));	
 }
 
-void RTC_SetAlarmValue(struct tm *dateTime){	
+void RTC_SetAlarmValue(struct tm *dateTime){
+   memcpy((void*)&__rtca, (void*)dateTime, sizeof(struct tm));		
 }
 
-uint32_t RTC_HasAlarms(void){ return 0;}
+int checkAlarm(int alm){
+   switch(alm & 7){
+      case 0: return __rtca.tm_sec == __rtc.tm_sec;
+      case 1: return __rtca.tm_min == __rtc.tm_min;
+      case 2: return __rtca.tm_hour == __rtc.tm_hour;
+      case 3: return __rtca.tm_mday == __rtc.tm_mday;
+      case 4: return __rtca.tm_wday == __rtc.tm_wday;
+      case 5: return __rtca.tm_yday == __rtc.tm_yday;
+      case 6: return __rtca.tm_mon == __rtc.tm_mon;
+      case 7: return __rtca.tm_year == __rtc.tm_year;
+   }
+   return 0;
+}
 
-void RTC_ClearAlarms(void){}
 
-void RTC_ActivateAlarm(uint32_t alarm){}
+uint32_t RTC_CheckAlarm(void){
+uint8_t bits;
 
-void RTC_DeactivateAlarm(uint32_t alarm){}
+   if(!__amr)
+      return 0;
+      
+   for(bits = 0; bits < 8; bits++){
+         if(__amr & (1<<bits))
+            if(!checkAlarm(bits))
+               return 0;   
+   }
+   
+   return 1;
+}
+
+void RTC_ClearAlarm(void){
+}
+
+void RTC_ActivateAlarm(uint32_t alarm){
+   __amr = alarm;
+}
+
+void RTC_DeactivateAlarm(uint32_t alarm){
+   __amr = alarm;
+}
 
 //---------------------------------------------------------------------------
 int __button;
