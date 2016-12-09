@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h> 
 #include <stdio.h> 
 #include <lcd.h>
+#include <time.h>
+#include <rtc.h>
 #include "lcdsdl.h"
 
 #define BUTTON_L (1<<11)
@@ -13,7 +15,10 @@ int BUTTON_Read(void);
 int BUTTON_GetButtonsEvents(void);
 
 int main(int argc, char *argv[]){
-
+time_t rawtime;
+   time ( &rawtime );
+   RTC_Init(localtime(&rawtime));
+   
    LCD_Init();
    LCD_SetColors(GREEN,BLACK);
   // LCD_Pixel(10,10,RED);

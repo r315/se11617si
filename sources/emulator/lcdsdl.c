@@ -28,21 +28,21 @@ struct LCD{
 
 
 
-int LCD_Update(void *ptr){    
+uint32_t LCD_Update(uint32_t interval, void *ptr){    
 /*    while(lcd.update){
     	SDL_UpdateWindowSurface(lcd.window);
         SDL_Delay(10);
     }*/
 	
-	SDL_UpdateWindowSurface(lcd.window);
-    if(lcd.auto_update)
-		SDL_AddTimer(UPDATE_TIME, LCD_Update, (void*)NULL);
-    return 0;
+	 SDL_UpdateWindowSurface(lcd.window);
+    if(!lcd.auto_update)
+      return 0;	
+    return interval;  //timer is set using return value
 }
 
 void LCD_Init(void){
 
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) { 
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 ) { 
 		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
 		return; 
 	}
@@ -78,7 +78,9 @@ void LCD_Init(void){
 
      //if(lcd.thread_update == NULL)
      //   fprintf(stderr, "Error creating update thread\n");
-	 LCD_Update((void*)NULL);
+//	 LCD_Update(UPDATE_TIME,(void*)NULL);
+
+	SDL_AddTimer(UPDATE_TIME, LCD_Update, (void*)NULL);
 }
 
 void LCD_Close(void){
