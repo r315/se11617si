@@ -22,10 +22,14 @@ typedef struct{
 //TODO: allow variable time
 #define BUTTON_HOLD_TIME 2000   //2 seconds
 
-#define BUTTON_EMPTY    0
-#define BUTTON_PRESSED  1 
-#define BUTTON_RELEASED 2
-#define BUTTON_HOLD     3
+enum {
+	BUTTON_EMPTY = 0,
+	BUTTON_PRESSED,
+	BUTTON_RELEASED,
+	BUTTON_HOLD,
+	BUTTON_TIMING
+}BUTTON_States;
+
 
 /**
 * @brief Button connections
@@ -42,7 +46,7 @@ typedef struct{
 #define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
 
 #if defined(_EMU_)
-#define loop() BUTTON_GetButtonsEvents() != 113 //SDLK_q
+#define loop() BUTTON_Hit() != 113 //SDLK_q
 #else
 #define loop() 1
 #endif
@@ -67,10 +71,17 @@ int BUTTON_Hit(void);
 int BUTTON_Read(void);
 
 /**
-* @brief Devolve o código (bitmap) do estado do botão: pressionado (transição),
-*        libertado (transição), repetição (mantém o estado anterior)
+* @brief Devolve o código (bitmap) do estado do botão: 
+* 		 pressionado (transição),
+*        libertado (transição),
+*        repetição (mantido pressionado)
 **/
-int BUTTON_GetButtonsEvents(void);
+int BUTTON_GetButtonEvents(void);
 
+/**
+ * @brief Devolve o codigo (bitmap) da tecla corrente
+ *        EMPTY se nenhuma tecla pressionada
+ **/
+int BUTTON_GetButton(void); 
 #endif
 

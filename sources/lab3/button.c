@@ -52,6 +52,8 @@ uint32_t cur = BUTTON_Capture();
 	if(TicksToMs(TIMER0_Elapse(__buttons.timer)) > BUTTON_HOLD_TIME){
 		__buttons.events = BUTTON_HOLD;
 	}
+	else
+		__buttons.events = BUTTON_TIMING;
 	
 	return __buttons.cur;
 }
@@ -61,11 +63,14 @@ int BUTTON_Read(void){
 	return __buttons.cur; 
 }
 
-int BUTTON_GetButtonsEvents(void){
-		BUTTON_Hit();
+int BUTTON_GetButtonEvents(void){
+	BUTTON_Hit();
 	return __buttons.events;
 }
 
+int BUTTON_GetButton(void){
+	return __buttons.cur;
+}
 
 
 
