@@ -25,7 +25,7 @@
 #define FLASH_CMD_BLANK_CHECK    53
 #define FLASH_CMD_VERIFY         56
 
-#define FLASH_MIN_DATA_SIZE      256
+#define FLASH_MIN_DATA_SIZE      512
 
 typedef enum {
     CMD_SUCESS = 0,
