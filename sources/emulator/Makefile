@@ -43,7 +43,8 @@ lib: $(LIB_OBJS)
 #	$(GCC)  $(INCSPATH) -Wall -lSDL2 -c $(EDIR)/lcd.c -o lcd.o
 #	$(GCC)  $(INCSPATH) -Wall -lSDL2 -c $(EDIR)/emulator.c -o emulator.o
 #	$(GCC)  $(INCSPATH) -Wall -lSDL2 -c $(EDIR)/font8x16.c -o font8x16.o
+	rm -f libemu.a
 	ar rcs libemu.a lcdsdl.o lcd.o emulator.o font8x16.o
-	
+	rm -f *.o
 
 	

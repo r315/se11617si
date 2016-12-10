@@ -79,11 +79,11 @@ void RTC_ClearAlarm(void){
 	 RTC->ILR |= RTC_RTCALF;
 }
 
-void RTC_ActivateAlarm(uint32_t alarm){
+void RTC_ActivateAlarm(uint8_t alarm){
 	RTC->AMR &= ~alarm;
 }
 
-void RTC_DeactivateAlarm(uint32_t alarm){
+void RTC_DeactivateAlarm(uint8_t alarm){
 	RTC->AMR |= alarm;
 }
 

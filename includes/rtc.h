@@ -65,12 +65,12 @@ void RTC_SetAlarmValue(struct tm *dateTime);
 /** 
 * @brief Activa um alarme
 **/
-void RTC_ActivateAlarm(uint32_t alarm);
+void RTC_ActivateAlarm(uint8_t alarm);
 
 /** 
 * @brief Desactiva um alarme
 **/
-void RTC_DeactivateAlarm(uint32_t alarm);
+void RTC_DeactivateAlarm(uint8_t alarm);
 
 /** 
 * @brief Verifica se algum alarme foi gerado.

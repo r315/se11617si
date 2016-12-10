@@ -31,14 +31,16 @@ init.o:
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
-	rm -f *.o $(TARGET).axf $(TARGET) $(TARGET).exe
+	rm -f *.o *.obj $(TARGET).axf $(TARGET) $(TARGET).exe
 	
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
 
-libflash: $(LIBTARGET).o
+lib: $(LIBTARGET).o
+	rm -f ../../libs/lib$(LIBTARGET).a
 	$(AR) -cr ../../libs/lib$(<:.o=.a) $<
+	rm -f *.o
 
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o
@@ -55,11 +57,11 @@ UNAME_S := $(shell uname -s)
 GPP = gcc
 ifeq ($(UNAME_S),Linux)
 
-$(TARGET).o: $(TARGET).c
-	$(GPP)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).o
+$(TARGET).obj: $(TARGET).c
+	$(GPP)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).obj
 	
-$(TARGET): $(TARGET).o
-	$(GPP)  $(TARGET).o -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
+$(TARGET): $(TARGET).obj
+	$(GPP)  $(TARGET).obj -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
 	
 emulator: $(TARGET)
 	./$(TARGET)
