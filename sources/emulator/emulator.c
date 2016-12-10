@@ -106,18 +106,23 @@ void RTC_DeactivateAlarm(uint32_t alarm){
 }
 
 //---------------------------------------------------------------------------
-int __button;
+typedef struct _button{
+    int button;
+    int event;
+}Button;
+
+Button __button;
 
 int BUTTON_Filter(const Uint8 *ink){
-        __button= 0;
-        if(ink[SDL_SCANCODE_1])  __button |= BUTTON_L;
-        if(ink[SDL_SCANCODE_2])  __button |= BUTTON_F;
-        if(ink[SDL_SCANCODE_3])  __button |= BUTTON_R;
-        if(ink[SDL_SCANCODE_4])  __button |= BUTTON_S;
-        if(ink[SDL_SCANCODE_Q])  __button = SDLK_q;
-        if(ink[SDL_SCANCODE_ESCAPE])  __button = SDLK_q;
+        __button.button = 0;
+        if(ink[SDL_SCANCODE_1])  __button.button |= BUTTON_L;
+        if(ink[SDL_SCANCODE_2])  __button.button |= BUTTON_F;
+        if(ink[SDL_SCANCODE_3])  __button.button |= BUTTON_R;
+        if(ink[SDL_SCANCODE_4])  __button.button |= BUTTON_S;
+        if(ink[SDL_SCANCODE_Q])  __button.button = SDLK_q;
+        if(ink[SDL_SCANCODE_ESCAPE])  __button.button = SDLK_q;
         //printf("key pressed %u\n",__button);
-return __button;
+return __button.button;
 }
 
 void BUTTON_Init(void){}
@@ -126,23 +131,32 @@ int BUTTON_Hit(void){
 static SDL_Event event;
     if(SDL_PollEvent(&event)){
         if(event.type == SDL_QUIT){
-            __button = SDLK_q;
-	         return __button;
+            __button.button = SDLK_q;
+	         return __button.button;
 		   }
         if(event.type == SDL_KEYDOWN){
+            __button.event = BUTTON_PRESSED;
             return BUTTON_Filter(SDL_GetKeyboardState(NULL));
         }
+        if(event.type == SDL_KEYUP){
+            __button.event = BUTTON_RELEASED;
+        }
     }   
+    __button.event = BUTTON_EMPTY;
     return 0;
 }
 				   
 int BUTTON_Read(void){
     while(!BUTTON_Hit());
-    return __button;
+    return __button.button;
 }
 
-int BUTTON_GetButtonsEvents(void){
-    return __button;
+int BUTTON_GetButtonEvents(void){
+    return __button.event;
+}
+
+int BUTTON_GetButton(void){
+    return __button.button;
 }
 
 //---------------------------------------------------------------------------
