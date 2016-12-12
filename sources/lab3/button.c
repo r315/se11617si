@@ -63,8 +63,7 @@ int BUTTON_Read(void){
 	return __buttons.cur; 
 }
 
-int BUTTON_GetButtonEvents(void){
-	BUTTON_Hit();
+int BUTTON_GetButtonEvents(void){	
 	return __buttons.events;
 }
 

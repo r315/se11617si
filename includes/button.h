@@ -46,9 +46,9 @@ enum {
 #define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
 
 #if defined(_EMU_)
-#define loop() BUTTON_Hit() != 113 //SDLK_q
+#define loop BUTTON_Hit() != 113 //SDLK_q
 #else
-#define loop() 1
+#define loop 1
 #endif
 
 
