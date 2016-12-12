@@ -100,7 +100,9 @@ uint32_t startSector, endSector;
     return __result[0];
 }
 
-
+/**
+ * @return CMD_SUCCESS | COMPARE_ERROR | COUNT_ERROR | ADDR_ERROR |ADDR_NOT_MAPPED
+ **/
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
     __command[0] = FLASH_CMD_VERIFY;
     __command[1] = (uint32_t)dstAddr & 0xFFFFFFFC;
