@@ -25,15 +25,16 @@
 
 #define RTC_AMR_OFF 0xFF
 
-#define RTC_AMR_SEC 	(1<<0)
-#define RTC_AMR_MIN		(1<<1)
-#define RTC_AMR_HOUR	(1<<2)
-#define RTC_AMR_DOM 	(1<<3)
-#define RTC_AMR_DOW 	(1<<4)
-#define RTC_AMR_DOY		(1<<5)
-#define RTC_AMR_MON		(1<<6)
-#define RTC_AMR_YEAR	(1<<7)
+#define RTC_AMR_SEC     (1<<0)
+#define RTC_AMR_MIN     (1<<1)
+#define RTC_AMR_HOUR    (1<<2)
+#define RTC_AMR_DOM     (1<<3)
+#define RTC_AMR_DOW     (1<<4)
+#define RTC_AMR_DOY     (1<<5)
+#define RTC_AMR_MON     (1<<6)
+#define RTC_AMR_YEAR    (1<<7)
 
+#define TIME_FORMAT (2<<8) | 10 // print decimal with 2 digits  
 
 
 /** 

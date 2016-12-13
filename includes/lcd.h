@@ -23,6 +23,7 @@
 #define BLUE 0x1f
 #define BLACK 0
 #define WHITE 0xFFFF
+#define UBUNTU RGB(6,2,4)
 
 /**
 * @brief Função de inicialização do lcd
