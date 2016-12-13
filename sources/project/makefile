@@ -15,7 +15,7 @@ LDSCRIPT= -T ../../bsp/ldscript
 TARGET = proj
 LIBTARGET =
 
-OBJS = init.o $(TARGET).o system.o
+OBJS = init.o $(TARGET).o system.o save.o idle.o config.o space.o
 
 SYMBOLS =
 LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lflash -lgcc -lc
@@ -45,21 +45,24 @@ lst:
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
-
-
 ###############################################################
 UNAME_S := $(shell uname -s)
 GPP = gcc
+
+XOBJS=$(TARGET).obj system.obj save.obj idle.obj config.obj space.obj
+
 ifeq ($(UNAME_S),Linux)
 
-$(TARGET).obj: $(TARGET).c
-	$(GPP)  $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $(TARGET).c -o $(TARGET).obj
-	
-$(TARGET): $(TARGET).obj
-	$(GPP)  $(TARGET).obj -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
-	
 emulator: $(TARGET)
 	./$(TARGET)
+
+$(TARGET): $(XOBJS)
+	$(GPP)  $(XOBJS) -Wall -L../emulator -lemu -lSDL2 -o $(TARGET)
+
+%.obj : %.c
+	$(GPP) $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $< -o $(<:.c=.obj)
+
+
 else
 
 COMPILER_FLAGS = -D_EMU_ -w -Wl,-subsystem,windows

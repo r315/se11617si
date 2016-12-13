@@ -28,11 +28,9 @@ void SYS_Init(void){
 
     SPI_Init(SPI_MAX_FREQ, SPI_16BIT); //after init use full speed
 
-    LCD_Clear(RGB(6,2,4));
+    LCD_Clear(BLACK);
 
     LCD_SetColors(GREEN,BLACK);
-    
-    memset((void*)defaultRtc, 0 , sizeof(struct tm));	// initialize rtc structures     
-    
+        
     RTC_Init((struct tm*)&defaultRtc);
 }

@@ -1,5 +1,10 @@
-#include "system.h"
 #include <button.h>
+
+#include "system.h"
+#include "save.h"
+#include "config.h"
+#include "space.h"
+#include "idle.h"
 
 
 typedef enum Mstates{
@@ -9,16 +14,26 @@ typedef enum Mstates{
   SAVE    
 }State;
 
-int config(int b);
-int spcinv(int b);
-int saveToFlash(void);
+int dummy;
+
+State switchTo(State newState){
+    switch(newState){
+        case IDLE: popIdle(); break;
+        case CONFIG: break;
+        case GAME: popSpace();break;
+        case SAVE: break;
+    }
+    return newState;
+}
+
 
 int main(void){
-State state = IDLE;
+State state;
 uint32_t button;    
     
-    SYS_Init();
+    SYS_Init();    
     
+    state = switchTo(IDLE);
     
     while(loop){
         
@@ -26,51 +41,59 @@ uint32_t button;
         BUTTON_Hit();
         
         if(BUTTON_GetButtonEvents() == BUTTON_PRESSED){
-            button = BUTTON_GetButton();        
+           button = BUTTON_GetButton();            
         }
         else
-            button = 0;      
-                
+           button = BUTTON_EMPTY;      
+           
+        if(BUTTON_GetButtonEvents() != BUTTON_EMPTY){
+            printf("State %u\n",BUTTON_GetButtonEvents());
+        }
+         
+        //main state machine        
         switch(state){
             case IDLE: 
                 if(button == BUTTON_F){                   
-                    state = GAME;
+                    state = switchTo(GAME);
                     break;
                 }
                 
                 if(button == BUTTON_S){
-                    loadSavedGame();
-                    state = GAME;
+                    loadGame(&dummy,1);
+                    state = switchTo(GAME);
                     break;
                 }
                 
                 if(button == (BUTTON_F| BUTTON_R)){
                     if(BUTTON_GetButtonEvents() == BUTTON_HOLD){
-                        state = CONFIG;
+                        state = switchTo(CONFIG);
                         break;
                     }
-                }                
+                }
+                                                
+                idle();                
                 break;
                 
             case CONFIG: 
                 if(!config(button)){
-                    state = IDLE;
+                    state = switchTo(IDLE);
                 }
                 break;
                 
             case GAME: 
                 if(button == BUTTON_S){
-                    state = SAVE;
+                    state = switchTo(SAVE);
+                    break;
                 }
-                spcinv(button);
+                space(button);
                 break;    
                         
             case SAVE:
-                if(!saveToFlash()){
-                    state = IDLE;
+                if(!saveGame(&dummy,1)){
+                    state = switchTo(IDLE);
                 }
                 break;   
         }        
     }
-
+return 0;
 }
