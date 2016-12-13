@@ -22,13 +22,13 @@ typedef struct{
 //TODO: allow variable time
 #define BUTTON_HOLD_TIME 2000   //2 seconds
 
-enum {
+enum Benvent{
 	BUTTON_EMPTY = 0,
 	BUTTON_PRESSED,
-	BUTTON_RELEASED,
-	BUTTON_HOLD,
-	BUTTON_TIMING
-}BUTTON_States;
+    BUTTON_TIMING,
+   	BUTTON_HOLD,
+	BUTTON_RELEASED	
+}Bstate;
 
 
 /**
@@ -46,7 +46,7 @@ enum {
 #define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
 
 #if defined(_EMU_)
-#define loop BUTTON_Hit() != 113 //SDLK_q
+#define loop BUTTON_GetButtonEvents() != 256 //SDL_QUIT
 #else
 #define loop 1
 #endif

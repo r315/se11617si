@@ -109,6 +109,7 @@ void RTC_DeactivateAlarm(uint32_t alarm){
 typedef struct _button{
     int button;
     int event;
+    unsigned int timeout;
 }Button;
 
 Button __button;
@@ -119,8 +120,7 @@ int BUTTON_Filter(const Uint8 *ink){
         if(ink[SDL_SCANCODE_2])  __button.button |= BUTTON_F;
         if(ink[SDL_SCANCODE_3])  __button.button |= BUTTON_R;
         if(ink[SDL_SCANCODE_4])  __button.button |= BUTTON_S;
-        if(ink[SDL_SCANCODE_Q])  __button.button = SDLK_q;
-        if(ink[SDL_SCANCODE_ESCAPE])  __button.button = SDLK_q;
+        if(ink[SDL_SCANCODE_Q] || ink[SDL_SCANCODE_ESCAPE]) { __button.button = SDLK_q; __button.event = SDL_QUIT; }
         //printf("key pressed %u\n",__button);
 return __button.button;
 }
@@ -129,21 +129,44 @@ void BUTTON_Init(void){}
 
 int BUTTON_Hit(void){
 static SDL_Event event;
-    if(SDL_PollEvent(&event)){
+
+    if(SDL_PollEvent(&event)){       
+        if(event.type == SDL_KEYDOWN && __button.event == BUTTON_EMPTY){
+            __button.event = BUTTON_PRESSED;
+            __button.timeout = SDL_GetTicks() + 300;
+            printf("Start Timeout %u\n", __button.timeout);
+            return BUTTON_Filter(SDL_GetKeyboardState(NULL));
+        }     
+
+        if(event.type == SDL_KEYUP){
+            __button.event = BUTTON_RELEASED; 
+            return __button.button;
+        }
+
         if(event.type == SDL_QUIT){
             __button.button = SDLK_q;
+            __button.event = SDL_QUIT;
 	         return __button.button;
-		   }
-        if(event.type == SDL_KEYDOWN){
-            __button.event = BUTTON_PRESSED;
-            return BUTTON_Filter(SDL_GetKeyboardState(NULL));
-        }
-        if(event.type == SDL_KEYUP){
-            __button.event = BUTTON_RELEASED;
-        }
+		}
+    }
+
+    switch(__button.event){
+        case BUTTON_PRESSED:
+            __button.event = BUTTON_TIMING;
+            break;
+
+        case BUTTON_TIMING:
+            if(SDL_GetTicks() > __button.timeout)
+                __button.event = BUTTON_HOLD;               
+            break;
+
+        case BUTTON_RELEASED:
+                __button.event = BUTTON_EMPTY;
+                __button.button = BUTTON_EMPTY;
+
+        default : break;            
     }   
-    __button.event = BUTTON_EMPTY;
-    return 0;
+    return __button.button;
 }
 				   
 int BUTTON_Read(void){

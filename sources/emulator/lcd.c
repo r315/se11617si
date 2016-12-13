@@ -47,8 +47,19 @@ uint8_t digit, count;
 
 }
 
+void LCD_NewLine(void){
+uint8_t h = *((uint8_t*)font8x16+1);
+    _y += h;
+    if(_y > (LCD_H - h))
+        _y = 0;
+    _x = 0;
+}
+
 void LCD_WriteChar(char ch){
-	LCD_PutChar(ch, _x, _y, _fColor, _bColor);
+    if(ch == '\n')
+        LCD_NewLine();
+    else
+	    LCD_PutChar(ch, _x, _y, _fColor, _bColor);
 }
 
 void LCD_WriteString(char *str){
@@ -59,14 +70,6 @@ void LCD_WriteString(char *str){
 void LCD_Goto(int x, int y){
 		_x = x;
 		_y = y;
-}
-
-void LCD_NewLine(void){
-uint8_t h = *((uint8_t*)font8x16+1);
-    _y += h;
-    if(_y > (LCD_H - h))
-        _y = 0;
-    _x = 0;
 }
 
 void LCD_Clear(int color){
