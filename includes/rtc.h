@@ -35,7 +35,7 @@
 #define RTC_AMR_YEAR    (1<<7)
 
 #define TIME_FORMAT (2<<8) | 10 // print decimal with 2 digits  
-
+#define YEAR_FORMAT (4<<8) | 10 // print decimal with 4 digits  
 
 /** 
 * @brief Faz a iniciação do sistema para permitir o acesso ao periférico RTC.
