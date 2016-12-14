@@ -2,7 +2,7 @@
 #define _idle_h_
 
 
-void popIdle(void);
+void popIdle(void *ptr);
 void idle(void);
 
 

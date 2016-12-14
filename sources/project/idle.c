@@ -4,40 +4,70 @@
 #include <timer.h>
 #include "idle.h"
 
+#define MAX_TOP_SCORES 3
+#define SCORES_FORMAT (3<<8) | 10
+
 static const char title[]={
     "           IDLE\n\n"
     "F   -  start new Game\n"
     "S   -  Load Game\n"
     "L&R -  for config\n"
+    "Top Scores:\n"
 };
 
+static uint32_t highScores;
+static uint32_t updateTime;
 
-void PRINT_Rtc(){
-struct tm rtc;    
-    LCD_Goto(80,96);    
-    RTC_GetValue(&rtc);    
-    
-    LCD_WriteInt(rtc.tm_hour, TIME_FORMAT);
+void PRINT_DateTime(struct tm *rtc){
+    LCD_WriteInt(rtc->tm_mday, TIME_FORMAT);
+    LCD_WriteChar('/');
+    LCD_WriteInt(rtc->tm_mon, TIME_FORMAT);
+    LCD_WriteChar('/');
+    LCD_WriteInt(rtc->tm_year, YEAR_FORMAT);  
+    LCD_WriteChar(' ');     
+    LCD_WriteInt(rtc->tm_hour, TIME_FORMAT);
     LCD_WriteChar(':');
-    LCD_WriteInt(rtc.tm_min, TIME_FORMAT);
+    LCD_WriteInt(rtc->tm_min, TIME_FORMAT);
     LCD_WriteChar(':');
-    LCD_WriteInt(rtc.tm_sec, TIME_FORMAT);
+    LCD_WriteInt(rtc->tm_sec, TIME_FORMAT);  
 }
 
-void popIdle(void){
+/**
+ * @brief high scores are stored on one integer so is 8-bit one high score
+ * */
+void PRINT_HighScores(int scores){   
+uint8_t n = MAX_TOP_SCORES;
+    while(n--){
+        LCD_WriteInt(scores & 255, SCORES_FORMAT);
+        LCD_NewLine();
+        LCD_WriteString("          "); //TODO: make dynamic position
+        scores >>= 8;
+    }
+}
+
+void popIdle(void *ptr){  
+    highScores = *((int*)ptr);  
+    updateTime = TIMER0_GetValue() - 1000;  //force update
     LCD_Clear(BLACK);
     LCD_SetColors(RED,BLACK);
     LCD_Goto(0,0);    
     LCD_WriteString((char*)title);
-    LCD_SetColors(GREEN,BLACK);    
+    LCD_SetColors(GREEN,BLACK);
 }
 
 void idle(void){
-static uint32_t time;
+struct tm rtc;
     //TODO: interrupt on rtc for seconds
-    if( TIMER0_Elapse(time) > 1000){
-        PRINT_Rtc();
-        time = TIMER0_GetValue();
+    if( TIMER0_Elapse(updateTime) > 1000){
+        RTC_GetValue(&rtc);   
+        LCD_Goto(10,LCD_H-16);
+        LCD_SetColors(GREEN,BLACK);        
+        PRINT_DateTime(&rtc);
+        
+        LCD_Goto(80,96);
+        LCD_SetColors(BLUE,BLACK);
+        PRINT_HighScores(highScores);
+        
+        updateTime = TIMER0_GetValue();
     }
-
 }
