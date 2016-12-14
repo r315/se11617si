@@ -69,9 +69,11 @@ COMPILER_FLAGS = -D_EMU_ -w -Wl,-subsystem,windows
 INCLUDES += -I"C:/tools/SDL2/include" -I"C:/tools/SDL2/include" -I../../includes
 LINKER_FLAGS = -L"C:/tools/SDL2/lib" -LC:/tools/MinGw/lib -L../emulator -lemu -lmingw32 -lSDL2main -lSDL2
 
-$(TARGET).exe: $(TARGET).c
-	$(GPP) -c $(TARGET).c $(INCLUDES) $(COMPILER_FLAGS) -o $(TARGET).obj
-	$(GPP) $(TARGET).obj $(LINKER_FLAGS) -o $(TARGET)
+$(TARGET).exe: $(XOBJS)
+	$(GPP) $(XOBJS) $(LINKER_FLAGS) -o $(TARGET)
+
+%.obj : %.c
+	$(GPP) $(INCSPATH) -Wall -lSDL2 -D_EMU_ -c $< -o $(<:.c=.obj)
 	
 emulator: $(TARGET).exe
 	cmd /c $(TARGET).exe
