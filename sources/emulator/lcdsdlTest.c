@@ -22,15 +22,15 @@ time_t rawtime;
    LCD_Init();
    LCD_SetColors(GREEN,BLACK);
   // LCD_Pixel(10,10,RED);
-   LCD_OpenFrame(0,0,LCD_W,LCD_H);
-   LCD_Fill(BLUE,LCD_SIZE);
-   //LCD_Update(NULL);
+  
+   LCD_Clear(BLUE);
+
 
    LCD_WriteString("hello");
 
     while(loop()){
-        
-        switch(BUTTON_GetButtonsEvents()){
+        BUTTON_Hit();
+        switch(BUTTON_GetButtonEvents()){
 
             case BUTTON_L:
                 LCD_WriteString("BUTTON_L");

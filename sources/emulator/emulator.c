@@ -134,7 +134,7 @@ static SDL_Event event;
         if(event.type == SDL_KEYDOWN && __button.event == BUTTON_EMPTY){
             __button.event = BUTTON_PRESSED;
             __button.timeout = SDL_GetTicks() + 300;
-            printf("Start Timeout %u\n", __button.timeout);
+            //printf("Start Timeout %u\n", __button.timeout);
             return BUTTON_Filter(SDL_GetKeyboardState(NULL));
         }     
 
