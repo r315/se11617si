@@ -22,6 +22,7 @@
 #define GREEN (0x3F<<5)
 #define BLUE 0x1f
 #define BLACK 0
+#define PINK (RED|BLUE)
 #define WHITE 0xFFFF
 #define UBUNTU RGB(6,2,4)
 
@@ -85,6 +86,11 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor);
 *             : bits 15-8 contem o numero minimo de digitos
 **/
 void LCD_WriteInt(uint32_t value, uint32_t base);
+
+/**
+ * @brief abre uma janela para estrita de dados.
+ * */
+void LCD_Window(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
 
 #endif
 

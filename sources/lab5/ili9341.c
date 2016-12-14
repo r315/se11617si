@@ -31,7 +31,7 @@ void LCD_Command(uint16_t data){
     LCD_CS1;	
 }
 
-void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
+void LCD_Window(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
     LCD_Command(CASET);  
     //LCD_Data((x<<8) | (x + w -1));   
     LCD_Data(x);

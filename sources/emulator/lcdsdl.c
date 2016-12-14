@@ -96,7 +96,7 @@ void LCD_Fill(uint16_t color, uint32_t n){
 		LCD_Data(color);
 }
 
-void LCD_OpenFrame(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
+void LCD_Window(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
 {
    lcd.wx = x;
    lcd.wy = y;

@@ -73,7 +73,7 @@ void LCD_Goto(int x, int y){
 }
 
 void LCD_Clear(int color){
-	LCD_OpenFrame(0,0,LCD_W,LCD_H);	
+	LCD_Window(0,0,LCD_W,LCD_H);	
 	LCD_Fill(color, LCD_SIZE);	
 }
 
@@ -119,7 +119,7 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor) {
 			_y = 0;
 	}	
 	
-	LCD_OpenFrame(x,y,nCols,nRows);
+	LCD_Window(x,y,nCols,nRows);
 
 	//LCD_Command(RAMWR);
 
