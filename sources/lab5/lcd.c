@@ -48,7 +48,10 @@ uint8_t digit, count;
 }
 
 void LCD_WriteChar(char ch){
-	LCD_PutChar(ch, _x, _y, _fColor, _bColor);
+	if(ch == '\n')
+        LCD_NewLine();
+    else
+	    LCD_PutChar(ch, _x, _y, _fColor, _bColor);
 }
 
 void LCD_WriteString(char *str){
