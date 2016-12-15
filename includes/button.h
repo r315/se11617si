@@ -15,12 +15,12 @@
 typedef struct{
 	uint32_t cur;
 	uint32_t last;
-	uint32_t timer;
+	uint32_t counter;
 	uint32_t events;
+    uint32_t htime;
 }BUTTON_Controller;
 
-//TODO: allow variable time
-#define BUTTON_HOLD_TIME 2000   //2 seconds
+#define BUTTON_DEFAULT_HOLD_TIME 2000   //2 seconds
 
 enum Benvent{
 	BUTTON_EMPTY = 0,
@@ -56,7 +56,7 @@ enum Benvent{
 * @brief Faz a iniciação do sistema para permitir o acesso aos botões
 * @param mask bitmap com os bits correspondentes aos pinos ligados nos botões
 **/
-void BUTTON_Init(void);
+void BUTTON_Init(int ht);
 
 /**
 * @brief Devolve o codigo (bitmap) do botão pressionado ou 0 no caso de não existir 
@@ -83,5 +83,11 @@ int BUTTON_GetButtonEvents(void);
  *        EMPTY se nenhuma tecla pressionada
  **/
 int BUTTON_GetButton(void); 
+
+/*
+* @brief configura o tempo minimo para que uma tecla 
+*        seja considerada como mantida oressionada 
+**/
+void BUTTON_SetHoldTime(int t);
 #endif
 

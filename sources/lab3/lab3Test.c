@@ -14,7 +14,7 @@ int main (void){
 
 	TIMER0_Init(MS_IN_1S);
 	LED_Init(LED,LED_OFF);
-	BUTTON_Init();
+	BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME);
 
 	while(1){			
 		switch(BUTTON_Read()){
@@ -31,7 +31,7 @@ int main (void){
 				LED_Blink(2000);
 		  		break;		         
 			case BUTTON_L | BUTTON_R:
-				if(BUTTON_GetButtonsEvents() != BUTTON_HOLD)
+				if(BUTTON_GetButtonEvents() != BUTTON_HOLD)
 					break;
 				LED_Blink(30);
 				TIMER0_DelayMs(70);
