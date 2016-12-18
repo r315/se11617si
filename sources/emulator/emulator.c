@@ -109,7 +109,8 @@ void RTC_DeactivateAlarm(uint32_t alarm){
 typedef struct _button{
     int button;
     int event;
-    unsigned int timeout;
+	unsigned int htime;
+    unsigned int count;
 }Button;
 
 Button __button;
@@ -125,7 +126,9 @@ int BUTTON_Filter(const Uint8 *ink){
 return __button.button;
 }
 
-void BUTTON_Init(void){}
+void BUTTON_Init(int ht){
+	__button.htime = ht;
+}
 
 int BUTTON_Hit(void){
 static SDL_Event event;
@@ -133,7 +136,7 @@ static SDL_Event event;
     if(SDL_PollEvent(&event)){       
         if(event.type == SDL_KEYDOWN && __button.event == BUTTON_EMPTY){
             __button.event = BUTTON_PRESSED;
-            __button.timeout = SDL_GetTicks() + 300;
+            __button.count = SDL_GetTicks() + __button.htime;
             //printf("Start Timeout %u\n", __button.timeout);
             return BUTTON_Filter(SDL_GetKeyboardState(NULL));
         }     
@@ -156,7 +159,7 @@ static SDL_Event event;
             break;
 
         case BUTTON_TIMING:
-            if(SDL_GetTicks() > __button.timeout)
+            if(SDL_GetTicks() > __button.count)
                 __button.event = BUTTON_HOLD;               
             break;
 
@@ -174,7 +177,7 @@ int BUTTON_Read(void){
     return __button.button;
 }
 
-int BUTTON_GetButtonEvents(void){
+int BUTTON_GetEvents(void){
     return __button.event;
 }
 

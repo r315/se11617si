@@ -46,7 +46,7 @@ enum Benvent{
 #define BUTTON_MASK (BUTTON_L | BUTTON_R | BUTTON_F | BUTTON_S)
 
 #if defined(_EMU_)
-#define loop BUTTON_GetButtonEvents() != 256 //SDL_QUIT
+#define loop BUTTON_GetEvents() != 256 //SDL_QUIT
 #else
 #define loop 1
 #endif
@@ -76,7 +76,7 @@ int BUTTON_Read(void);
 *        libertado (transição),
 *        repetição (mantido pressionado)
 **/
-int BUTTON_GetButtonEvents(void);
+int BUTTON_GetEvents(void);
 
 /**
  * @brief Devolve o codigo (bitmap) da tecla corrente

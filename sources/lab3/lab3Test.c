@@ -19,7 +19,7 @@ int main (void){
 	while(1){			
 		switch(BUTTON_Read()){
 			case BUTTON_L:
-				LED_Blink(500);
+    			LED_Blink(500);                        
 		  		break;
 			case BUTTON_R:
 				LED_Blink(1000);

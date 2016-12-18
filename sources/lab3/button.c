@@ -26,7 +26,60 @@ void BUTTON_Init(int ht){
 }
 
 int BUTTON_Hit(void){
-uint32_t cur = BUTTON_Capture();
+uint32_t cur;
+
+    cur = BUTTON_Capture();
+
+
+    switch(__button.events){
+
+        case BUTTON_EMPTY:
+            if(cur == BUTTON_EMPTY)
+                break;
+            __button.last= __button.cur;
+			__button.cur = cur;
+            __button.events = BUTTON_PRESSED;
+            break;
+
+        case BUTTON_PRESSED:
+            if(cur == BUTTON_EMPTY){
+                __button.events = BUTTON_RELEASED;
+                break;
+            }
+            if(cur == __button.cur){
+                __button.events = BUTTON_TIMING;
+                __button.counter = TIMER0_GetValue();
+                break;
+            }
+            __button.events = BUTTON_RELEASED; // key was released and other key pressed
+            break;
+
+        case BUTTON_TIMING:
+            if(cur == BUTTON_EMPTY){
+                __button.events = BUTTON_RELEASED;
+                break;
+            }
+            if(TicksToMs(TIMER0_Elapse(__button.counter)) > __button.htime){
+        		__button.events = BUTTON_HOLD;
+	        }   
+            break;
+
+        case BUTTON_HOLD:
+            if(cur == BUTTON_EMPTY){
+                __button.events = BUTTON_RELEASED;
+            }
+            break;
+        case BUTTON_RELEASED:
+            __button.last= __button.cur;
+			__button.cur = BUTTON_EMPTY;
+            __button.events = BUTTON_EMPTY;
+            break;
+        default: break;
+}
+
+            
+
+#if 0
 	
 	// check if any buttons pressed
 	if(cur == BUTTON_EMPTY){		
@@ -55,7 +108,7 @@ uint32_t cur = BUTTON_Capture();
 	}
 	else
 		__button.events = BUTTON_TIMING;
-	
+#endif	
 	return __button.cur;
 }
 
@@ -64,7 +117,7 @@ int BUTTON_Read(void){
 	return __button.cur; 
 }
 
-int BUTTON_GetButtonEvents(void){	
+int BUTTON_GetEvents(void){	
 	return __button.events;
 }
 
