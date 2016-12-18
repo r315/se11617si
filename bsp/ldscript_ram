@@ -24,9 +24,12 @@ SECTIONS {
 	} > ram
 	end = .;
 
+    __idata__ = .;   /* mark location counter */
 	.data ALIGN(4) : {
+        __sdata__ = ABSOLUTE(.); /* mark execution counter */
 		*(.data*)
 		. = ALIGN(4);
+        __edata__ = ABSOLUTE(.);
 	} > ram
 
 	.bss ALIGN(4) : {

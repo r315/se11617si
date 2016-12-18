@@ -21,9 +21,6 @@ const int presistentRtc[]={0,2,0,0,0,0,0,0,0,0,0};
 #define MEM_DATA_FORMAT (2<<8) | BASE_HEX
 #define MEM_MAX_COLS 8
 
-#define BASE_DEC 10
-#define TIME_FORMAT (2<<8) | BASE_DEC
-
 enum RtcFormat{
    RTC_DATETIME,
    RTC_TIME_HHMM,
@@ -111,7 +108,7 @@ void PRINT_Rtc(struct tm* rtc, uint8_t data){
          LCD_WriteChar('-');
          LCD_WriteInt(rtc->tm_mon, TIME_FORMAT);
          LCD_WriteChar('-');
-         LCD_WriteInt(rtc->tm_year, (4<<8) | BASE_DEC);
+         LCD_WriteInt(rtc->tm_year, (4<<8) |10);
          break;     
          
       case RTC_TIME_HHMM:
@@ -260,7 +257,7 @@ int button;
 
     LED_Init(LED, LED_ON);
 
-    BUTTON_Init();
+    BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME);
 
     SPI_Init(1000, SPI_8BIT); // lcd must be initialyze with low speed and 8bit transfers
 
@@ -288,7 +285,9 @@ int button;
    
     PRINT_RtcInfoAlarm(&alarm.alarm);
 
-    while(loop()){ 
+    while(loop){ 
+    
+    BUTTON_Hit();
   
     //Check Events      
     if(BUTTON_GetButtonEvents() == BUTTON_PRESSED){
