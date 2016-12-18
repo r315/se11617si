@@ -1,28 +1,53 @@
 #include <timer.h>
 #include <button.h>
-#include <display.h>
 #include <spi.h>
+#include <lcd.h>
 
 
 int main(void){
 
-	TIMER0_Init(MS_IN_1S);	
+	PLL_Init();   //if used must be the first peripheral to initialize
+    
+    TIMER0_Init(MS_IN_1S);
 
-	BUTTON_Init();	
-	
-	SPI_Init(SPI_MAX_CLK);	
+    BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME);
 
-	LCD_Init();
+    SPI_Init(1000, SPI_8BIT); // lcd must be initialyze with low speed and 8bit transfers
 
-	PLL_Init();
+    LCD_Init();
 
-	LCD_OpenWrap(0,0,LCD_W,LCD_H);
-	LCD_Fill(BLACK,LCD_SIZE);
+    SPI_Init(SPI_MAX_FREQ, SPI_16BIT); //after init use full speed
 
-	while(1){			
+    LCD_Clear(BLACK);
+
+    LCD_SetColors(GREEN,BLACK);
+        
+
+	while(1){	
+        BUTTON_Hit();
+
+        if(BUTTON_GetButtonEvents() == BUTTON_RELEASED)LCD_Clear(BLACK);
+		
 		switch(BUTTON_Read()){
 			case BUTTON_L:
-				LCD_Fill(RED,LCD_SIZE);				
+	            switch(BUTTON_GetButtonEvents()){
+                    case BUTTON_PRESSED:
+                        LCD_Goto(0,0);  
+                        LCD_WriteString("Pressed");
+                        break;
+                    case BUTTON_TIMING:
+                        LCD_Goto(0,16);  
+                        LCD_WriteString("Timing");
+                        break;
+                    case BUTTON_HOLD:
+                        LCD_Goto(0,32);  
+                        LCD_WriteString("Hold");
+                        break;
+                    case BUTTON_RELEASED:
+                        LCD_Clear(BLACK);
+                        break;
+
+                }
 		  		break;
 			case BUTTON_R:
 				LCD_Fill(GREEN,LCD_SIZE);	
@@ -34,7 +59,7 @@ int main(void){
 				LCD_Fill(WHITE,LCD_SIZE);	
 		  		break;		         
 			case BUTTON_L | BUTTON_R:
-				if(BUTTON_GetButtonsEvents() != BUTTON_HOLD)
+				if(BUTTON_GetButtonEvents() != BUTTON_HOLD)
 					break;
 				LCD_Fill(BLACK,LCD_SIZE);				
 				break;		
