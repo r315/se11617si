@@ -18,8 +18,9 @@ uint8_t padding = base>>8;
 uint8_t digit, count;
 	
 	if(!value){                    // se valor for zero
-        while(padding--)           // apenas se mosta um digito zero
+        do{
     		LCD_WriteChar('0');    // ou os especificados por padding
+		}while(padding--);         // apenas se mosta um digito zero
 		return;
 	}
 
@@ -85,9 +86,7 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor) {
 	unsigned char pixelRow;
 	unsigned int pixel1, pixel2;
 	unsigned char *pFont;
-	unsigned char *pChar;
-
-	SPI_BeginTransfer(LCD_CS);
+	unsigned char *pChar;	
 
 	pFont = (unsigned char *) font8x16;
 	nCols = *pFont;
@@ -122,13 +121,15 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor) {
 	LCD_Window(x,y,nCols,nRows);
 
 	//LCD_Command(RAMWR);
-
+    SPI_BeginTransfer(LCD_CS);
+    LCD_RS1;
 	for (i = 0; i < nBytes; i++) {
 		pixelRow = *pChar++;
 //		pixelRow = *pChar--;
 //		for (colIndex = 0; colIndex < nCols / 2; colIndex++) {
 		for (colIndex = 0; colIndex < nCols; colIndex++) {
-			LCD_Data(((pixelRow & 0x80) != 0) ? fColor : bColor);
+			//LCD_Data(((pixelRow & 0x80) != 0) ? fColor : bColor);
+            SPI_Send(((pixelRow & 0x80) != 0) ? fColor : bColor);
 			pixelRow <<= 1;
 			/*pixel1 = ((pixelRow & 0x1) != 0) ? fColor : bColor;
 			pixelRow >>= 1;
