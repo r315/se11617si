@@ -20,15 +20,13 @@ void SYS_Init(void){
 
     LED_Init(LED, LED_ON);
 
-    BUTTON_Init();
+    BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME-1500);
 
     SPI_Init(1000, SPI_8BIT); // lcd must be initialyze with low speed and 8bit transfers
 
     LCD_Init();
 
     SPI_Init(SPI_MAX_FREQ, SPI_16BIT); //after init use full speed
-
-    LCD_Clear(BLACK);
 
     LCD_SetColors(GREEN,BLACK);
         

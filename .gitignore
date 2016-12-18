@@ -7,4 +7,5 @@ docs/
 *.zip
 *.gdbtkinit
 *.obj
+*.lst
 schematic/

@@ -1,0 +1,8 @@
+halt
+reg pc 0x40
+poll
+reset init
+bp 0x40 4 hw
+
+mww 0xE01FC040 0x1
+flash write_image erase unlock /home/hmr/Dropbox/isel/SE1/sources/lab6/lab6Test.axf

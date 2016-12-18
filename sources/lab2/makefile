@@ -9,12 +9,13 @@ TARGET= lab2Test
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS=
-LDSCRIPT= -T ../../bsp/ldscript_ram
+#LDSCRIPT= -T ../../bsp/ldscript_ram
+LDSCRIPT= -T ../../bsp/ldscript
 LIBS = -lled
 
 all: lab2Test.axf
 
-lab2Test.axf: init.o lab2Test.o delay.o 
+lab2Test.axf: init.o lab2Test.o delay.o
 	$(LD) $(LFLAGS) $(LDSCRIPT) -L../../libs lab2Test.o init.o delay.o -o lab2Test.axf $(LIBS)
 
 lab2Test.o: lab2Test.c 
