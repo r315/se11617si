@@ -3,6 +3,7 @@
 #include <rtc.h>
 #include <timer.h>
 #include "idle.h"
+#include "config.h"
 
 #define MAX_TOP_SCORES 3
 #define SCORES_FORMAT (3<<8) | 10
@@ -52,7 +53,12 @@ void popIdle(void *ptr){
     LCD_SetColors(RED,BLACK);
     LCD_Goto(0,0);    
     LCD_WriteString((char*)title);
-    LCD_SetColors(GREEN,BLACK);
+    
+    LCD_Goto(80,96);
+    LCD_SetColors(BLUE,BLACK);
+    PRINT_HighScores(highScores);
+    LCD_SetColors(GREEN,BLACK);   
+    BUTTON_SetHoldTime(ENTER_CONFIG_TIME);       
 }
 
 void idle(void){
@@ -60,14 +66,8 @@ struct tm rtc;
     //TODO: interrupt on rtc for seconds
     if( TIMER0_Elapse(updateTime) > 1000){
         RTC_GetValue(&rtc);   
-        LCD_Goto(10,LCD_H-16);
-        LCD_SetColors(GREEN,BLACK);        
-        PRINT_DateTime(&rtc);
-        
-        LCD_Goto(80,96);
-        LCD_SetColors(BLUE,BLACK);
-        PRINT_HighScores(highScores);
-        
+        LCD_Goto(10,LCD_H-16);        
+        PRINT_DateTime(&rtc);                
         updateTime = TIMER0_GetValue();
     }
 }
