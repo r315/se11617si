@@ -1,10 +1,13 @@
+#include <time.h>
 #include <button.h>
-
+#include <lcd.h>
 #include "system.h"
 #include "save.h"
 #include "config.h"
 #include "space.h"
 #include "idle.h"
+
+#include <spi.h>
 
 
 typedef enum Mstates{
@@ -16,11 +19,13 @@ typedef enum Mstates{
 
 int dummy;
 
+struct tm rtc;
+
 State switchTo(State newState){
     switch(newState){
-        case IDLE: popIdle(); break;
-        case CONFIG: break;
-        case GAME: popSpace();break;
+        case IDLE: popIdle(&dummy); break;
+        case CONFIG: popConfig(&rtc); break;
+        case GAME: popSpace((void*)0);break; //TODO: pass save location
         case SAVE: break;
     }
     return newState;
@@ -30,7 +35,8 @@ State switchTo(State newState){
 int main(void){
 State state;
 uint32_t button;    
-    
+
+    dummy = 10;
     SYS_Init();    
     
     state = switchTo(IDLE);
@@ -40,15 +46,16 @@ uint32_t button;
         //Check Events      
         BUTTON_Hit();
         
-        if(BUTTON_GetButtonEvents() == BUTTON_PRESSED){
+        if(BUTTON_GetEvents() == BUTTON_PRESSED ||
+           BUTTON_GetEvents() == BUTTON_HOLD){
            button = BUTTON_GetButton();            
         }
         else
            button = BUTTON_EMPTY;      
            
-        if(BUTTON_GetButtonEvents() != BUTTON_EMPTY){
-            printf("State %u\n",BUTTON_GetButtonEvents());
-        }
+        //if(BUTTON_GetButtonEvents() != BUTTON_EMPTY){
+        //    printf("Button %u State %u\n",button, BUTTON_GetButtonEvents());
+        //}
          
         //main state machine        
         switch(state){
@@ -64,13 +71,13 @@ uint32_t button;
                     break;
                 }
                 
-                if(button == (BUTTON_F| BUTTON_R)){
-                    if(BUTTON_GetButtonEvents() == BUTTON_HOLD){
+                if(button == (BUTTON_L | BUTTON_R)){
+                    if(BUTTON_GetEvents() == BUTTON_HOLD){
                         state = switchTo(CONFIG);
                         break;
                     }
                 }
-                                                
+
                 idle();                
                 break;
                 
