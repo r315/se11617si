@@ -169,14 +169,23 @@ void popSpace(void *ptr){
 	moveAliens(0,Aliens1);	
 }
 
+#define SPEED 5
 void space(int b){
 static uint32_t frametime;	
 uint8_t n;
+static int8_t dir = -1;
+static uint8_t speed = SPEED;
+static uint8_t f;
 	
     if(TIMER0_GetValue() > frametime){
 		for(n=0; n < MAX_PROJECTILES; n++)		
-			moveProjectile(&projectiles[n],-4);
-			
+			moveProjectile(&projectiles[n],-1);			
+		
+		if(!(--speed)){
+			dir = moveAliens(dir,(f & 4)? Aliens0:Aliens1);
+			speed = SPEED;
+			f++;
+		}		
 		frametime = TIMER0_GetValue() + 20;
 	}
 	else{
@@ -185,10 +194,12 @@ uint8_t n;
 	}
 	
     switch(b){
-        case BUTTON_L:	moveTank(&tank,-2); break;
-        case BUTTON_R:	moveTank(&tank,2); break;            
+        case BUTTON_L:	moveTank(&tank,-1); break;
+        case BUTTON_R:	moveTank(&tank,1); break;            
         break;
-        case BUTTON_F: newProjectile(projectiles, MAX_PROJECTILES, tank.x + SPRITE_W/2, tank.y - 4);
+		case (BUTTON_F | BUTTON_L):
+		case (BUTTON_F | BUTTON_R):
+        case BUTTON_F: newProjectile(tank.x + SPRITE_W/2, tank.y - 4, PINK);
 				
         
         default: break;
