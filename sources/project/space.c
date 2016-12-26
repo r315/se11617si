@@ -10,17 +10,12 @@
 
 void LCD_Fill(uint16_t color, uint32_t n);
 
-typedef struct _tank{
-    int x;
-    int y;
-    uint8_t *data;
-}Tank;
-
-typedef struct _alien{
+typedef struct _sprite{
 	int x;
-	int y;
+	int y;	
 	uint8_t *data;
-}Alien;
+	uint8_t alive;
+}Sprite;
 
 typedef struct projectile{
 	int x;
