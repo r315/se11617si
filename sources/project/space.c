@@ -91,27 +91,28 @@ int newy;
 		
 	newy = pj->y + dir;
 	
-	if(newy > (SCREEN_H-SPRITE_H) || newy < 0){
+	if(newy > (SCREEN_H-SPRITE_H) || newy < -SPRITE_H){
 		pj->inmotion = 0;
 		return;
 	}
 	
-	LCD_Window(pj->x, pj->y, 1, 4);
+	LCD_OffsetWindow(pj->x, pj->y, 1, 4);
 	LCD_Fill(BGCOLOR, 4);	
 	
 	pj->y = newy;
 	
-	LCD_Window(pj->x, pj->y, 1, 4);
-	LCD_Fill(WHITE, 4);		
+	LCD_OffsetWindow(pj->x, pj->y, 1, 4);
+	LCD_Fill(pj->color, 4);		
 }
 
-void newProjectile(Projectile *pjs, uint8_t n, int x, int y){
+void newProjectile(int x, int y, uint16_t color){
 uint8_t i;
-	for(i = 0; i < n; i++){
-		if(!pjs[i].inmotion){
-			pjs[i].x = x;
-			pjs[i].y = y;
-			pjs[i].inmotion = ON;
+	for(i = 0; i < MAX_PROJECTILES; i++){
+		if(!projectiles[i].inmotion){
+			projectiles[i].x = x;
+			projectiles[i].y = y;
+			projectiles[i].color = color;
+			projectiles[i].inmotion = ON;
 			return;
 		}	
 	}	
