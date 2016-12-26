@@ -185,6 +185,10 @@ int BUTTON_GetButton(void){
     return __button.button;
 }
 
+void BUTTON_SetHoldTime(int t){
+	__button.htime = t;
+}
+
 //---------------------------------------------------------------------------
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector){
     return 0;
