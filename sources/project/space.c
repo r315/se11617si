@@ -151,16 +151,22 @@ uint8_t i;
 }
 
 void popSpace(void *ptr){
-    LCD_Clear(BLACK);
-    LCD_SetColors(RED,BLACK);
+    LCD_Clear(UBUNTU);
+    LCD_SetColors(RED,UBUNTU);
     LCD_Goto(0,0);    
     LCD_WriteString((char*)title);
-    LCD_SetColors(GREEN,BLACK);  
+    //LCD_SetColors(GREEN,BLACK); 
+	
+	BUTTON_SetHoldTime(80);
+
+	LCD_OffsetWindow(0, 0, SCREEN_W, SCREEN_H);
+	LCD_Fill(BGCOLOR,SCREEN_W * SCREEN_H);
     
-    tank.data = (uint8_t*)spcinv;
-    tank.x = (LCD_W/2)-8;
-    tank.y = LCD_H-16;
-    drawTank(&tank);    
+    loadTank(&tank);
+    drawSprite(&tank);    
+	
+	loadAliens(aliens, Aliens0, 0);
+	moveAliens(0,Aliens1);	
 }
 
 void space(int b){
