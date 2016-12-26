@@ -35,7 +35,10 @@ Projectile projectiles[5];
 
 int state;
 
-void drawTank(Tank *tk){
+void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
+	LCD_Window(SCREEN_SX + x, SCREEN_SY + y, w, h);
+}
+
 void drawSprite(Sprite *sp){
 uint16_t i;
 uint8_t *data;
@@ -51,7 +54,13 @@ uint8_t *data;
 	//GPIO_Set(3); //LCD_CS
 }
 
-void moveTank(Tank *tk, int8_t dir){
+void loadTank(Sprite *sp){
+	sp->data = (uint8_t*)TANK_DATA;
+    sp->x = (SCREEN_W/2)-8;
+    sp->y = SCREEN_H-16;
+}
+
+void moveTank(Sprite *tk, int8_t dir){
 int newx;
 int8_t d;
 
@@ -64,14 +73,14 @@ int8_t d;
 
 	// erase only necessary data from old position		
 	if(newx >= tk->x)
-		LCD_Window(tk->x, tk->y, d, SPRITE_H);
+		LCD_OffsetWindow(tk->x, tk->y, d, SPRITE_H);
 	else
-		LCD_Window(newx+SPRITE_W, tk->y, d, SPRITE_H);	
+		LCD_OffsetWindow(newx+SPRITE_W, tk->y, d, SPRITE_H);	
 		
 	LCD_Fill(BGCOLOR, d * SPRITE_H);
 	
 	tk->x = newx;
-	drawTank(tk);	
+	drawSprite(tk);	
 }
 
 void moveProjectile(Projectile *pj, int8_t dir){
