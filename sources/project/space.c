@@ -118,6 +118,38 @@ uint8_t i;
 	}	
 }
 
+void loadAliens(Sprite *als, const char *al, uint16_t y){
+uint8_t i;
+uint16_t x = SPRITE_W;
+	for(i=0; i < MAX_ALIENS; i++, al+=1){
+		als[i].x = x;
+		als[i].y = y;
+		als[i].data = (uint8_t*)(SPRITES_DATA + (((*al) - 1) * SPRITE_SIZE));
+		als[i].alive = ON;
+		x += SPRITE_W;
+		if(x > (SCREEN_W-(SPRITE_W*2)) ){
+			x = SPRITE_W;
+			y += SPRITE_H;
+		}
+	}
+}
+
+int8_t moveAliens(int8_t dir, const char *alienFrame){
+uint8_t i;
+
+	if(((dir < 0) && (aliens[0].x == 0)) || (dir > 0 && aliens[MAX_ALIENS-1].x == SCREEN_W-SPRITE_W))
+		dir  = -dir;
+
+	for(i = 0; i< MAX_ALIENS; i++, alienFrame +=  1){
+		if(aliens[i].alive){
+			aliens[i].x += dir;
+			drawSprite(&aliens[i]);
+			aliens[i].data = (uint8_t*)(SPRITES_DATA + (((*alienFrame) - 1) * SPRITE_SIZE));
+		}
+	}
+	return dir;
+}
+
 void popSpace(void *ptr){
     LCD_Clear(BLACK);
     LCD_SetColors(RED,BLACK);
