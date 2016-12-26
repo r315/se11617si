@@ -8,4 +8,6 @@ docs/
 *.gdbtkinit
 *.obj
 *.lst
+*.exe
+*.$$$
 schematic/
