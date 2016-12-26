@@ -36,21 +36,19 @@ Projectile projectiles[5];
 int state;
 
 void drawTank(Tank *tk){
+void drawSprite(Sprite *sp){
 uint16_t i;
 uint8_t *data;
 	
-	data = tk->data;                
-	LCD_Window(tk->x,tk->y,16,16);        
-	//GPIO_Clr(3);
-	//GPIO_Set(9);
-	for(i = 0; i < SPRITE_SIZE; i++, data+=1){
-		//LCD_Data(pallete[*data & 15]);
-		//LCD_Data(pallete[(*data)>>4 & 15]);
-		//SPI_Send(pal1[*data & 15]);
-		//SPI_Send(pal1[(*data)>>4 & 15]);
+	data = sp->data;                
+	LCD_OffsetWindow(sp->x, sp->y,SPRITE_W,SPRITE_H);        
+	//GPIO_Clr(3); //LCD_CS
+	//GPIO_Set(9); //LCD_RS
+	for(i = 0; i < SPRITE_SIZE; i++, data+=1){		
 		LCD_Data(pal1[*data]);
+        //SPI_Send(pal1[*data]);
 	}
-	//GPIO_Set(3);
+	//GPIO_Set(3); //LCD_CS
 }
 
 void moveTank(Tank *tk, int8_t dir){
