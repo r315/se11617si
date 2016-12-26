@@ -53,8 +53,8 @@ uint32_t button;
         else
            button = BUTTON_EMPTY;      
            
-        //if(BUTTON_GetButtonEvents() != BUTTON_EMPTY){
-        //    printf("Button %u State %u\n",button, BUTTON_GetButtonEvents());
+        //if(BUTTON_GetEvents() != BUTTON_EMPTY){
+        //   printf("Button %u State %u\n",button, BUTTON_GetEvents());
         //}
          
         //main state machine        
