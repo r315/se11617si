@@ -20,6 +20,7 @@ typedef struct _sprite{
 typedef struct projectile{
 	int x;
 	int y;
+	uint16_t color;
 	uint8_t inmotion;
 }Projectile;
 
@@ -29,10 +30,8 @@ static const char title[]={
 
 void LCD_Data(uint16_t color);
 
-Tank tank;
+Sprite tank, aliens[36];
 Projectile projectiles[5];
-
-Alien aliens[10];
 
 int state;
 
