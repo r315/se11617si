@@ -23,18 +23,18 @@ static const int <PaletteIdentifier>[]={0,
 #end palette
 
 #tileset
-;#map
-;//-----------------------------------------------------------------------------
-;// Map <MapIdentifier>
-;//-----------------------------------------------------------------------------
-;##define <MapIdentifier>_w <MapWidth>
-;##define <MapIdentifier>_h <MapHeight>
-;;const char <MapIdentifier>[<MapWidth>][<MapHeight>]={
-;const char <MapIdentifier>[]={
-;#mapdata "\n"  ","  ",\n"  ",\n"  "\n}; \n"
-;<(TileNumber): "0x%02x">
-;#end mapdata
-;#end map
+#map
+//-----------------------------------------------------------------------------
+// Map <MapIdentifier>
+//-----------------------------------------------------------------------------
+##define <MapIdentifier>_w <MapWidth>
+##define <MapIdentifier>_h <MapHeight>
+;const char <MapIdentifier>[<MapWidth>][<MapHeight>]={
+const char <MapIdentifier>[]={
+#mapdata "\n"  ","  ",\n"  ",\n"  "\n}; \n"
+<(TileNumber): "0x%02x">
+#end mapdata
+#end map
 //-----------------------------------------------------------------------------
 // <TileSetIdentifier>
 // Count <TileCount>
