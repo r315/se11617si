@@ -8,17 +8,17 @@
 #include <button.h>
 #include <flash.h>
 #include <time.h>
+#include <clock.h>
 
-
-const int defaultRtc[]={0,2,0,0,0,0,0,0,0,0,0};
+const int defaultRtc[]={0,0,0,0,0,0,0,0,0,0,0};
 
 void SYS_Init(void){
       
-    //PLL_Init();   //if used must be the first peripheral to initialize
+    PLL_Init();   //if used must be the first peripheral to initialize
     
     TIMER0_Init(MS_IN_1S);
 
-    LED_Init(LED, LED_ON);
+    LED_Init(LED, LED_OFF);
 
     BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME-1500);
 
