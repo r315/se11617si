@@ -17,10 +17,10 @@ uint8_t digits[32];        //maximo de 32 digitos
 uint8_t padding = base>>8;
 uint8_t digit, count;
 	
-	if(!value){                    // se valor for zero
+	if(!value){                  // se valor for zero
         do{
     		LCD_WriteChar('0');    // ou os especificados por padding
-		}while(padding--);           // apenas se mosta um digito zero
+		}while(--padding);        // apenas se mosta um digito zero
 		return;
 	}
 
