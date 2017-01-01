@@ -23,11 +23,11 @@ typedef struct{
 #define BUTTON_DEFAULT_HOLD_TIME 2000   //2 seconds
 
 enum Benvent{
-	BUTTON_EMPTY = 0,
-	BUTTON_PRESSED,
+    BUTTON_EMPTY = 0,
+    BUTTON_PRESSED,
     BUTTON_TIMING,
-   	BUTTON_HOLD,
-	BUTTON_RELEASED	
+    BUTTON_HOLD,
+    BUTTON_RELEASED	
 }Bstate;
 
 

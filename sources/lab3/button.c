@@ -14,7 +14,7 @@
 static BUTTON_Controller __button;
 
 uint32_t BUTTON_Capture(void){
-	return (~GPIO_Read()) & BUTTON_MASK;  //common ground
+    return (~GPIO_Read()) & BUTTON_MASK;  //common ground
 }
 
 void BUTTON_Init(int ht){    
@@ -30,14 +30,12 @@ uint32_t cur;
 
     cur = BUTTON_Capture();
 
-
     switch(__button.events){
 
         case BUTTON_EMPTY:
             if(cur == BUTTON_EMPTY)
-                break;
-            __button.last= __button.cur;
-			__button.cur = cur;
+                break;            
+            __button.cur = cur;
             __button.events = BUTTON_PRESSED;
             break;
 
@@ -46,34 +44,45 @@ uint32_t cur;
                 __button.events = BUTTON_RELEASED;
                 break;
             }
-            if(cur == __button.cur){
-                __button.events = BUTTON_TIMING;
+            if(cur == __button.cur){             // same key still pressed
+                __button.events = BUTTON_TIMING; // start timer
                 __button.counter = TIMER0_GetValue();
                 break;
             }
-            __button.events = BUTTON_RELEASED; // key was released and other key pressed
-            break;
+            __button.cur = cur; // another key was pressed 
+            break;              // TODO: optionaly implement if one key is relesed
 
         case BUTTON_TIMING:
             if(cur == BUTTON_EMPTY){
                 __button.events = BUTTON_RELEASED;
                 break;
+            }            
+            if(cur == __button.cur){
+                if(TicksToMs(TIMER0_Elapse(__button.counter)) > __button.htime){
+                    __button.events = BUTTON_HOLD;
+                }   
+                break;
             }
-            if(TicksToMs(TIMER0_Elapse(__button.counter)) > __button.htime){
-        		__button.events = BUTTON_HOLD;
-	        }   
+            __button.cur = cur; // another key was pressed 
+            __button.events = BUTTON_PRESSED;
             break;
 
         case BUTTON_HOLD:
             if(cur == BUTTON_EMPTY){
                 __button.events = BUTTON_RELEASED;
             }
+            if(cur == __button.cur)
+                break;
+            __button.cur = cur; // another key was pressed 
+            __button.events = BUTTON_PRESSED;
             break;
+            
         case BUTTON_RELEASED:
             __button.last= __button.cur;
-			__button.cur = BUTTON_EMPTY;
+            __button.cur = BUTTON_EMPTY;
             __button.events = BUTTON_EMPTY;
             break;
+            
         default: break;
 }
 
