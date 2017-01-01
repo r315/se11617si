@@ -54,13 +54,17 @@ unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector
 *        endereço da FLASH referenciado por dstAddr. Pressupõe que os sectores envolvidos na
 *        operação de escrita foram apagados previamente e que size não excede 4kB.
 * @return CMD_SUCCESS | SRC_ADDR_ERROR | DST_ADDR_ERROR | SRC_ADDR_NOT_MAPPED |
-*         DST_ADDR_NOT_MAPPED | COUNT_ERROR | SECTOR_NOT_PREPARED_FOR_WRITE_OPERATIONm | BUSY.
+*         DST_ADDR_NOT_MAPPED | COUNT_ERROR | SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION | BUSY.
 **/
 unsigned int FLASH_WriteBlock( void *dstAddr, void *srcAddr, unsigned int size);
 
 /**
 * @brief Escreve o bloco de dados referenciado por srcAddr, de dimensão size bytes, no
 *        endereço da FLASH referenciado por dstAddr.
+*
+* @return CMD_SUCCESS | SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION | INVALID_SECTOR
+*         SRC_ADDR_ERROR | DST_ADDR_ERROR | SRC_ADDR_NOT_MAPPED | DST_ADDR_NOT_MAPPED
+*         COUNT_ERROR | BUSY.
 **/
 unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size);
 

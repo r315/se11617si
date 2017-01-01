@@ -9,7 +9,8 @@ OBJDUMP = arm-none-eabi-objdump
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
 LFLAGS= 
-LDSCRIPT= -T ../../bsp/ldscript
+#LDSCRIPT= -T ../../bsp/ldscript
+LDSCRIPT= -T ../../bsp/ldscript_ram
 
 
 TARGET = proj
