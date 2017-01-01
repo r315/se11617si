@@ -1,3 +1,6 @@
+$  openocd -f openocd04_lpc2106.cfg
+$  telnet localhost 4444
+
 halt
 reg pc 0x40
 poll
