@@ -13,10 +13,11 @@ static const char title[]={
 };
 
 void LCD_Data(uint16_t color);
+void LCD_Fill(uint16_t color, uint32_t n);
 int state;
 
 void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
-	LCD_Window(SCREEN_SX + x, SCREEN_SY + y, w, h);
+    LCD_Window(SCREEN_SX + x, SCREEN_SY + y, w, h);
 }
 
 void drawSprite(Sprite *sp){
@@ -41,7 +42,7 @@ uint8_t *data;
 }
 
 void loadTank(Sprite *sp){
-	sp->data = (uint8_t*)TANK_DATA;
+    sp->data = (uint8_t*)TANK_DATA;
     sp->x = (SCREEN_W/2)-8;
     sp->y = SCREEN_H-16;
 }
@@ -50,45 +51,45 @@ void moveTank(Sprite *tk, int8_t dir){
 int newx;
 int8_t d;
 
-	newx = tk->x + dir;
-	
-	if(newx > (SCREEN_W-SPRITE_W) || newx < 0)
-		return;
-		
-	d = (dir < 0)? -dir : dir;
+    newx = tk->x + dir;
 
-	// erase only necessary data from old position		
-	if(newx >= tk->x)
-		LCD_OffsetWindow(tk->x, tk->y, d, SPRITE_H);
-	else
-		LCD_OffsetWindow(newx+SPRITE_W, tk->y, d, SPRITE_H);	
-		
-	LCD_Fill(BGCOLOR, d * SPRITE_H);
-	
-	tk->x = newx;
-	drawSprite(tk);	
+    if(newx > (SCREEN_W-SPRITE_W) || newx < 0)
+        return;
+
+    d = (dir < 0)? -dir : dir;
+
+    // erase only necessary data from old position
+    if(newx >= tk->x)
+        LCD_OffsetWindow(tk->x, tk->y, d, SPRITE_H);
+    else
+        LCD_OffsetWindow(newx+SPRITE_W, tk->y, d, SPRITE_H);
+
+    LCD_Fill(BGCOLOR, d * SPRITE_H);
+
+    tk->x = newx;
+    drawSprite(tk);
 }
 
 void moveProjectile(Projectile *pj, int8_t dir){
 int newy;
 
-	if(!pj->inmotion)
-		return;
-		
-	newy = pj->y + dir;
-	
-	if(newy > (SCREEN_H-SPRITE_H) || newy < -SPRITE_H){
-		pj->inmotion = 0;
-		return;
-	}
-	
-	LCD_OffsetWindow(pj->x, pj->y, 1, 4);
-	LCD_Fill(BGCOLOR, 4);	
-	
-	pj->y = newy;
-	
-	LCD_OffsetWindow(pj->x, pj->y, 1, 4);
-	LCD_Fill(pj->color, 4);		
+    if(!pj->inmotion)
+        return;
+
+    newy = pj->y + dir;
+
+    if(newy > (SCREEN_H-SPRITE_H) || newy < -SPRITE_H){
+        pj->inmotion = 0;
+        return;
+    }
+
+    LCD_OffsetWindow(pj->x, pj->y, 1, 4);
+    LCD_Fill(BGCOLOR, 4);
+
+    pj->y = newy;
+
+    LCD_OffsetWindow(pj->x, pj->y, 1, 4);
+    LCD_Fill(pj->color, 4);
 }
 
 void newProjectile(int x, int y, uint16_t color){
