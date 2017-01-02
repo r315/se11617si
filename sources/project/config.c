@@ -15,19 +15,6 @@ static const char title[]={
     
 };
 
-void popConfig(void *ptr){  
-	field = HOUR;
-	
-	RTC_GetValue(&cur_time);
-	RTC_GetAlarmValue(&alarm);
- 
-    LCD_Clear(BLACK);
-    LCD_SetColors(RED,BLACK);
-    LCD_Goto(0,0);    
-    LCD_WriteString((char*)title);
-    LCD_SetColors(GREEN,BLACK);
-    
-}
 
 void PRINT_RtcTime(struct tm *rtc, uint8_t format){
     LCD_WriteInt(rtc->tm_hour, TIME_FORMAT);
@@ -98,6 +85,21 @@ void setTime(struct tm *rtc, uint8_t fld, signed char step){
 void setIndicator(uint8_t fld){
 	LCD_Goto(8+(16*fld),80);
     LCD_WriteChar('^');    
+}
+
+void popConfig(void *ptr){  
+    field = HOUR;
+    cur_time = (struct tm*)ptr;
+    
+    RTC_GetValue(cur_time);
+    RTC_GetAlarmValue(&alarm);
+ 
+    LCD_Clear(BLACK);
+    LCD_SetColors(RED,BLACK);
+    LCD_Goto(0,0);    
+    LCD_WriteString((char*)title);
+    LCD_SetColors(GREEN,BLACK);
+    PRINT_FullDate(cur_time);
 }
 
 int config(int b){
