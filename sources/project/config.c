@@ -62,11 +62,11 @@ void PRINT_FullDate(struct tm *rtc){
 }
 
 void changeField(int32_t *fld, uint32_t max, int8_t step){
-	*fld = (*fld + step);
-	*fld = *fld % (max+1);
-	
-	if(*((uint32_t*)fld) > max)
-		*fld = max;	
+    *fld = (*fld + step);
+    *fld = *fld % (max+1);
+    
+    if(*((uint32_t*)fld) > max)
+        *fld = max;	
 }
 
 void setTime(struct tm *rtc, uint8_t fld, signed char step){  
