@@ -31,7 +31,7 @@ int main (void){
 				LED_Blink(2000);
 		  		break;		         
 			case BUTTON_L | BUTTON_R:
-				if(BUTTON_GetButtonEvents() != BUTTON_HOLD)
+				if(BUTTON_GetEvents() != BUTTON_HOLD)
 					break;
 				LED_Blink(30);
 				TIMER0_DelayMs(70);
