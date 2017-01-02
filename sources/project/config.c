@@ -7,9 +7,8 @@
 //TODO: fix field indicator and save to flash
 
 
-static struct tm alarm, cur_time;
+static struct tm alarm, *cur_time;
 static uint8_t field;
-
 const char wdays[7][4]={"mon","tue","wed","thu","fri","sat","sun"};
 static const char title[]={
     "           CONFIG\n\n"    
@@ -36,7 +35,7 @@ void PRINT_Rtc(struct tm *rtc, uint8_t data){
          LCD_WriteChar('-');
          LCD_WriteInt(rtc->tm_mon, TIME_FORMAT);
          LCD_WriteChar('-');
-         LCD_WriteInt(rtc->tm_year, (4<<8) |10);
+         LCD_WriteInt(rtc->tm_year, YEAR_FORMAT);
          break;     
          
       case RTC_TIME_HHMM:
