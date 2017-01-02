@@ -22,16 +22,22 @@ void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
 void drawSprite(Sprite *sp){
 uint16_t i;
 uint8_t *data;
-	
-	data = sp->data;                
-	LCD_OffsetWindow(sp->x, sp->y,SPRITE_W,SPRITE_H);        
-	//GPIO_Clr(3); //LCD_CS
-	//GPIO_Set(9); //LCD_RS
-	for(i = 0; i < SPRITE_SIZE; i++, data+=1){		
-		LCD_Data(pal1[*data]);
-        //SPI_Send(pal1[*data]);
-	}
-	//GPIO_Set(3); //LCD_CS
+
+    data = sp->data;                
+    LCD_OffsetWindow(sp->x, sp->y,SPRITE_W,SPRITE_H);
+
+    #ifdef _EMU_
+    for(i = 0; i < SPRITE_SIZE; i++, data+=1){       
+        LCD_Data(pal1[*data]);
+    }
+    #else
+    GPIO_Clr(3); //LCD_CS
+    GPIO_Set(9); //LCD_RS
+    for(i = 0; i < SPRITE_SIZE; i++, data+=1){
+        SPI_Send(pal1[*data]);
+    }
+    GPIO_Set(3); //LCD_CS
+    #endif
 }
 
 void loadTank(Sprite *sp){
