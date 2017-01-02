@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <button.h>
 #include <timer.h>
+#include "proj.h"
 #include "space.h"
 #include "sprites/sprites.h"
 
@@ -12,9 +13,9 @@ static const char title[]={
     "      # Space Invaders #\n\n"    
 };
 
+GameData *gamedata;
 void LCD_Data(uint16_t color);
 void LCD_Fill(uint16_t color, uint32_t n);
-int state;
 
 void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
     LCD_Window(SCREEN_SX + x, SCREEN_SY + y, w, h);
@@ -122,20 +123,29 @@ uint16_t x = SPRITE_W;
     }
 }
 
-int8_t moveAliens(int8_t dir, const char *alienFrame){
+int8_t moveAliens( Sprite *als, const uint8_t *alienFrame, int8_t dir, int8_t height){
 uint8_t i;
 
-	if(((dir < 0) && (aliens[0].x == 0)) || (dir > 0 && aliens[MAX_ALIENS-1].x == SCREEN_W-SPRITE_W))
-		dir  = -dir;
+    if(((dir < 0) && (als[0].x <= 0)) || (dir > 0 && als[MAX_ALIENS-1].x >= SCREEN_W-SPRITE_W))
+        dir  = -dir;
 
-	for(i = 0; i< MAX_ALIENS; i++, alienFrame +=  1){
-		if(aliens[i].alive){
-			aliens[i].x += dir;
-			drawSprite(&aliens[i]);
-			aliens[i].data = (uint8_t*)(SPRITES_DATA + (((*alienFrame) - 1) * SPRITE_SIZE));
-		}
-	}
-	return dir;
+    for(i = 0; i< MAX_ALIENS; i++, alienFrame +=  1){
+        als[i].x += dir;
+        als[i].y += height;
+        
+        if(als[i].alive){
+            drawSprite(&als[i]);
+            als[i].data = (uint8_t*)(SPRITES_DATA + (((*alienFrame) - 1) * SPRITE_SIZE));
+        }
+        else
+        {
+            LCD_OffsetWindow(als[i].x, als[i].y, SPRITE_W, SPRITE_H);	
+            LCD_Fill(BGCOLOR, SPRITE_SIZE);
+        }
+    }
+    return dir;
+}
+
 }
 
 void popSpace(void *ptr){
