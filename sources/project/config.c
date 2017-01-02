@@ -122,14 +122,10 @@ signed char step;
 		
 	setTime(&cur_time, field, step);    
    
-	LCD_Goto(16,64);	   
-	PRINT_Rtc(&cur_time, RTC_TIME_HHMM);                
-	LCD_WriteChar(' ');
-	PRINT_Rtc(&cur_time, RTC_WDAY);      
-	LCD_WriteChar(' ');
-	PRINT_Rtc(&cur_time, RTC_DATE);      
-	LCD_WriteString("                 ");
-	setIndicator(field);	   
-	
-	return 1;
+    setTime(cur_time, field, step);
+    
+    PRINT_FullDate(cur_time);
+    
+    setIndicator(field);
+    return 1;
 }
