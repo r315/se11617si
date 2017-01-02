@@ -37,6 +37,23 @@ State switchTo(State newState){
     return newState;
 }
 
+void saveTopScore(uint32_t score, uint32_t *scorestab){
+uint8_t n;
+uint32_t *p1,*p2;
+    for(n = 0; n < MAX_TOP_SCORES; n++){
+        if(score > scorestab[n]){
+            p1 = &scorestab[MAX_TOP_SCORES-2];
+            p2 = &scorestab[MAX_TOP_SCORES-1];
+            while( (p2) != &scorestab[n]){
+                *p2 = *p1;
+                p1 -= 1;
+                p2 -= 1;
+            }
+            scorestab[n] = score;
+            return;
+        }            
+    }
+}
 
 int main(void){
 State state;
