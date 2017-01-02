@@ -105,22 +105,25 @@ void popConfig(void *ptr){
 int config(int b){
 signed char step;
 
-	switch(b){
-		case BUTTON_F: field++;	break;
-			
-		case BUTTON_EMPTY: return 1;
-			
-		case BUTTON_S: return 0;
-			
-		case BUTTON_L: step = -1; break;
-		
-		case BUTTON_R: step =  1; break;
-	}
-	
-	if(field == YEAR +1)
-		return 0;
-		
-	setTime(&cur_time, field, step);    
+    if(BUTTON_GetEvents() != BUTTON_PRESSED)
+        return 1;
+
+    switch(b){
+        case BUTTON_L: step = -1; break;
+        
+        case BUTTON_R: step =  1; break;
+        
+        case BUTTON_F: 
+            if((++field) == (YEAR + 1))
+                field = HOUR;
+            step = 0;
+            break;       
+        
+        case BUTTON_S:        
+            return 0;
+        
+        default: return 1;
+    } 
    
     setTime(cur_time, field, step);
     
