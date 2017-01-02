@@ -147,13 +147,20 @@ uint32_t button,res;
         //Check Events      
         button = BUTTON_Hit();        
         
+        #if 0   
+        if(BUTTON_GetEvents() != BUTTON_EMPTY){
+           printf("Button %u State %u\n",button, BUTTON_GetEvents());
         }
-        else
-           button = BUTTON_EMPTY;      
-           
-        //if(BUTTON_GetEvents() != BUTTON_EMPTY){
-        //   printf("Button %u State %u\n",button, BUTTON_GetEvents());
-        //}
+        #endif
+        
+        #if 0
+        if(button){
+            LCD_Goto(0,0);
+            LCD_WriteInt(button,(4<<8)|16);
+            LCD_WriteChar(':');
+            LCD_WriteInt(BUTTON_GetEvents(),16);
+        }        
+        #endif    
          
         //main state machine        
         switch(state){
@@ -177,7 +184,7 @@ uint32_t button,res;
                         break;
                     }
                 }
-
+                
                 idle();                
                 break;
                 
