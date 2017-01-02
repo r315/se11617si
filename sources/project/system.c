@@ -10,7 +10,7 @@
 #include <time.h>
 #include <clock.h>
 
-const int defaultRtc[]={0,0,0,0,0,0,0,0,0,0,0};
+const int defaultRtc[]={0,0,0,0,0,2010,0,0,0,0,0};
 
 void SYS_Init(void){
       
