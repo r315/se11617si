@@ -1,15 +1,26 @@
 #include <time.h>
 #include <button.h>
 #include <lcd.h>
+#include <led.h>
+#include <spi.h>
+#include <flash.h>
+#include <timer.h>
+#include "proj.h"
 #include "system.h"
 #include "save.h"
 #include "config.h"
 #include "space.h"
 #include "idle.h"
 
-#include <spi.h>
+
+//---------------------------------------------------------------
+// Constants and macros
+//---------------------------------------------------------------
 
 
+//---------------------------------------------------------------
+// Structures and global variables
+//---------------------------------------------------------------
 typedef enum Mstates{
   IDLE,
   CONFIG,  
@@ -26,6 +37,9 @@ typedef struct _SaveData{
 
 SaveData saveddata;
 
+//---------------------------------------------------------------
+// Functions
+//---------------------------------------------------------------
 
 State switchTo(State newState){
     switch(newState){
