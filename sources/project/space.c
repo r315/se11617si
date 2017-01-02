@@ -169,6 +169,12 @@ uint8_t score;
     return 0;
 }
 
+void updateScore(uint32_t scr){
+    LCD_Goto(SCREEN_SX + 3, SCREEN_SY + 3);
+    LCD_WriteInt(scr, SCORES_FORMAT);
+    
+}
+
 }
 
 void popSpace(void *ptr){
