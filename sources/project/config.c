@@ -10,11 +10,10 @@
 static struct tm alarm, cur_time;
 static uint8_t field;
 
+const char wdays[7][4]={"mon","tue","wed","thu","fri","sat","sun"};
 static const char title[]={
-    "           CONFIG\n\n"
-    
+    "           CONFIG\n\n"    
 };
-
 
 void PRINT_RtcTime(struct tm *rtc, uint8_t format){
     LCD_WriteInt(rtc->tm_hour, TIME_FORMAT);
@@ -26,7 +25,6 @@ void PRINT_RtcTime(struct tm *rtc, uint8_t format){
     }
 }
 
-const char wdays[7][4]={"mon","tue","wed","thu","fri","sat","sun"};
 void PRINT_Rtc(struct tm *rtc, uint8_t data){   
    switch(data){      
       case RTC_DATETIME:
