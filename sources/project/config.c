@@ -14,51 +14,33 @@ static const char title[]={
     "           CONFIG\n\n"    
 };
 
-void PRINT_RtcTime(struct tm *rtc, uint8_t format){
-    LCD_WriteInt(rtc->tm_hour, TIME_FORMAT);
+void PRINT_Field(uint32_t field, uint32_t format, uint8_t select){
+    if(select)
+        LCD_SetColors(CFG_BC, CFG_FC); // invert colors
+
+    LCD_WriteInt(field, format);
+    LCD_SetColors(CFG_FC, CFG_BC);
+}
+
+void PRINT_FullDate(struct tm *rtc, uint8_t select){
+    POSITION_DATE;    
+    
+    PRINT_Field(rtc->tm_hour, TIME_FORMAT, (select == HOUR)? ON : OFF);
     LCD_WriteChar(':');
-    LCD_WriteInt(rtc->tm_min, TIME_FORMAT);
-    if(format == RTC_TIME_HHMMSS){
-        LCD_WriteChar(':');
-        LCD_WriteInt(rtc->tm_sec, TIME_FORMAT);
-    }
-}
-
-void PRINT_Rtc(struct tm *rtc, uint8_t data){   
-   switch(data){      
-      case RTC_DATETIME:
-         PRINT_RtcTime(rtc,RTC_TIME_HHMM);
-         LCD_WriteChar(' ');
-                  
-      case RTC_DATE:
-         LCD_WriteInt(rtc->tm_mday, TIME_FORMAT);
-         LCD_WriteChar('-');
-         LCD_WriteInt(rtc->tm_mon, TIME_FORMAT);
-         LCD_WriteChar('-');
-         LCD_WriteInt(rtc->tm_year, YEAR_FORMAT);
-         break;     
-         
-      case RTC_TIME_HHMM:
-         PRINT_RtcTime(rtc, RTC_TIME_HHMM);
-         break;
-      
-      case RTC_TIME_HHMMSS:
-         PRINT_RtcTime(rtc,RTC_TIME_HHMMSS);        
-         break;      
-         
-      case RTC_WDAY:         
-         LCD_WriteString((char*)&wdays[rtc->tm_wday][0]);         
-         break;      
-   }   
-}
-
-void PRINT_FullDate(struct tm *rtc){
-    LCD_Goto(16,64);
-    PRINT_Rtc(rtc, RTC_TIME_HHMM);                
+    PRINT_Field(rtc->tm_min, TIME_FORMAT, (select == MINUTES)? ON : OFF);
     LCD_WriteChar(' ');
-    PRINT_Rtc(rtc, RTC_WDAY);      
+    
+    if(select == WEEKDAY)
+        LCD_SetColors(CFG_BC, CFG_FC);
+    LCD_WriteString((char*)&wdays[rtc->tm_wday][0]);
+    LCD_SetColors(CFG_FC, CFG_BC);    
     LCD_WriteChar(' ');
-    PRINT_Rtc(rtc, RTC_DATE);    
+    
+    PRINT_Field(rtc->tm_mday, TIME_FORMAT, (select == MDAY)? ON : OFF);
+    LCD_WriteChar('-');
+    PRINT_Field(rtc->tm_mon, TIME_FORMAT, (select == MONTH)? ON : OFF);
+    LCD_WriteChar('-');
+    PRINT_Field(rtc->tm_year, TIME_FORMAT, (select == YEAR)? ON : OFF);
 }
 
 void changeField(int32_t *fld, uint32_t max, int8_t step){
@@ -80,13 +62,6 @@ void setTime(struct tm *rtc, uint8_t fld, signed char step){
    }   
 }
 
-void setIndicator(uint8_t fld){
-    LCD_Goto(8,80);
-    LCD_WriteString("                 ");
-    LCD_Goto(8+(16*fld),80);
-    LCD_WriteChar('^');    
-}
-
 void popConfig(void *ptr){  
     field = HOUR;
     cur_time = (struct tm*)ptr;
@@ -99,7 +74,7 @@ void popConfig(void *ptr){
     LCD_Goto(0,0);    
     LCD_WriteString((char*)title);
     LCD_SetColors(GREEN,BLACK);
-    PRINT_FullDate(cur_time);
+    PRINT_FullDate(cur_time, field);
 }
 
 int config(int b){
