@@ -92,33 +92,34 @@ int newy;
     LCD_Fill(pj->color, 4);
 }
 
-void newProjectile(int x, int y, uint16_t color){
+void newProjectile(Projectile *proj, int x, int y, uint16_t color){
 uint8_t i;
-	for(i = 0; i < MAX_PROJECTILES; i++){
-		if(!projectiles[i].inmotion){
-			projectiles[i].x = x;
-			projectiles[i].y = y;
-			projectiles[i].color = color;
-			projectiles[i].inmotion = ON;
-			return;
-		}	
-	}	
+    for(i = 0; i < MAX_PROJECTILES; i++){
+        if(!proj[i].inmotion){
+            proj[i].x = x;
+            proj[i].y = y;
+            proj[i].color = color;
+            proj[i].inmotion = ON;
+            return;
+        }	
+    }	
 }
 
-void loadAliens(Sprite *als, const char *al, uint16_t y){
+void loadAliens(Sprite *als, const uint8_t *al, uint16_t y){
 uint8_t i;
 uint16_t x = SPRITE_W;
-	for(i=0; i < MAX_ALIENS; i++, al+=1){
-		als[i].x = x;
-		als[i].y = y;
-		als[i].data = (uint8_t*)(SPRITES_DATA + (((*al) - 1) * SPRITE_SIZE));
-		als[i].alive = ON;
-		x += SPRITE_W;
-		if(x > (SCREEN_W-(SPRITE_W*2)) ){
-			x = SPRITE_W;
-			y += SPRITE_H;
-		}
-	}
+    for(i=0; i < MAX_ALIENS; i++, al+=1){
+        als[i].x = x;
+        als[i].y = y;
+        als[i].type = (*al) - 1;
+        als[i].data = (uint8_t*)(SPRITES_DATA + (als[i].type * SPRITE_SIZE));
+        als[i].alive = ON;
+        x += SPRITE_W;
+        if(x > (SCREEN_W-(SPRITE_W*2)) ){
+            x = SPRITE_W;
+            y += SPRITE_H;
+        }
+    }
 }
 
 int8_t moveAliens(int8_t dir, const char *alienFrame){
