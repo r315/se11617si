@@ -135,7 +135,12 @@ int main(void){
 State state;
 uint32_t button,res;
     
+    SYS_Init();    
+        
     state = switchTo(IDLE);
+    restoreData(&saveddata,sizeof(SaveData));
+    
+    //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));
     
     while(loop){
         
@@ -167,8 +172,14 @@ uint32_t button,res;
                     break;
                 }
                 
-                if(button == (BUTTON_L | BUTTON_R)){
-                    if(BUTTON_GetEvents() == BUTTON_HOLD){
+                    if(button == BUTTON_S){
+                        if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))
+                            state = switchTo(GAME);
+                        break;
+                    }                    
+                }else {//if(BUTTON_GetEvents() == BUTTON_HOLD){
+                    if(button == BUTTON_L){
+                    //if(button == (BUTTON_L| BUTTON_R)){ 
                         state = switchTo(CONFIG);
                         break;
                     }
@@ -177,24 +188,37 @@ uint32_t button,res;
                 idle();                
                 break;
                 
-            case CONFIG: 
+            case CONFIG:
                 if(!config(button)){
                     state = switchTo(IDLE);
+                    RTC_SetValue(&saveddata.rtc);
                 }
                 break;
                 
             case GAME: 
                 if(button == BUTTON_S){
-                    state = switchTo(SAVE);
-                    break;
+                    if(BUTTON_GetEvents() == BUTTON_PRESSED){
+                        state = switchTo(SAVE);
+                        break;
+                    }
                 }
                 space(button);
                 break;    
                         
             case SAVE:
-                if(!saveGame(&dummy,1)){
-                    state = switchTo(IDLE);
-                }
+                LED_SetState(LED_ON);
+                //printf("Score: %u\n",saveddata.spaceInvaders.score);                                
+                saveTopScore(saveddata.spaceInvaders.score, saveddata.topscores);                
+                
+                saveddata.checksum = generateChecksum(&saveddata.spaceInvaders, sizeof(GameData));                    
+                
+                res = saveData(&saveddata,sizeof(SaveData));
+                
+                LED_SetState(LED_OFF);
+                
+                displaySaveResult(res);                
+                
+                state = switchTo(IDLE);                
                 break;   
         }        
     }
