@@ -52,7 +52,15 @@ void PRINT_Rtc(struct tm *rtc, uint8_t data){
    }   
 }
 
-//TODO: FIX this
+void PRINT_FullDate(struct tm *rtc){
+    LCD_Goto(16,64);
+    PRINT_Rtc(rtc, RTC_TIME_HHMM);                
+    LCD_WriteChar(' ');
+    PRINT_Rtc(rtc, RTC_WDAY);      
+    LCD_WriteChar(' ');
+    PRINT_Rtc(rtc, RTC_DATE);    
+}
+
 void changeField(int32_t *fld, uint32_t max, int8_t step){
 	*fld = (*fld + step);
 	*fld = *fld % (max+1);
