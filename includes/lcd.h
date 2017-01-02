@@ -83,8 +83,8 @@ void LCD_PutChar(char c, int x, int y, int fColor, int bColor);
 /**
 * @brief Mostra um inteiro no lcd
 * @param value : valor a mostrar
-* @param base : base a qual o numero deve de ser representado
-*             : bits 15-8 contem o numero minimo de digitos
+* @param base : base a qual o numero deve de ser representado Ex:(2,10,16)
+*             : bits 15-8 contem o numero minimo de digitos   Ex:(0:8, 1:08, 4:0123, 8:00001234)
 **/
 void LCD_WriteInt(uint32_t value, uint32_t base);
 
@@ -92,6 +92,16 @@ void LCD_WriteInt(uint32_t value, uint32_t base);
  * @brief abre uma janela para estrita de dados.
  * */
 void LCD_Window(uint32_t x, uint32_t y, uint32_t w, uint32_t h);
+
+/**
+ * @brief Retorna a largura de um caractere em pixeis
+ **/
+uint8_t LCD_GetFontWidth(void);
+
+/**
+ * @brief Retorna a altura de um caractere em pixeis
+ **/
+uint8_t LCD_GetFontHeight(void);
 
 #endif
 

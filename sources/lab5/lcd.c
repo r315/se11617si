@@ -2,9 +2,18 @@
 #include <lcd.h>
 #include "ili9341.h"
 
+#define FONT (unsigned char *)font8x16
 extern const unsigned char font8x16[97][16];
 static uint32_t _x, _y;
 static uint32_t _fColor, _bColor;
+
+uint8_t LCD_GetFontWidth(void){
+return *FONT;
+}
+
+uint8_t LCD_GetFontHeight(void){
+return *(FONT + 1);
+}
 
 void LCD_SetColors(uint32_t fColor, uint32_t bColor){
 	_fColor = fColor;

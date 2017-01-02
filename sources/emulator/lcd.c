@@ -1,6 +1,7 @@
 #include <lcd.h>
 #include "lcdsdl.h"
 
+#define FONT (unsigned char *)font8x16
 
 extern const unsigned char font8x16[97][16];
 static uint32_t _x, _y;
@@ -11,6 +12,13 @@ void LCD_SetColors(uint32_t fColor, uint32_t bColor){
 	_bColor = bColor;
 }
 
+uint8_t LCD_GetFontWidth(void){
+return *FONT;
+}
+
+uint8_t LCD_GetFontHeight(void){
+return *(FONT + 1);
+}
 
 void LCD_WriteInt(uint32_t value, uint32_t base){
 uint8_t digits[32];        //maximo de 32 digitos 
