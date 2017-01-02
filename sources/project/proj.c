@@ -145,11 +145,8 @@ uint32_t button,res;
     while(loop){
         
         //Check Events      
-        BUTTON_Hit();
+        button = BUTTON_Hit();        
         
-        if(BUTTON_GetEvents() == BUTTON_PRESSED ||
-           BUTTON_GetEvents() == BUTTON_HOLD){
-           button = BUTTON_GetButton();            
         }
         else
            button = BUTTON_EMPTY;      
@@ -160,17 +157,13 @@ uint32_t button,res;
          
         //main state machine        
         switch(state){
-            case IDLE: 
-                if(button == BUTTON_F){                   
-                    state = switchTo(GAME);
-                    break;
-                }
-                
-                if(button == BUTTON_S){
-                    loadGame(&dummy,1);
-                    state = switchTo(GAME);
-                    break;
-                }
+            case IDLE:
+                if(BUTTON_GetEvents() == BUTTON_PRESSED){
+                    if(button == BUTTON_F){ 
+                        newGame(&saveddata.spaceInvaders);                                      
+                        state = switchTo(GAME);
+                        break;
+                    }
                 
                     if(button == BUTTON_S){
                         if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))
