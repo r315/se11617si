@@ -3,6 +3,7 @@
 #include <rtc.h>
 #include <button.h>
 #include "config.h"
+#include "proj.h"
 
 //TODO: fix field indicator and save to flash
 
@@ -43,22 +44,22 @@ void PRINT_FullDate(struct tm *rtc, uint8_t select){
     PRINT_Field(rtc->tm_year, TIME_FORMAT, (select == YEAR)? ON : OFF);
 }
 
-void changeField(int32_t *fld, uint32_t max, int8_t step){
-    *fld = (*fld + step);
-    *fld = *fld % (max+1);
-    
-    if(*((uint32_t*)fld) > max)
-        *fld = max;	
+void changeField(uint32_t *fld, uint16_t max, signed char step){    
+    *fld = (*fld + step);    
+    if(step > 0)
+        *fld = *fld % max;
+    else if(*fld > max)
+        *fld = max-1;	
 }
 
 void setTime(struct tm *rtc, uint8_t fld, signed char step){  
     switch(fld){
-        case HOUR:      changeField((int32_t *)&rtc->tm_hour,23, step); break;
-        case MINUTES:   changeField((int32_t *)&rtc->tm_min,59, step); break;
-        case WEEKDAY:   changeField((int32_t *)&rtc->tm_wday,6, step); break;        
-        case MDAY:      changeField((int32_t *)&rtc->tm_mday,31, step); break;        
-        case MONTH:     changeField((int32_t *)&rtc->tm_mon,12, step); break;        
-        case YEAR:      changeField((int32_t *)&rtc->tm_year,2060, step); break;
+        case HOUR:      changeField((uint32_t *)&rtc->tm_hour, 24, step); break;
+        case MINUTES:   changeField((uint32_t *)&rtc->tm_min,  60, step); break;
+        case WEEKDAY:   changeField((uint32_t *)&rtc->tm_wday, 7,  step); break;        
+        case MDAY:      changeField((uint32_t *)&rtc->tm_mday, 32, step); break;        
+        case MONTH:     changeField((uint32_t *)&rtc->tm_mon,  13, step); break;        
+        case YEAR:      changeField((uint32_t *)&rtc->tm_year, 2060, step); break;
    }   
 }
 
@@ -84,26 +85,20 @@ signed char step;
         return 1;
 
     switch(b){
-        case BUTTON_L: step = -1; break;
-        
-        case BUTTON_R: step =  1; break;
-        
+        case BUTTON_L: step = -1; break;        
+        case BUTTON_R: step =  1; break;        
         case BUTTON_F: 
             if((++field) == (YEAR + 1))
                 field = HOUR;
             step = 0;
-            break;       
-        
-        case BUTTON_S:        
-            return 0;
-        
+            break;        
+        case BUTTON_S: return 0;        
         default: return 1;
     } 
    
     setTime(cur_time, field, step);
     
-    PRINT_FullDate(cur_time);
+    PRINT_FullDate(cur_time, field);    
     
-    setIndicator(field);
     return 1;
 }
