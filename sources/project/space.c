@@ -146,6 +146,29 @@ uint8_t i;
     return dir;
 }
 
+uint8_t checkColision(Projectile *proj, Sprite *als){
+uint8_t i;
+uint8_t score;
+
+    if(proj->inmotion == OFF)
+        return 0;   
+    
+    for(i = 0; i< MAX_ALIENS; i++){
+        if(als[i].alive){
+            if(als[i].x <= proj->x && (als[i].x + SPRITE_W) >= proj->x){
+                if(als[i].y <= proj->y && (als[i].y + SPRITE_H) >= proj->y){
+                    als[i].alive = OFF;
+                    proj->inmotion = OFF;
+                    score = als[i].type + 1;
+                    //printf("Score: %u\n",score);
+                    return score;
+                }
+            } 
+        }
+    }
+    return 0;
+}
+
 }
 
 void popSpace(void *ptr){
