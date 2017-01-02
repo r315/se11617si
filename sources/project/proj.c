@@ -55,6 +55,68 @@ uint32_t *p1,*p2;
     }
 }
 
+uint8_t generateChecksum(void *data, uint32_t size){
+uint8_t sum = 0;
+    while(size--){
+        //printf("data %u\n",*((uint8_t*)data));
+        sum += *((uint8_t*)data++);
+    } 
+    sum = 0xFF - sum;
+    //printf("Checksum %u\n", sum);
+    return sum;
+}
+
+uint8_t checksumData(void *data, uint32_t size, uint8_t checksum){
+uint8_t sum = 0;
+    while(size--){     
+        sum += *((uint8_t*)data++);        
+    }    
+    //printf("Sum %u\n", sum);
+    return (uint8_t)(sum + (checksum + 1));
+}
+
+uint32_t strlenInPixels(char *str){
+uint8_t count = 0;
+    while(*str++)
+        count++;
+    return count * 8;    
+}
+
+void displaySaveResult(uint32_t res){
+char *msg;    
+
+    switch(res){
+        case CMD_SUCESS: 
+            msg = "Save ok"; break;
+            
+        case SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION : 
+            LCD_WriteString("Sector Not Ready");break;
+            
+        case INVALID_SECTOR: 
+            msg = "Invalid Sector";break;
+            
+        case SRC_ADDR_ERROR: 
+            msg = "Invalid Start Address";break;
+        
+        case DST_ADDR_ERROR: 
+            msg = "Invalid Destination Address";break;
+        
+        case COUNT_ERROR: 
+            msg = "Count error";break;    
+            
+        case BUSY: 
+            msg = "Busy";break; 
+            
+        default: LCD_WriteInt(res,(2<<8) | 16);
+                TIMER0_DelayMs(1500);
+                return;                 
+    }
+    
+    LCD_Goto( (LCD_W/2) - (strlenInPixels(msg)/2), LCD_H /2);
+    LCD_WriteString(msg);
+    TIMER0_DelayMs(1500);
+}
+
 int main(void){
 State state;
 uint32_t button,res;
