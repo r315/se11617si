@@ -175,6 +175,10 @@ void updateScore(uint32_t scr){
     
 }
 
+void newGame(GameData *gd){    
+    loadTank(&gd->tank);    
+    loadAliens(gd->aliens, Aliens0, SPRITE_H * 3);	
+    gd->score = 0;    
 }
 
 void popSpace(void *ptr){
