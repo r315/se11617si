@@ -2,20 +2,11 @@
 #include <flash.h>
 #include "save.h"
 
-int saveData(void *data, int dataSize){
-    #ifndef _EMU_
-    return FLASH_WriteData(SAVE_BLOCK,data,dataSize);
-    #else
-    uint8_t *dst = SAVE_BLOCK;
-    while(dataSize--)
-        *dst++ = *((uint8_t*)data++);                
-    return CMD_SUCESS;
-    #endif
+int saveData(void *data, int dataSize){    
+    return FLASH_WriteData(SAVE_BLOCK,data,dataSize);    
 }
 
 int restoreData(void *data, int dataSize){
-uint8_t *src = SAVE_BLOCK;
-    while(dataSize--)
-        *((uint8_t*)data++) = *src++;        
+    memcpy(data,SAVE_BLOCK, dataSize);
     return CMD_SUCESS;
 }
