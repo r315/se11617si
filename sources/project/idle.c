@@ -2,11 +2,11 @@
 #include <time.h>
 #include <rtc.h>
 #include <timer.h>
+#include <button.h>
 #include "idle.h"
-#include "config.h"
-
-#define MAX_TOP_SCORES 3
-#define SCORES_FORMAT (3<<8) | 10
+#include "proj.h"
+//#include "config.h"
+//#include "space.h"
 
 static const char title[]={
     "           IDLE\n\n"
@@ -16,7 +16,6 @@ static const char title[]={
     "Top Scores:\n"
 };
 
-static uint32_t highScores;
 static uint32_t updateTime;
 
 void PRINT_DateTime(struct tm *rtc){
@@ -34,20 +33,18 @@ void PRINT_DateTime(struct tm *rtc){
 }
 
 /**
- * @brief high scores are stored on one integer so is 8-bit one high score
+ * @brief 
  * */
-void PRINT_HighScores(int scores){   
-uint8_t n = MAX_TOP_SCORES;
-    while(n--){
-        LCD_WriteInt(scores & 255, SCORES_FORMAT);
+void PRINT_HighScores(uint32_t *scores){   
+uint8_t n;
+    for(n = 0; n < MAX_TOP_SCORES; n++){
+        LCD_WriteInt(scores[n], SCORES_FORMAT);
         LCD_NewLine();
-        LCD_WriteString("          "); //TODO: make dynamic position
-        scores >>= 8;
+        LCD_WriteString("          "); //TODO: make dynamic position        
     }
 }
 
-void popIdle(void *ptr){  
-    highScores = *((int*)ptr);  
+void popIdle(void *ptr){      
     updateTime = TIMER0_GetValue() - 1000;  //force update
     LCD_Clear(BLACK);
     LCD_SetColors(RED,BLACK);
@@ -55,8 +52,8 @@ void popIdle(void *ptr){
     LCD_WriteString((char*)title);
     
     LCD_Goto(80,96);
-    LCD_SetColors(BLUE,BLACK);
-    PRINT_HighScores(highScores);
+    LCD_SetColors(YELLOW,BLACK);
+    PRINT_HighScores((uint32_t *)ptr);
     LCD_SetColors(GREEN,BLACK);   
     BUTTON_SetHoldTime(ENTER_CONFIG_TIME);       
 }
