@@ -8,31 +8,11 @@
 #include <gpio.h>
 #include <spi.h>
 
-void LCD_Fill(uint16_t color, uint32_t n);
-
-typedef struct _sprite{
-	int x;
-	int y;	
-	uint8_t *data;
-	uint8_t alive;
-}Sprite;
-
-typedef struct projectile{
-	int x;
-	int y;
-	uint16_t color;
-	uint8_t inmotion;
-}Projectile;
-
 static const char title[]={
     "      # Space Invaders #\n\n"    
 };
 
 void LCD_Data(uint16_t color);
-
-Sprite tank, aliens[36];
-Projectile projectiles[5];
-
 int state;
 
 void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
