@@ -12,7 +12,7 @@ static const char title[]={
     "           IDLE\n\n"
     "F   -  start new Game\n"
     "S   -  Load Game\n"
-    "L&R -  for config\n"
+    "L&R -  for config\n\n"
     "Top Scores:\n"
 };
 
@@ -35,12 +35,12 @@ void PRINT_DateTime(struct tm *rtc){
 /**
  * @brief 
  * */
-void PRINT_HighScores(uint32_t *scores){   
-uint8_t n;
+void PRINT_HighScores(uint32_t x, uint32_t y, uint32_t *scores){   
+uint8_t n;    
     for(n = 0; n < MAX_TOP_SCORES; n++){
+        LCD_Goto(x,y);
         LCD_WriteInt(scores[n], SCORES_FORMAT);
-        LCD_NewLine();
-        LCD_WriteString("          "); //TODO: make dynamic position        
+        y += LCD_FontHeight();        
     }
 }
 
@@ -49,21 +49,19 @@ void popIdle(void *ptr){
     LCD_Clear(BLACK);
     LCD_SetColors(RED,BLACK);
     LCD_Goto(0,0);    
-    LCD_WriteString((char*)title);
+    LCD_WriteString((char*)title);    
     
-    LCD_Goto(80,96);
     LCD_SetColors(YELLOW,BLACK);
-    PRINT_HighScores((uint32_t *)ptr);
+    PRINT_HighScores(96,112,(uint32_t *)ptr);
     LCD_SetColors(GREEN,BLACK);   
     BUTTON_SetHoldTime(ENTER_CONFIG_TIME);       
 }
 
 void idle(void){
-struct tm rtc;
-    //TODO: interrupt on rtc for seconds
+struct tm rtc;    
     if( TIMER0_Elapse(updateTime) > 1000){
         RTC_GetValue(&rtc);   
-        LCD_Goto(10,LCD_H-16);        
+        LCD_Goto(0,LCD_H-16);        
         PRINT_DateTime(&rtc);                
         updateTime = TIMER0_GetValue();
     }
