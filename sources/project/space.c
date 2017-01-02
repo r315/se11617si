@@ -182,25 +182,24 @@ void newGame(GameData *gd){
 }
 
 void popSpace(void *ptr){
-    LCD_Clear(UBUNTU);
-    LCD_SetColors(RED,UBUNTU);
-    LCD_Goto(0,0);    
-    LCD_WriteString((char*)title);
-    //LCD_SetColors(GREEN,BLACK); 
-	
-	BUTTON_SetHoldTime(80);
 
-	LCD_OffsetWindow(0, 0, SCREEN_W, SCREEN_H);
-	LCD_Fill(BGCOLOR,SCREEN_W * SCREEN_H);
-    
-    loadTank(&tank);
-    drawSprite(&tank);    
-	
-	loadAliens(aliens, Aliens0, 0);
-	moveAliens(0,Aliens1);	
+    LCD_Clear(UBUNTU);
+    LCD_SetColors(WHITE,UBUNTU);
+    LCD_Goto(0,0);    
+    LCD_WriteString((char*)title);    
+
+    BUTTON_SetHoldTime(80);
+
+    LCD_OffsetWindow(0, 0, SCREEN_W, SCREEN_H);
+    LCD_Fill(BGCOLOR,SCREEN_W * SCREEN_H);
+
+    gamedata = (GameData*)ptr; 
+    moveTank(&gamedata->tank,0);   
+    moveAliens(gamedata->aliens, Aliens1, 0,0);
+    updateScore(gamedata->score);
 }
 
-#define SPEED 5
+
 void space(int b){
 static uint32_t frametime;	
 uint8_t n;
