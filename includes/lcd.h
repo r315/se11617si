@@ -21,6 +21,7 @@
 #define RED (0x1F<<11)
 #define GREEN (0x3F<<5)
 #define BLUE 0x1f
+#define YELLOW 0xFFE4
 #define BLACK 0
 #define PINK (RED|BLUE)
 #define WHITE 0xFFFF
