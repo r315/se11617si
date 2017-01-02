@@ -17,16 +17,22 @@ typedef enum Mstates{
   SAVE    
 }State;
 
-int dummy;
+typedef struct _SaveData{
+    uint32_t topscores[MAX_TOP_SCORES];    
+    uint8_t checksum;
+    GameData spaceInvaders;    
+    struct tm rtc;
+}SaveData;
 
-struct tm rtc;
+SaveData saveddata;
+
 
 State switchTo(State newState){
     switch(newState){
-        case IDLE: popIdle(&dummy); break;
-        case CONFIG: popConfig(&rtc); break;
-        case GAME: popSpace((void*)0);break; //TODO: pass save location
-        case SAVE: break;
+        case IDLE:   popIdle(saveddata.topscores); break;
+        case CONFIG: popConfig(&saveddata.rtc); break;
+        case GAME:   popSpace(&saveddata.spaceInvaders);break;
+        case SAVE:   break;
     }
     return newState;
 }
@@ -34,10 +40,7 @@ State switchTo(State newState){
 
 int main(void){
 State state;
-uint32_t button;    
-
-    dummy = 10;
-    SYS_Init();    
+uint32_t button,res;
     
     state = switchTo(IDLE);
     
