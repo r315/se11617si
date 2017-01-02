@@ -26,7 +26,8 @@ void LED_SetState(int state){ __led_state = state;}
 //---------------------------------------------------------------------------
 static struct tm __rtc;
 static struct tm __rtca;
-uint32_t __amr;
+static uint32_t __amr;
+
 void RTC_SetValue(struct tm *dateTime){	
 	__rtc.tm_sec = dateTime->tm_sec % 60;
 	__rtc.tm_min = dateTime->tm_min % 60;
@@ -193,20 +194,12 @@ void BUTTON_SetHoldTime(int t){
 }
 
 //---------------------------------------------------------------------------
-static uint8_t _flashsector[FLASH_SECTOR_SIZE];
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector){
     return CMD_SUCESS;
 }
 
 unsigned int FLASH_WriteBlock( void *dstAddr, void *srcAddr, unsigned int size){
-uint32_t i;
-
-      i = (uint8_t)(*((int*)&dstAddr) & (FLASH_SECTOR_SIZE - 1));
-
-      
-      while(size--)
-         _flashsector[i++] = *((uint8_t*)(srcAddr++));
-
+    memcpy(dstAddr, srcAddr, size);
     return CMD_SUCESS;
 }
 
@@ -215,10 +208,8 @@ unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size){
 }
 
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
-uint32_t  i = (uint8_t)(*((int*)&dstAddr) & (FLASH_SECTOR_SIZE - 1));
-      
       while(size--){
-         if(_flashsector[i++] != *((uint8_t*)(srcAddr++)))
+         if(*((uint8_t*)(dstAddr++))  != *((uint8_t*)(srcAddr++)))
             return COMPARE_ERROR;
       }
     return CMD_SUCESS;
