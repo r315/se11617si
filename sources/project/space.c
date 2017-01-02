@@ -206,35 +206,40 @@ uint8_t n;
 static int8_t dir = -1;
 static uint8_t speed = SPEED;
 static uint8_t f;
-	
+    
     if(TIMER0_GetValue() > frametime){
-		for(n=0; n < MAX_PROJECTILES; n++)		
-			moveProjectile(&projectiles[n],-1);			
-		
-		if(!(--speed)){
-			dir = moveAliens(dir,(f & 4)? Aliens0:Aliens1);
-			speed = SPEED;
-			f++;
-		}		
-		frametime = TIMER0_GetValue() + 20;
-	}
-	else{
-		if(BUTTON_GetEvents() == BUTTON_HOLD)
-		return;    
-	}
-	
-    switch(b){
-        case BUTTON_L:	moveTank(&tank,-1); break;
-        case BUTTON_R:	moveTank(&tank,1); break;            
-        break;
-		case (BUTTON_F | BUTTON_L):
-		case (BUTTON_F | BUTTON_R):
-        case BUTTON_F: newProjectile(tank.x + SPRITE_W/2, tank.y - 4, PINK);
-				
         
-        default: break;
+        switch(b){
+            case BUTTON_L:  moveTank(&gamedata->tank,-1); break;
+            case BUTTON_R:  moveTank(&gamedata->tank,1); break;
+            case BUTTON_F:  newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK); break;            
+            
+            case (BUTTON_F | BUTTON_L): 
+                moveTank(&gamedata->tank,-1);
+                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK);
+                break;
+            
+            case (BUTTON_F | BUTTON_R):
+                moveTank(&gamedata->tank,1);
+                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK);
+                break;
+            
+            default: break;
+        }
+        
+        for(n=0; n < MAX_PROJECTILES; n++){
+            moveProjectile(&gamedata->tankprojectiles[n],-1);
+            gamedata->score += checkColision(&gamedata->tankprojectiles[n], gamedata->aliens);
+            updateScore(gamedata->score);
+        }
+    
+        if(!(--speed)){
+            dir = moveAliens(gamedata->aliens, (f & 4)? Aliens0 : Aliens1, dir,0); 
+            speed = SPEED;
+            f++;
+        }  
+        //TODO: implement aliens down and shot
+                    
+        frametime = TIMER0_GetValue() + 20;
     }
-    
-    
-
 }
