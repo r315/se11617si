@@ -69,22 +69,15 @@ void changeField(int32_t *fld, uint32_t max, int8_t step){
 		*fld = max;	
 }
 
-void setTime(struct tm *rtc, uint8_t fld, signed char step){
-  
-	switch(fld){
-		case HOUR: 		changeField((int32_t *)&rtc->tm_hour,23, step);	break;
-         
-		case MINUTES:	changeField((int32_t *)&rtc->tm_min,59, step);	break;		
-		 
-		case WEEKDAY:	changeField((int32_t *)&rtc->tm_wday,6, step);	break;
-			
-		case MDAY:		changeField((int32_t *)&rtc->tm_mday,31, step);	break;
-			
-		case MONTH:		changeField((int32_t *)&rtc->tm_mon,12, step);	break;
-			
-		case YEAR:		changeField((int32_t *)&rtc->tm_year,2060, step);	break;      
-   }
-   
+void setTime(struct tm *rtc, uint8_t fld, signed char step){  
+    switch(fld){
+        case HOUR:      changeField((int32_t *)&rtc->tm_hour,23, step); break;
+        case MINUTES:   changeField((int32_t *)&rtc->tm_min,59, step); break;
+        case WEEKDAY:   changeField((int32_t *)&rtc->tm_wday,6, step); break;        
+        case MDAY:      changeField((int32_t *)&rtc->tm_mday,31, step); break;        
+        case MONTH:     changeField((int32_t *)&rtc->tm_mon,12, step); break;        
+        case YEAR:      changeField((int32_t *)&rtc->tm_year,2060, step); break;
+   }   
 }
 
 void setIndicator(uint8_t fld){
