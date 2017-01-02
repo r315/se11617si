@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h> 
 #include <time.h>
 #include <button.h>
+#include <flash.h>
 
 #if defined(DBG)
 #define DBG printf
@@ -39,6 +40,8 @@ void RTC_SetValue(struct tm *dateTime){
 
 uint32_t rtcinc(uint32_t interval, void*ptr){
       __rtc.tm_sec = (__rtc.tm_sec == 59)? 0 : __rtc.tm_sec + 1;
+      if(__rtc.tm_sec == 0)
+         __rtc.tm_min = (__rtc.tm_min == 59)? 0 : __rtc.tm_sec + 1;
       //printf("sec: %u\n", __rtc.tm_sec);      
       return interval;
 }
@@ -190,18 +193,35 @@ void BUTTON_SetHoldTime(int t){
 }
 
 //---------------------------------------------------------------------------
+static uint8_t _flashsector[FLASH_SECTOR_SIZE];
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector){
-    return 0;
+    return CMD_SUCESS;
 }
 
 unsigned int FLASH_WriteBlock( void *dstAddr, void *srcAddr, unsigned int size){
-    return 0;
+uint32_t i;
+
+      i = (uint8_t)(*((int*)&dstAddr) & (FLASH_SECTOR_SIZE - 1));
+
+      
+      while(size--)
+         _flashsector[i++] = *((uint8_t*)(srcAddr++));
+
+    return CMD_SUCESS;
 }
+
 unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size){
-    return 0;
+    return  FLASH_WriteBlock(dstAddr, srcAddr, size);
 }
+
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
-    return 0;
+uint32_t  i = (uint8_t)(*((int*)&dstAddr) & (FLASH_SECTOR_SIZE - 1));
+      
+      while(size--){
+         if(_flashsector[i++] != *((uint8_t*)(srcAddr++)))
+            return COMPARE_ERROR;
+      }
+    return CMD_SUCESS;
 }
 //---------------------------------------------------------------------------
 void TIMER0_Init(unsigned int frequency){}
@@ -222,6 +242,8 @@ void TIMER0_DelayMs(unsigned int ms){
     SDL_Delay(ms);
 }
 
+void PLL_Init(void){
+}
 
 
 
