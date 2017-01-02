@@ -81,7 +81,9 @@ void setTime(struct tm *rtc, uint8_t fld, signed char step){
 }
 
 void setIndicator(uint8_t fld){
-	LCD_Goto(8+(16*fld),80);
+    LCD_Goto(8,80);
+    LCD_WriteString("                 ");
+    LCD_Goto(8+(16*fld),80);
     LCD_WriteChar('^');    
 }
 
