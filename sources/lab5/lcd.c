@@ -29,7 +29,7 @@ uint8_t digit, count;
 	if(!value){                    // se valor for zero
         do{
     		LCD_WriteChar('0');    // ou os especificados por padding
-		}while(padding--);         // apenas se mosta um digito zero
+		}while(--padding);         // apenas se mosta um digito zero
 		return;
 	}
 
