@@ -20,6 +20,9 @@
 #define SPRITES_DATA spcinv
 #define TANK_DATA SPRITES_DATA + (SPRITE_SIZE * 6)
 
+#define PROJECTILE_W 2
+#define PROJECTILE_H 6
+
 typedef struct _sprite{
 	int x;
 	int y;
