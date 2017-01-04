@@ -40,7 +40,7 @@ uint8_t n;
     for(n = 0; n < MAX_TOP_SCORES; n++){
         LCD_Goto(x,y);
         LCD_WriteInt(scores[n], SCORES_FORMAT);
-        y += LCD_FontHeight();        
+        y += LCD_GetFontHeight();        
     }
 }
 
