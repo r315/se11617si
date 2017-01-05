@@ -112,26 +112,27 @@ uint8_t i;
 }
 
 void loadAliens(Sprite *als, const uint8_t *al, uint16_t y){
-uint8_t i;
+uint8_t i,j,a = 0;
 uint16_t x = SPRITE_W;
-    for(i=0; i < MAX_ALIENS; i++, al+=1){
-        als[i].x = x;
-        als[i].y = y;
-        als[i].type = (*al) - 1;
-        als[i].data = (uint8_t*)(SPRITES_DATA + (als[i].type * SPRITE_SIZE));
-        als[i].alive = ON;
-        x += SPRITE_W;
-        if(x > (SCREEN_W-(SPRITE_W*2)) ){
-            x = SPRITE_W;
-            y += SPRITE_H;
+    for(i=0; i < ALIENS_ROWS; i++){        
+        for(j=0; j < ALIENS_COLS; j++, al+=1){
+            als[a].x = x;
+            als[a].y = y;
+            als[a].type = (*al) - 1;
+            als[a].data = (uint8_t*)(SPRITES_DATA + (als[j].type * SPRITE_SIZE));
+            als[a].alive = ON;
+            x += SPRITE_W;
+            a++;
         }
-    }
+        x = SPRITE_W;
+        y += SPRITE_H;
+    }    
 }
 
 int8_t moveAliens( Sprite *als, const uint8_t *alienFrame, int8_t dir, int8_t height){
 uint8_t i;
 
-    if(((dir < 0) && (als[0].x <= 0)) || (dir > 0 && als[MAX_ALIENS-1].x >= SCREEN_W-SPRITE_W))
+    if(((dir < 0) && (als[0].x <= 0)) || (dir > 0 && als[ALIENS_COLS - 1].x >= SCREEN_W-SPRITE_W))
         dir  = -dir;
 
     for(i = 0; i< MAX_ALIENS; i++, alienFrame +=  1){
@@ -217,7 +218,7 @@ static uint8_t f;
         switch(b){
             case BUTTON_L:  moveTank(&gamedata->tank,-1); break;
             case BUTTON_R:  moveTank(&gamedata->tank,1); break;
-            case BUTTON_F:  newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK); break;            
+            case BUTTON_F:  newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y -  PROJECTILE_H, PINK); break;            
             
             case (BUTTON_F | BUTTON_L): 
                 moveTank(&gamedata->tank,-1);
@@ -226,7 +227,7 @@ static uint8_t f;
             
             case (BUTTON_F | BUTTON_R):
                 moveTank(&gamedata->tank,1);
-                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK);
+                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - PROJECTILE_H, PINK);
                 break;
             
             default: break;
@@ -236,14 +237,16 @@ static uint8_t f;
             moveProjectile(&gamedata->tankprojectiles[n],-1);
             gamedata->score += checkColision(&gamedata->tankprojectiles[n], gamedata->aliens);            
         }
+        
         updateScore(gamedata->score);
+        
         if(!(--speed)){
-            dir = moveAliens(gamedata->aliens, (f & 4)? Aliens0 : Aliens1, dir,0); 
+            dir = moveAliens(gamedata->aliens, (f & 4)? Aliens0 : Aliens1, dir, 0); //move aliens, no descend
             speed = SPEED;
             f++;
         }  
         //TODO: implement aliens down and shot
                     
-        frametime = TIMER0_GetValue() + 20;
+        frametime = TIMER0_GetValue() + 20;  //50fps
     }
 }

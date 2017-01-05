@@ -1,8 +1,8 @@
 #ifndef _space_h_
 #define _space_h_
 
-#define SCREEN_W 128
-#define SCREEN_H 128
+#define SCREEN_W 160
+#define SCREEN_H 144
 
 #define SCREEN_SX (LCD_W/2) - (SCREEN_W/2)
 #define SCREEN_SY (LCD_H/2) - (SCREEN_H/2)
@@ -15,8 +15,11 @@
 
 #define SPEED 5
 
-#define MAX_PROJECTILES 1
-#define MAX_ALIENS 6*6
+#define ALIENS_COLS 6
+#define ALIENS_ROWS 6
+
+#define MAX_PROJECTILES 3
+#define MAX_ALIENS ALIENS_COLS * ALIENS_ROWS
 #define SPRITES_DATA spcinv
 #define TANK_DATA SPRITES_DATA + (SPRITE_SIZE * 6)
 
