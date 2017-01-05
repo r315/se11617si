@@ -70,7 +70,7 @@ unsigned int FLASH_WriteData(void *dstAddr, void *srcAddr, unsigned int size);
 
 /**
 * @brief Compara o conteúdo do bloco de dados referenciado por srcAddr, de dimensão size
-*        bytes, com o conteúdo do bloco de dados referenciado por dstAddr.
+*        em bytes, com o conteúdo do bloco de dados referenciado por dstAddr.
 * @return CMD_SUCCESS | COMPARE_ERROR | COUNT_ERROR | ADDR_ERROR |ADDR_NOT_MAPPED
 **/
 unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size);
