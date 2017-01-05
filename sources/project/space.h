@@ -24,30 +24,29 @@
 #define PROJECTILE_H 6
 
 typedef struct _sprite{
-	int x;
-	int y;
+    int x;
+    int y;
     uint8_t type;
-	uint8_t *data;
-	uint8_t alive;
+    uint8_t *data;
+    uint8_t alive;
 }Sprite;
 
 typedef struct projectile{
-	int x;
-	int y;
-	uint16_t color;
-	uint8_t inmotion;
+    int x;
+    int y;
+    uint16_t color;
+    uint8_t inmotion;
 }Projectile;
 
 typedef struct _gameData{
-	uint32_t score;	
-	uint8_t state;
-	Sprite tank;
-	Sprite aliens[MAX_ALIENS];	
-	Projectile tankprojectiles[MAX_PROJECTILES];
-	Projectile alienprojectiles[MAX_PROJECTILES];
+    uint32_t score;
+    uint8_t state;
+    Sprite tank;
+    Sprite aliens[MAX_ALIENS];
+    Projectile tankprojectiles[MAX_PROJECTILES];
+    Projectile alienprojectiles[MAX_PROJECTILES];
 }GameData;
 
-//extern GameData gamedata;
 void popSpace(void *ptr);
 void space(int b);
 void newGame(GameData *gd);
