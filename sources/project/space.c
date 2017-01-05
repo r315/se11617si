@@ -1,3 +1,4 @@
+#include <string.h>
 #include <lcd.h>
 #include <stdint.h>
 #include <button.h>
@@ -72,6 +73,11 @@ int8_t d;
     drawSprite(tk);
 }
 
+void removeProjectile(Projectile *pj){
+    LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
+    LCD_Fill(BGCOLOR, PROJECTILE_W * PROJECTILE_H);
+}
+
 void moveProjectile(Projectile *pj, int8_t dir){
 int newy;
 
@@ -84,10 +90,8 @@ int newy;
         pj->inmotion = 0;
         return;
     }
-
-    LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
-    LCD_Fill(BGCOLOR, PROJECTILE_W * PROJECTILE_H);
-
+       
+    removeProjectile(pj);
     pj->y = newy;
 
     LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
@@ -150,7 +154,6 @@ uint8_t i;
 uint8_t checkColision(Projectile *proj, Sprite *als){
 uint8_t i;
 uint8_t score;
-
     if(proj->inmotion == OFF)
         return 0;   
     
@@ -159,6 +162,7 @@ uint8_t score;
             if(als[i].x <= proj->x && (als[i].x + SPRITE_W) >= proj->x){
                 if(als[i].y <= proj->y && (als[i].y + SPRITE_H) >= proj->y){
                     als[i].alive = OFF;
+                    removeProjectile(proj);
                     proj->inmotion = OFF;
                     score = als[i].type + 1;
                     //printf("Score: %u\n",score);
