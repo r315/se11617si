@@ -87,10 +87,14 @@ uint32_t startSector, endSector;
        if( FLASH_EraseSectors(startSector, endSector) != CMD_SUCESS )
          return __result[0];
     }
-   
+
     do{
        if(FLASH_WriteBlock(dstAddr,srcAddr,FLASH_MIN_DATA_SIZE) != CMD_SUCESS)
          break;
+
+       dstAddr += FLASH_MIN_DATA_SIZE;
+       srcAddr += FLASH_MIN_DATA_SIZE;
+
        if(size > FLASH_MIN_DATA_SIZE)
           size -= FLASH_MIN_DATA_SIZE;
        else
@@ -107,7 +111,7 @@ unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
     __command[0] = FLASH_CMD_VERIFY;
     __command[1] = (uint32_t)dstAddr & 0xFFFFFFFC;
     __command[2] = (uint32_t)srcAddr & 0xFFFFFFFC;
-    __command[3] = size >> 2;           //word bondary
+    __command[3] = (size >> 2) & 0xFFFFFFFC;           //word bondary
     iap_entry(__command,__result);
     return __result[0];    
 }
