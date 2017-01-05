@@ -107,7 +107,7 @@ unsigned int FLASH_VerifyData(void *dstAddr, void *srcAddr, unsigned int size){
     __command[0] = FLASH_CMD_VERIFY;
     __command[1] = (uint32_t)dstAddr & 0xFFFFFFFC;
     __command[2] = (uint32_t)srcAddr & 0xFFFFFFFC;
-    __command[3] = size & 0xFFFFFFFC;  //word bondary
+    __command[3] = size >> 2;           //word bondary
     iap_entry(__command,__result);
     return __result[0];    
 }
