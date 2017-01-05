@@ -81,7 +81,7 @@ skip_data_copy:
 
       mov      r0,#2             /* MAM Functions Fully activated */ 
       ldr      r2,=0xE01FC000    /* MAMCR register address */
-      str      r0,[r2] 
+      str      r0,[r2]
 
 
    /* call main() function */
