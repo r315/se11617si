@@ -14,6 +14,7 @@ static const char title[]={
 };
 
 GameData *gamedata;
+static uint32_t frametime;
 void LCD_Data(uint16_t color);
 void LCD_Fill(uint16_t color, uint32_t n);
 
@@ -84,13 +85,13 @@ int newy;
         return;
     }
 
-    LCD_OffsetWindow(pj->x, pj->y, 1, 4);
-    LCD_Fill(BGCOLOR, 4);
+    LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
+    LCD_Fill(BGCOLOR, PROJECTILE_W * PROJECTILE_H);
 
     pj->y = newy;
 
-    LCD_OffsetWindow(pj->x, pj->y, 1, 4);
-    LCD_Fill(pj->color, 4);
+    LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
+    LCD_Fill(pj->color, PROJECTILE_W * PROJECTILE_H);
 }
 
 void newProjectile(Projectile *proj, int x, int y, uint16_t color){
@@ -201,7 +202,6 @@ void popSpace(void *ptr){
 
 
 void space(int b){
-static uint32_t frametime;	
 uint8_t n;
 static int8_t dir = -1;
 static uint8_t speed = SPEED;
@@ -216,7 +216,7 @@ static uint8_t f;
             
             case (BUTTON_F | BUTTON_L): 
                 moveTank(&gamedata->tank,-1);
-                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - 4, PINK);
+                newProjectile(gamedata->tankprojectiles, gamedata->tank.x + SPRITE_W/2, gamedata->tank.y - PROJECTILE_H, PINK);
                 break;
             
             case (BUTTON_F | BUTTON_R):
@@ -229,10 +229,9 @@ static uint8_t f;
         
         for(n=0; n < MAX_PROJECTILES; n++){
             moveProjectile(&gamedata->tankprojectiles[n],-1);
-            gamedata->score += checkColision(&gamedata->tankprojectiles[n], gamedata->aliens);
-            updateScore(gamedata->score);
+            gamedata->score += checkColision(&gamedata->tankprojectiles[n], gamedata->aliens);            
         }
-    
+        updateScore(gamedata->score);
         if(!(--speed)){
             dir = moveAliens(gamedata->aliens, (f & 4)? Aliens0 : Aliens1, dir,0); 
             speed = SPEED;
