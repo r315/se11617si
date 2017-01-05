@@ -175,27 +175,42 @@ uint32_t button,res;
         //main state machine        
         switch(state){
             case IDLE:
-                if(BUTTON_GetEvents() == BUTTON_PRESSED){
-                    if(button == BUTTON_F){ 
-                        newGame(&saveddata.spaceInvaders);                                      
-                        state = switchTo(GAME);
-                        break;
-                    }
+                idle();
                 
-                    if(button == BUTTON_S){
-                        if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))
+                if(BUTTON_GetEvents() == BUTTON_PRESSED){
+                    switch(button){
+                        case BUTTON_F:
+                            newGame(&saveddata.spaceInvaders);                                      
                             state = switchTo(GAME);
-                        break;
-                    }                    
-                }else {//if(BUTTON_GetEvents() == BUTTON_HOLD){
-                    if(button == BUTTON_L){
-                    //if(button == (BUTTON_L| BUTTON_R)){ 
-                        state = switchTo(CONFIG);
-                        break;
+                            break;
+                        case BUTTON_S:
+                            restoreData(&saveddata,sizeof(SaveData));
+                            //if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))
+                            if(!memcmp(&saveddata,0x1a000,sizeof(SaveData)))
+                                
+                                state = switchTo(GAME);
+                            break;
+                        default: break;
                     }
+                    break;
                 }
                 
-                idle();                
+                if(BUTTON_GetEvents() == BUTTON_HOLD){
+                    //if(button == BUTTON_L){
+                    switch(button){
+                        //case BUTTON_L:
+                        case (BUTTON_L| BUTTON_R):
+                            state = switchTo(CONFIG);
+                            break;
+                            
+                        case BUTTON_R:
+                            //memset(&saveddata.topscores, 0, MAX_TOP_SCORES * sizeof(uint32_t));
+                            //memset(&saveddata.spaceInvaders, 0 ,sizeof(GameData));
+                            memset(&saveddata, 0, sizeof(SaveData));
+                            switchTo(IDLE);
+                        default: break;
+                    }                
+                }                
                 break;
                 
             case CONFIG:
@@ -222,7 +237,7 @@ uint32_t button,res;
                 
                 saveddata.checksum = generateChecksum(&saveddata.spaceInvaders, sizeof(GameData));                    
                 
-                res = saveData(&saveddata,sizeof(SaveData));
+                res = saveData(&saveddata, sizeof(SaveData));
                 
                 LED_SetState(LED_OFF);
                 
