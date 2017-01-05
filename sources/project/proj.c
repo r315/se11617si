@@ -1,3 +1,4 @@
+#include <string.h>
 #include <time.h>
 #include <button.h>
 #include <lcd.h>
@@ -5,6 +6,7 @@
 #include <spi.h>
 #include <flash.h>
 #include <timer.h>
+#include <rtc.h>
 #include "proj.h"
 #include "system.h"
 #include "save.h"
@@ -31,7 +33,7 @@ typedef enum Mstates{
 typedef struct _SaveData{
     uint32_t topscores[MAX_TOP_SCORES];    
     uint8_t checksum;
-    GameData spaceInvaders;    
+    GameData spaceInvaders;
     struct tm rtc;
 }SaveData;
 
@@ -121,7 +123,14 @@ char *msg;
         case BUSY: 
             msg = "Busy";break; 
             
-        default: LCD_WriteInt(res,(2<<8) | 16);
+        case COMPARE_ERROR: 
+            msg = "Compare Error";break; 
+            
+        default:         
+                LCD_Goto(0,0);
+                LCD_WriteString("ERROR: 0x"); 
+                LCD_WriteInt(res,(2<<8) | 16);
+                LCD_WriteChar(' ');
                 TIMER0_DelayMs(1500);
                 return;                 
     }
