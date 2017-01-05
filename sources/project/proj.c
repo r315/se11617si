@@ -144,10 +144,11 @@ int main(void){
 State state;
 uint32_t button,res;
     
-    SYS_Init();    
-        
+    SYS_Init();       
+    
+    restoreData(&saveddata,sizeof(SaveData));   
+    
     state = switchTo(IDLE);
-    restoreData(&saveddata,sizeof(SaveData));
     
     //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));
     
