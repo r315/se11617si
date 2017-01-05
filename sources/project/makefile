@@ -43,6 +43,10 @@ dump: $(TARGET).axf
 	
 lst:
 	$(OBJDUMP) -S --disassemble $(TARGET).axf > $(TARGET).lst
+	
+flash: LDSCRIPT = -T ../../bsp/ldscript
+flash: all
+
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)
