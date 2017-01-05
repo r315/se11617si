@@ -148,6 +148,8 @@ uint32_t button,res;
     
     restoreData(&saveddata,sizeof(SaveData));   
     
+    RTC_SetValue(&saveddata.rtc);
+    
     state = switchTo(IDLE);
     
     //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));    
@@ -213,7 +215,7 @@ uint32_t button,res;
             case CONFIG:
                 if(!config(button)){
                     state = switchTo(IDLE);
-                    RTC_SetValue(&saveddata.rtc);
+                    RTC_SetValue(&saveddata.rtc); // RTC Is saved on flash when a game is saved
                 }
                 break;
                 
