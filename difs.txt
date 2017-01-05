@@ -1,0 +1,13 @@
+OPTIMIZE_OUTPUT_FOR_C  = YES
+EXTRACT_ALL            = YES
+INPUT                  = "includes/" \
+                         "sources/project/" \
+                         "sources/lab3/" \
+                         "sources/lab4/" \
+                         "sources/lab5/" \
+                         "sources/lab6/"
+SOURCE_BROWSER         = YES
+GENERATE_LATEX         = NO
+ 
+CLASS_DIAGRAMS         = NO
+HAVE_DOT               = NO
