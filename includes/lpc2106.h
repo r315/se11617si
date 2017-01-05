@@ -1,9 +1,8 @@
-/******************************************************************************
- * @file:    LPC2106.h
- * @Description: Header for LPC2106  devolped for embedded systems class
- *				 only necessary modules are defined
- * @author:  Hugo Reis
- * @date:    10/2016
+/**
+ * @file	lpc2106.h
+ * @brief	Header Containinig data structures for accessing LPC2106 peripherals only used modules are defined
+ * @author  Hugo Reis
+ * @date    10/2016
  ******************************************************************************/
 #ifndef lpc2106_h_
 #define lpc2106_h_

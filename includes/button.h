@@ -1,5 +1,5 @@
 /**
-* @file		buttons.h
+* @file		button.h
 * @brief	Contains API header for reading buttons.
 *     		
 * @version	1.0

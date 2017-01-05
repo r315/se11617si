@@ -1,6 +1,6 @@
 /**
 * @file		ili9341.h
-* @brief	Contains the ILI9341 API and symbols.
+* @brief	Contains the ILI9341 lcd controller API headers and symbols.
 *     		
 * @version	1.0
 * @date		5 Nov. 2016

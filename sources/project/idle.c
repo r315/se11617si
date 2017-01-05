@@ -54,7 +54,7 @@ void popIdle(void *ptr){
     LCD_SetColors(YELLOW,BLACK);
     PRINT_HighScores(96,112,(uint32_t *)ptr);
     LCD_SetColors(GREEN,BLACK);   
-    BUTTON_SetHoldTime(ENTER_CONFIG_TIME);       
+    BUTTON_SetHoldTime(ENTER_CONFIG_TIME);
 }
 
 void idle(void){

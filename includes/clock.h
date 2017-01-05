@@ -1,3 +1,11 @@
+/**
+* @file		clock.h
+* @brief	Contains API header for reading system clock and initialize PLL.
+*     		
+* @version	1.0
+* @date		3 Nov. 2016
+* @author	Hugo Reis
+**********************************************************************/
 #ifndef _clock_h_
 #define _clock_h_
 

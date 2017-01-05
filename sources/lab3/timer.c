@@ -1,6 +1,6 @@
 /**
 * @file		timer.c
-* @brief	Contains API source code for controlling timer 0.
+* @brief
 *     		
 * @version	1.0
 * @date		3 Nov. 2016
