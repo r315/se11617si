@@ -44,7 +44,7 @@ typedef struct _gameData{
     Sprite tank;
     Sprite aliens[MAX_ALIENS];
     Projectile tankprojectiles[MAX_PROJECTILES];
-    Projectile alienprojectiles[MAX_PROJECTILES];
+  //  Projectile alienprojectiles[MAX_PROJECTILES];
 }GameData;
 
 void popSpace(void *ptr);

@@ -78,7 +78,7 @@ uint8_t sum = 0;
         sum += *((uint8_t*)data++);
     } 
     sum = 0xFF - sum;
-    //printf("Checksum %u\n", sum);
+    //printf("Generated Checksum %u\n", sum);
     return sum;
 }
 
@@ -87,7 +87,7 @@ uint8_t sum = 0;
     while(size--){     
         sum += *((uint8_t*)data++);        
     }    
-    //printf("Sum %u\n", sum);
+    //printf("Calculated Checksum %u\n", sum);
     return (uint8_t)(sum + (checksum + 1));
 }
 
@@ -150,7 +150,7 @@ uint32_t button,res;
     
     state = switchTo(IDLE);
     
-    //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));
+    //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));    
     
     while(loop){
         
@@ -183,11 +183,9 @@ uint32_t button,res;
                             newGame(&saveddata.spaceInvaders);                                      
                             state = switchTo(GAME);
                             break;
-                        case BUTTON_S:
-                            restoreData(&saveddata,sizeof(SaveData));
-                            //if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))
-                            if(!memcmp(&saveddata,0x1a000,sizeof(SaveData)))
-                                
+                        case BUTTON_S:                            
+                            restoreData(&saveddata,sizeof(SaveData));                            
+                            if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))                            
                                 state = switchTo(GAME);
                             break;
                         default: break;
@@ -203,10 +201,9 @@ uint32_t button,res;
                             state = switchTo(CONFIG);
                             break;
                             
-                        case BUTTON_R:
-                            //memset(&saveddata.topscores, 0, MAX_TOP_SCORES * sizeof(uint32_t));
-                            //memset(&saveddata.spaceInvaders, 0 ,sizeof(GameData));
+                        case BUTTON_R:                            
                             memset(&saveddata, 0, sizeof(SaveData));
+                            saveData(&saveddata, sizeof(SaveData));
                             switchTo(IDLE);
                         default: break;
                     }                
