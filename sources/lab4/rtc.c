@@ -8,7 +8,6 @@ void RTC_Init(struct tm *dateTime){
 	RTC->PREINT = (getPclk() / RTC_DIVIDER) - 1;
 	RTC->PREFRAC = getPclk() - ((RTC->PREINT + 1) * RTC_DIVIDER);
 	RTC->ILR = 3;
-	RTC->ILR = 0;
 	RTC->CIIR = 0; /* Counter Increment Interrupt Disable */
 	RTC_DeactivateAlarm(RTC_AMR_OFF);
 	RTC_SetValue(dateTime);

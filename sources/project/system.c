@@ -13,6 +13,8 @@
 const int defaultRtc[]={0,0,0,0,0,2010,0,0,0,0,0};
 
 void SYS_Init(void){
+    
+    SC->APBDIV = 2; // PCLK = CCLK / 2
       
     PLL_Init();   //if used must be the first peripheral to initialize
     
@@ -27,7 +29,7 @@ void SYS_Init(void){
     LCD_Init();
 
     SPI_Init(SPI_MAX_FREQ, SPI_16BIT); //after init use full speed
-
+    
     LCD_SetColors(GREEN,BLACK);
         
     RTC_Init((struct tm*)&defaultRtc);

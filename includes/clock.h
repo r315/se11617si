@@ -1,6 +1,6 @@
 /**
 * @file		clock.h
-* @brief	Contains API header for reading system clock and initialize PLL.
+* @brief	Contains API header for returning the current CCLK and PCLK, also alows initializations of PLL.
 *     		
 * @version	1.0
 * @date		3 Nov. 2016
