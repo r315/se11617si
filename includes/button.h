@@ -67,7 +67,7 @@ int BUTTON_Hit(void);
 /**
 * @brief Devolve o código (bitmap) do botão pressionado. É bloqueante.
 *
-**/						   
+**/
 int BUTTON_Read(void);
 
 /**
@@ -84,9 +84,14 @@ int BUTTON_GetEvents(void);
  **/
 int BUTTON_GetButton(void); 
 
-/*
+/**
+* @brief Efectua uma espera pelo evento dado no parametro*        
+**/
+void BUTTON_WaitEvent(int event);
+
+/**
 * @brief configura o tempo minimo para que uma tecla 
-*        seja considerada como mantida oressionada 
+*        seja considerada como mantida pressionada 
 **/
 void BUTTON_SetHoldTime(int t);
 #endif

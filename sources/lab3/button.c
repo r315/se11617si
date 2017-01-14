@@ -58,7 +58,7 @@ uint32_t cur;
                 break;
             }            
             if(cur == __button.cur){
-                if(TicksToMs(TIMER0_Elapse(__button.counter)) > __button.htime){
+                if(TIMER0_TicksToMs(TIMER0_Elapse(__button.counter)) > __button.htime){
                     __button.events = BUTTON_HOLD;
                 }   
                 break;
@@ -84,9 +84,7 @@ uint32_t cur;
             break;
             
         default: break;
-}
-
-            
+    }            
 
 #if 0
 	
@@ -117,12 +115,19 @@ uint32_t cur;
 	}
 	else
 		__button.events = BUTTON_TIMING;
-#endif	
-	return __button.cur;
+#endif
+
+    return __button.cur;
+}
+
+void BUTTON_WaitEvent(int event){
+ do{
+     BUTTON_Hit();
+ }while(__button.events != event);    
 }
 
 int BUTTON_Read(void){
-	while(BUTTON_Hit() == BUTTON_EMPTY);
+	BUTTON_WaitEvent(BUTTON_PRESSED);
 	return __button.cur; 
 }
 
