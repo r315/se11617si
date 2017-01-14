@@ -44,22 +44,23 @@ void PRINT_FullDate(struct tm *rtc, uint8_t select){
     PRINT_Field(rtc->tm_year, TIME_FORMAT, (select == YEAR)? ON : OFF);
 }
 
-void changeField(uint32_t *fld, uint16_t max, signed char step){    
+//TODO FIX for year when overflow go from max to 0
+void advanceField(uint32_t *fld, uint16_t max, signed char step){    
     *fld = (*fld + step);    
     if(step > 0)
         *fld = *fld % max;
     else if(*fld > max)
-        *fld = max-1;	
+        *fld = max-1;
 }
 
 void setTime(struct tm *rtc, uint8_t fld, signed char step){  
     switch(fld){
-        case HOUR:      changeField((uint32_t *)&rtc->tm_hour, 24, step); break;
-        case MINUTES:   changeField((uint32_t *)&rtc->tm_min,  60, step); break;
-        case WEEKDAY:   changeField((uint32_t *)&rtc->tm_wday, 7,  step); break;        
-        case MDAY:      changeField((uint32_t *)&rtc->tm_mday, 32, step); break;        
-        case MONTH:     changeField((uint32_t *)&rtc->tm_mon,  13, step); break;        
-        case YEAR:      changeField((uint32_t *)&rtc->tm_year, 2060, step); break;
+        case HOUR:      advanceField((uint32_t *)&rtc->tm_hour, 24, step); break;
+        case MINUTES:   advanceField((uint32_t *)&rtc->tm_min,  60, step); break;
+        case WEEKDAY:   advanceField((uint32_t *)&rtc->tm_wday, 7,  step); break;        
+        case MDAY:      advanceField((uint32_t *)&rtc->tm_mday, 32, step); break;        
+        case MONTH:     advanceField((uint32_t *)&rtc->tm_mon,  13, step); break;        
+        case YEAR:      advanceField((uint32_t *)&rtc->tm_year, 2060, step); break;
    }   
 }
 
@@ -76,27 +77,31 @@ void popConfig(void *ptr){
     LCD_WriteString((char*)title);
     LCD_SetColors(GREEN,BLACK);
     PRINT_FullDate(cur_time, field);
+    BUTTON_SetHoldTime(500);
 }
 
 int config(int b){
 signed char step;
 
-    if(BUTTON_GetEvents() != BUTTON_PRESSED)
-        return 1;
 
-    switch(b){
-        case BUTTON_L: step = -1; break;        
-        case BUTTON_R: step =  1; break;        
-        case BUTTON_F: 
-            if((++field) == (YEAR + 1))
-                field = HOUR;
-            step = 0;
+    switch(BUTTON_GetEvents()){
+        
+        case BUTTON_PRESSED:
+            if(b == BUTTON_F){        
+                if((++field) == (YEAR + 1))
+                    field = HOUR;
+                step = 0;
+                break;               
+            }            
+            if(b == BUTTON_S) return 0;            
+            
+        case BUTTON_HOLD:
+            switch(b){
+                case BUTTON_L: step = -1; break;        
+                case BUTTON_R: step =  1; break;
+                default: return 1;
+            }
             break;
-
-        case BUTTON_S:
-            return 0;
-
-        default: return 1;
     }
 
     setTime(cur_time, field, step);
