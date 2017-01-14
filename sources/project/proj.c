@@ -140,12 +140,23 @@ char *msg;
     TIMER0_DelayMs(1500);
 }
 
+void mesureDisplayDraw(void){
+uint32_t time;
+    LED_SetState(LED_ON);
+    time = TIMER0_GetValue();
+    LCD_Clear(RED);    
+    time = TIMER0_TicksToMs(TIMER0_Elapse(time));
+    LED_SetState(LED_OFF);
+    LCD_Goto(0,0);
+    LCD_WriteInt(time,10);    
+}
+
 int main(void){
 State state;
 uint32_t button,res;
     
-    SYS_Init();       
-    
+    SYS_Init();     
+
     restoreData(&saveddata,sizeof(SaveData));   
     
     RTC_SetValue(&saveddata.rtc);
@@ -190,13 +201,15 @@ uint32_t button,res;
                             if(!checksumData(&saveddata.spaceInvaders, sizeof(GameData), saveddata.checksum))                            
                                 state = switchTo(GAME);
                             break;
+                        case BUTTON_R:
+                            //mesureDisplayDraw();  
+                            break;
                         default: break;
                     }
                     break;
                 }
                 
-                if(BUTTON_GetEvents() == BUTTON_HOLD){
-                    //if(button == BUTTON_L){
+                if(BUTTON_GetEvents() == BUTTON_HOLD){                    
                     switch(button){
                         //case BUTTON_L:
                         case (BUTTON_L| BUTTON_R):
@@ -207,6 +220,7 @@ uint32_t button,res;
                             memset(&saveddata, 0, sizeof(SaveData));
                             saveData(&saveddata, sizeof(SaveData));
                             switchTo(IDLE);
+                            BUTTON_WaitEvent(BUTTON_RELEASED);
                         default: break;
                     }                
                 }                
