@@ -41,7 +41,7 @@ unsigned int TIMER0_Elapse(unsigned int lastRead);
 /**
 * @brief Converte contagem de ticks em milisegundos
 **/
-unsigned int TicksToMs(unsigned int ticks);
+unsigned int TIMER0_TicksToMs(unsigned int ticks);
 
 /**
 * @brief efectua uma pausa de ms passado como parametro

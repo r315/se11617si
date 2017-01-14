@@ -36,7 +36,7 @@ unsigned int TIMER0_Elapse(unsigned int lastRead){
 
 //PR+1  => 1000Ms
 //ticks => xMs
-unsigned int TicksToMs(unsigned int ticks){
+unsigned int TIMER0_TicksToMs(unsigned int ticks){
 return (ticks * MS_IN_1S) / __freq;
 }
 
@@ -45,7 +45,7 @@ return (ticks * MS_IN_1S) / __freq;
 //workarrond avoid init timer0 with a frequency lower than 1kz
 void TIMER0_DelayMs(unsigned int ms){
 uint32_t ticks = TIMER0_GetValue();
-   while( TicksToMs(TIMER0_Elapse(ticks)) < ms);
+   while( TIMER0_TicksToMs(TIMER0_Elapse(ticks)) < ms);
 }
 
 
