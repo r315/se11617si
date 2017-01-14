@@ -14,9 +14,9 @@ const int defaultRtc[]={0,0,0,0,0,2010,0,0,0,0,0};
 
 void SYS_Init(void){
     
-    SC->APBDIV = 2; // PCLK = CCLK / 2
+    SC->APBDIV = APBDIV_2; // PCLK = CCLK / APBDIB
       
-    PLL_Init();   //if used must be the first peripheral to initialize
+    PLL_Init(MSEL, PSEL);   //if used must be the first peripheral to initialize
     
     TIMER0_Init(MS_IN_1S);
 
