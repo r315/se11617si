@@ -11,10 +11,19 @@
 
 #include <lpc2106.h>
 
+//For understand this values see file "PLL_Calc.ods"
+//or LPC2106 user manual
 #define XTAL    14745600
+
+#define MSEL 4  
+#define PSEL 1
+
+#define APBDIV_1 1
+#define APBDIV_2 2
+#define APBDIV_4 0
 
 uint32_t getPclk(void);
 uint32_t getCclk(void);
-void PLL_Init(void);
+void PLL_Init(uint8_t msel, uint8_t psel);
 
 #endif
