@@ -41,7 +41,7 @@ void PRINT_FullDate(struct tm *rtc, uint8_t select){
     LCD_WriteChar('-');
     PRINT_Field(rtc->tm_mon, TIME_FORMAT, (select == MONTH)? ON : OFF);
     LCD_WriteChar('-');
-    PRINT_Field(rtc->tm_year, TIME_FORMAT, (select == YEAR)? ON : OFF);
+    PRINT_Field(rtc->tm_year, YEAR_FORMAT, (select == YEAR)? ON : OFF);
 }
 
 //TODO FIX for year when overflow go from max to 0

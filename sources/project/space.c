@@ -19,10 +19,17 @@ static uint32_t frametime;
 void LCD_Data(uint16_t color);
 void LCD_Fill(uint16_t color, uint32_t n);
 
+ /**
+ * @brief internal function that simply adds the offset to the game area to
+ *        before creating a window for write on the display
+ *
+ **/
 void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
     LCD_Window(SCREEN_SX + x, SCREEN_SY + y, w, h);
 }
-
+ /**
+  * @brief draws the given sprite on is x,y coordenates
+  * */
 void drawSprite(Sprite *sp){
 uint16_t i;
 uint8_t *data;
@@ -43,7 +50,9 @@ uint8_t *data;
     GPIO_Set(3); //LCD_CS
     #endif
 }
-
+ /**
+  * @brief copy bitmap data of tank from flash to sprite on ram
+  * */
 void loadTank(Sprite *sp){
     sp->data = (uint8_t*)TANK_DATA;
     sp->x = (SCREEN_W/2)-8;
@@ -97,7 +106,9 @@ int newy;
     LCD_OffsetWindow(pj->x, pj->y, PROJECTILE_W, PROJECTILE_H);
     LCD_Fill(pj->color, PROJECTILE_W * PROJECTILE_H);
 }
-
+ /**
+  * @brief creates a projectile on the given coordenates
+  * */
 void newProjectile(Projectile *proj, int x, int y, uint16_t color){
 uint8_t i;
     for(i = 0; i < MAX_PROJECTILES; i++){
@@ -110,7 +121,9 @@ uint8_t i;
         }	
     }	
 }
-
+/**
+  * @brief copy bitmap data os aliens from flash to ram
+  * */
 void loadAliens(Sprite *als, const uint8_t *al, uint16_t y){
 uint8_t i,j,a = 0;
 uint16_t x = SPRITE_W;

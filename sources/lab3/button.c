@@ -1,5 +1,5 @@
 /**
-* @file		buttons.C
+* @file		button.c
 * @brief	Contains API source code for reading buttons.
 *     		
 * @version	1.0

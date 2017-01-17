@@ -42,7 +42,10 @@ SaveData saveddata;
 //---------------------------------------------------------------
 // Functions
 //---------------------------------------------------------------
-
+ /**
+  * @brief calls the screen configurator for the given state
+  * @param newstate: the state that main loop is going to enter
+  * */
 State switchTo(State newState){
     switch(newState){
         case IDLE:   popIdle(saveddata.topscores); break;
@@ -52,7 +55,11 @@ State switchTo(State newState){
     }
     return newState;
 }
-
+ /**
+  * @brief if score is a top score insert it on scores table.
+  * @param score: score of last game
+  * @param scorestab: ponter to array contining the 3 best scores
+  * */
 void saveTopScore(uint32_t score, uint32_t *scorestab){
 uint8_t n;
 uint32_t *p1,*p2;
@@ -91,11 +98,16 @@ uint8_t sum = 0;
     return (uint8_t)(sum + (checksum + 1));
 }
 
+ /**
+  * @brief Returns the number of pixels that a string ocupies on the display
+  * @param str: String to check
+  * @return size in pixels
+  * */
 uint32_t strlenInPixels(char *str){
 uint8_t count = 0;
     while(*str++)
         count++;
-    return count * 8;    
+    return count * LCD_GetFontWidth();    
 }
 
 void displaySaveResult(uint32_t res){
@@ -140,6 +152,9 @@ char *msg;
     TIMER0_DelayMs(1500);
 }
 
+ /**
+  * @brief for debug purpose
+  * */
 void mesureDisplayDraw(void){
 uint32_t time;
     LED_SetState(LED_ON);
@@ -151,6 +166,9 @@ uint32_t time;
     LCD_WriteInt(time,10);    
 }
 
+ /**
+ * @brief main function
+ **/ 
 int main(void){
 State state;
 uint32_t button,res;

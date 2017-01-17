@@ -72,6 +72,7 @@ void LCD_Bkl(uint32_t state);
 
 /**
  * @brief	Write a character with specified color.
+ * @param	c		: character to print.
  * @param	x		: Column position.
  * @param	y		: Row position.
  * @param	fColor	: Foreground color.

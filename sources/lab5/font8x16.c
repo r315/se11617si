@@ -1,5 +1,5 @@
 /**
-* @file		lab5_font.c
+* @file		font8x16.c
 * @brief	Contains the graphic LCD 8x16 pixels font .
 *     		It is intended to be used in ISO C conforming development
 *     		environments and checks for this insofar as it is possible

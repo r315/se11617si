@@ -54,7 +54,7 @@ enum Benvent{
 
 /**
 * @brief Faz a iniciação do sistema para permitir o acesso aos botões
-* @param mask bitmap com os bits correspondentes aos pinos ligados nos botões
+* @param ht : mask bitmap com os bits correspondentes aos pinos ligados nos botões
 **/
 void BUTTON_Init(int ht);
 
