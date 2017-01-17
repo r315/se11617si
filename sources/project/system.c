@@ -11,12 +11,14 @@
 #include <clock.h>
 
 const int defaultRtc[]={0,0,0,0,0,2010,0,0,0,0,0};
-
+ /**
+  * @brief peripheral initialization
+  * */
 void SYS_Init(void){
     
-    SC->APBDIV = APBDIV_2; // PCLK = CCLK / APBDIB
+    CLOCK_SetAPBDIV(APBDIV_2);   // PCLK = CCLK / 2
       
-    PLL_Init(MSEL, PSEL);   //if used must be the first peripheral to initialize
+    CLOCK_PllInit(MSEL, PSEL);   // if used must be the first peripheral to initialize
     
     TIMER0_Init(MS_IN_1S);
 
@@ -24,7 +26,7 @@ void SYS_Init(void){
 
     BUTTON_Init(BUTTON_DEFAULT_HOLD_TIME-1500);
 
-    SPI_Init(1000, SPI_8BIT); // lcd must be initialyze with low speed and 8bit transfers
+    SPI_Init(1000, SPI_8BIT);    // lcd must be initialyze with low speed and 8bit transfers
 
     LCD_Init();
 
@@ -32,5 +34,5 @@ void SYS_Init(void){
     
     LCD_SetColors(GREEN,BLACK);
         
-    RTC_Init((struct tm*)&defaultRtc);
+    RTC_Init((struct tm*)&defaultRtc); //dummy value, rtc value is restored from flash
 }

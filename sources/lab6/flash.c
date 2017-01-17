@@ -25,7 +25,7 @@ uint32_t prepare_sector(uint32_t start, uint32_t end){
     __command[0] = FLASH_CMD_PREPARE_SECTOR;
     __command[1] = start;
     __command[2] = end;
-    __command[3] = getCclk() / 1000;  //clock specified in Khz
+    __command[3] = CLOCK_GetCCLK() / 1000;  //clock specified in Khz
     iap_entry(__command,__result);
     return __result[0];
 }
@@ -47,7 +47,7 @@ unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector
         __command[0] = FLASH_CMD_ERASE_SECTOR;
         __command[1] = startSector;
         __command[2] = endSector;
-        __command[3] = getCclk() / 1000;
+        __command[3] = CLOCK_GetCCLK() / 1000;
         iap_entry(__command,__result);
     }
     return __result[0];
@@ -69,7 +69,7 @@ uint32_t startSector, endSector;
        __command[1] = (uint32_t)dstAddr;
        __command[2] = (uint32_t)srcAddr;
        __command[3] = size;
-       __command[4] = getCclk() / 1000;
+       __command[4] = CLOCK_GetCCLK() / 1000;
        iap_entry(__command,__result);
     }
     

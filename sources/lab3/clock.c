@@ -3,7 +3,7 @@
 static __pclkval = 0;
 static __cclkval = 0;
 
-uint32_t getPclk(void){
+uint32_t CLOCK_GetPCLK(void){
 uint8_t apbdiv_val;
 
     do{
@@ -13,20 +13,20 @@ uint8_t apbdiv_val;
 	if(!__pclkval)
 	   switch(apbdiv_val){
 	      default:
-	      case 0: __pclkval = getCclk() / 4; break;
-	      case 1: __pclkval = getCclk(); break;
-	      case 2: __pclkval = getCclk() / 2; break;
+	      case 0: __pclkval = CLOCK_GetCCLK() / 4; break;
+	      case 1: __pclkval = CLOCK_GetCCLK(); break;
+	      case 2: __pclkval = CLOCK_GetCCLK() / 2; break;
     }
 	return __pclkval;
 }
 
-uint32_t getCclk(void){
+uint32_t CLOCK_GetCCLK(void){
     if(!__cclkval)
         __cclkval = XTAL;
 	return __cclkval;
 }
 
-void PLL_Init(uint8_t msel, uint8_t psel){
+void CLOCK_PllInit(uint8_t msel, uint8_t psel){
 	SC->PLLCON = 1; //enable pll
 	SC->PLLCFG = (psel<<5) | msel; 
 	SC->PLLFEED = 0xAA;		//write PLLCON sequence

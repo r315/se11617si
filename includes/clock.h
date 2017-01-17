@@ -22,8 +22,10 @@
 #define APBDIV_2 2
 #define APBDIV_4 0
 
-uint32_t getPclk(void);
-uint32_t getCclk(void);
-void PLL_Init(uint8_t msel, uint8_t psel);
+#define CLOCK_SetAPBDIV(x) SC->APBDIV = x
+
+uint32_t CLOCK_GetPCLK(void);
+uint32_t CLOCK_GetCCLK(void);
+void CLOCK_PllInit(uint8_t msel, uint8_t psel);
 
 #endif

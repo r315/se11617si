@@ -16,7 +16,7 @@ int spccr;
 	SPI0->SPCR = SPI0_MSTR | SPI0_CPOL | SPI0_CPHA | SPI0_EN_NBITS | (bitData << 8);
 	
 	if(frequency){
-		spccr = getPclk() / frequency;
+		spccr = CLOCK_GetPCLK() / frequency;
 		if(spccr < SPI_MAX_CLK)
 			spccr = SPI_MAX_CLK;
 	}

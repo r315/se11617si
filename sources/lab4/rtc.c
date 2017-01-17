@@ -5,8 +5,8 @@ void RTC_Init(struct tm *dateTime){
 
 	RTC_PowerUp();
 	RTC->CCR = 2;	// stop clock and reset
-	RTC->PREINT = (getPclk() / RTC_DIVIDER) - 1;
-	RTC->PREFRAC = getPclk() - ((RTC->PREINT + 1) * RTC_DIVIDER);
+	RTC->PREINT = (CLOCK_GetPCLK() / RTC_DIVIDER) - 1;
+	RTC->PREFRAC = CLOCK_GetPCLK() - ((RTC->PREINT + 1) * RTC_DIVIDER);
 	RTC->ILR = 3;
 	RTC->CIIR = 0; /* Counter Increment Interrupt Disable */
 	RTC_DeactivateAlarm(RTC_AMR_OFF);
