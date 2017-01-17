@@ -45,7 +45,7 @@ lst:
 	$(OBJDUMP) -S --disassemble $(TARGET).axf > $(TARGET).lst
 	
 flash: LDSCRIPT = -T ../../bsp/ldscript
-flash: all
+flash: all debug
 
 
 .c.o:

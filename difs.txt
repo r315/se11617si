@@ -5,9 +5,14 @@ INPUT                  = "includes/" \
                          "sources/lab3/" \
                          "sources/lab4/" \
                          "sources/lab5/" \
-                         "sources/lab6/"
+                         "sources/lab6/" \
+						 "bsp"
 SOURCE_BROWSER         = YES
 GENERATE_LATEX         = NO
  
 CLASS_DIAGRAMS         = NO
 HAVE_DOT               = NO
+
+OUTPUT_DIRECTORY       = /home/hmr/Documents
+PROJECT_NAME           = "Space Invaders"
+

@@ -39,7 +39,7 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-libs: $($(LIBTARGET):.a=.o) $(LIBTARGET)
+lib: $($(LIBTARGET):.a=.o) $(LIBTARGET)
 
 libled: led.o
 	$(AR) -cr  $(LIBSDIR)/libled.a led.o

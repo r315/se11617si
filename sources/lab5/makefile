@@ -38,7 +38,7 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-libs: libspi liblcd
+lib: libspi liblcd
 	rm -f *.o
 
 libspi: spi.o
