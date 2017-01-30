@@ -32,8 +32,8 @@ typedef struct{
     __IO    uint32_t    CLR;           /*!< Offset: 0x1C Output Clear Register                   */
 }FIO_Type;
 
-#define FIO0_BASE       (0x3FFFC000UL)                     /*!< GPIO Port 0                      */
-#define FIO0            ((FIO_Type *)FIO0_BASE)            /*!< GPIO Port 0                      */
+#define FIO0_BASE       (0x3FFFC000UL)                     /*!< FPIO Port 0                      */
+#define FIO0            ((FIO_Type *)FIO0_BASE)            /*!< FPIO Port 0                      */
 
 typedef struct {	
 	__IO    uint32_t    SPCR;            /*!< Offset: 0x00 Control Register                      */
@@ -139,5 +139,25 @@ typedef struct {
 
 #define SYSCON_BASE     (0xE01FC000UL)                     /*!< System Control Block             */
 #define SC              ((SYSCON_Type *)SYSCON_BASE)       /*!< System Control Block             */
+
+/* flash block addresses
+
+0 8 0x0000 0000 - 0x0000 1FFF
+1 8 0x0000 2000 - 0x0000 3FFF
+2 8 0x0000 4000 - 0x0000 5FFF
+3 8 0x0000 6000 - 0x0000 7FFF
+4 8 0x0000 8000 - 0x0000 9FFF
+5 8 0x0000 A000 - 0x0000 BFFF
+6 8 0x0000 C000 - 0x0000 DFFF
+7 8 0x0000 E000 - 0x0000 FFFF
+8 8 0x0001 0000 - 0x0001 1FFF
+9 8 0x0001 2000 - 0x0001 3FFF
+10 (0x0A) 8 0x0001 4000 - 0x0001 5FFF
+11 (0x0B) 8 0x0001 6000 - 0x0001 7FFF
+12 (0x0C) 8 0x0001 8000 - 0x0001 9FFF
+13 (0x0D) 8 0x0001 A000 - 0x0001 BFFF
+14 (0x0E) 8 0x0001 C000 - 0x0001 DFFF
+15 (0x0F) 8 0x0001 E000 - 0x0001 FFFF
+*/
 
 #endif

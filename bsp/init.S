@@ -21,7 +21,7 @@ _vectors:
       ldr      pc,SoftwareIntrrupt
       ldr      pc,PrefetchAbort
       ldr      pc,DataAbort
-      .word    0xB8A06F58
+      .word    0xB8A06F58  /* = ~(0xE59FF018 * 7) + 1 */
       ldr      pc,IRQVector
       ldr      pc,FIQVector
    
