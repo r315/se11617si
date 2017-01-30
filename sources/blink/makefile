@@ -11,8 +11,8 @@ AFLAGS= -g
 CFLAGS= -g -mapcs
 LFLAGS= -g
 LDSCRIPT= -T ../../bsp/ldscript_ram
-LIBS = -lgpio
-SYMBOLS = -D__NEWLIB__
+LIBS =
+SYMBOLS =
 
 
 TARGET = blink

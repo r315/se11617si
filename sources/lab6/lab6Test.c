@@ -290,7 +290,7 @@ int button;
     BUTTON_Hit();
   
     //Check Events      
-    if(BUTTON_GetButtonEvents() == BUTTON_PRESSED){
+    if(BUTTON_GetEvents() == BUTTON_PRESSED){
         button = BUTTON_GetButton();        
     }
     else

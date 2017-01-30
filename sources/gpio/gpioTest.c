@@ -5,11 +5,14 @@
 
 int main(void){
 int state;
-GPIO_Init(LED,0);
+GPIO_SetOutputN(LED);
 
 while(1){
 	state = GPIO_Read() & INPUT;
-	GPIO_Write(state == 0 ? LED : 0);
+	if(state)
+        GPIO_ClrN(LED);
+    else
+        GPIO_SetN(LED);
 }
 
 return 0;

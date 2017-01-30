@@ -6,7 +6,7 @@
 
 int main(void){
 
-	PLL_Init();   //if used must be the first peripheral to initialize
+	//PLL_Init();   //if used must be the first peripheral to initialize
     
     TIMER0_Init(MS_IN_1S);
 
@@ -26,11 +26,11 @@ int main(void){
 	while(1){	
         BUTTON_Hit();
 
-        if(BUTTON_GetButtonEvents() == BUTTON_RELEASED)LCD_Clear(BLACK);
+        if(BUTTON_GetEvents() == BUTTON_RELEASED)LCD_Clear(BLACK);
 		
 		switch(BUTTON_Read()){
 			case BUTTON_L:
-	            switch(BUTTON_GetButtonEvents()){
+	            switch(BUTTON_GetEvents()){
                     case BUTTON_PRESSED:
                         LCD_Goto(0,0);  
                         LCD_WriteString("Pressed");
@@ -59,7 +59,7 @@ int main(void){
 				LCD_Fill(WHITE,LCD_SIZE);	
 		  		break;		         
 			case BUTTON_L | BUTTON_R:
-				if(BUTTON_GetButtonEvents() != BUTTON_HOLD)
+				if(BUTTON_GetEvents() != BUTTON_HOLD)
 					break;
 				LCD_Fill(BLACK,LCD_SIZE);				
 				break;		
