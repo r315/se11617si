@@ -8,7 +8,7 @@ OBJDUMP = arm-none-eabi-objdump
 
 AFLAGS= -gstabs
 CFLAGS= -g -mapcs
-LFLAGS= 
+LFLAGS= -g 
 LDSCRIPT= -T ../../bsp/ldscript
 
 

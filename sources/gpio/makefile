@@ -42,6 +42,7 @@ lib:
 	$(CC) -mapcs $(SYMBOLS) -I../../includes -c $(LIBTARGET).c -o $(LIBTARGET).o
 #$(AS) $(AFLAGS) $(LIBTARGET).S -o $(LIBTARGET).o
 	$(AR) rcs ../../libs/lib$(LIBTARGET).a $(LIBTARGET).o
+	@rm -f $(LIBTARGET).o
 	
 dump: $(TARGET).axf
 	$(OBJDUMP) -d -S $(TARGET).o

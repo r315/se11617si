@@ -6,11 +6,11 @@ GDB = arm-none-eabi-gdb
 AR = arm-none-eabi-ar
 OBJDUMP = arm-none-eabi-objdump
 
-AFLAGS= -gstabs
+AFLAGS= -g
 CFLAGS= -g -mapcs
 LFLAGS= 
-#LDSCRIPT= -T ../../bsp/ldscript
-LDSCRIPT= -T ../../bsp/ldscript_ram
+LDSCRIPT= -T ../../bsp/ldscript
+LDSCRIPT_RAM= -T ../../bsp/ldscript_ram
 
 
 TARGET = proj
@@ -25,8 +25,11 @@ INCSPATH = -I../../includes
 
 all: $(TARGET).axf
 
-$(TARGET).axf: $(OBJS)
+flash: $(OBJS)
 	$(LD) $(LFLAGS) $(LDSCRIPT) $(LIBSPATH) $(OBJS) -o $(TARGET).axf $(LIBS)
+
+$(TARGET).axf: $(OBJS)
+	$(LD) $(LFLAGS) $(LDSCRIPT_RAM) $(LIBSPATH) $(OBJS) -o $(TARGET).axf $(LIBS)
 
 init.o:
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
@@ -37,16 +40,14 @@ clean:
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
 
-
 dump: $(TARGET).axf
-	$(OBJDUMP) -d -S $(TARGET).o
-	
+	$(OBJDUMP) -d -S $(TARGET).o > $(TARGET).lst
+
+symbols:
+	$(OBJDUMP) -t $(TARGET).axf
+
 lst:
 	$(OBJDUMP) -S --disassemble $(TARGET).axf > $(TARGET).lst
-	
-flash: LDSCRIPT = -T ../../bsp/ldscript
-flash: all debug
-
 
 .c.o:
 	$(CC) $(CFLAGS) $(SYMBOLS)  $(INCSPATH) -c $< -o $(<:.c=.o)

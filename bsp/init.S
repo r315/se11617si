@@ -14,6 +14,7 @@
  ******************************************************************/
 
 .section .startup, "ax"
+.global _start
 
 _vectors:
       ldr      pc,ResetVector
@@ -34,7 +35,7 @@ DataAbort:              .word DAbortHandler
 IRQVector:              .word IRQHandler
 FIQVector:              .word FIQHandler   
    
-.global _start
+
 
 ResetHandler:
 _start:

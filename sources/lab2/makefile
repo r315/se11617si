@@ -38,7 +38,8 @@ debug:  lab2Test.axf
 	
 lib: led.o
 	$(AR) rcs ../../libs/libled.a led.o 
-	
+	@rm -f led.o
+
 hex: $(TARGET).axf
 	$(OBJCOPY) --set-start 0x40000000 -O ihex $(TARGET).axf $(TARGET).hex
 

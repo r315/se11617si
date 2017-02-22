@@ -234,7 +234,7 @@ uint32_t button,res;
                             state = switchTo(CONFIG);
                             break;
                             
-                        case BUTTON_R:                            
+                        case BUTTON_R:  //Erase Top Scores                          
                             memset(&saveddata, 0, sizeof(SaveData));
                             saveData(&saveddata, sizeof(SaveData));
                             switchTo(IDLE);
