@@ -42,5 +42,19 @@
 #define GPIO_SetOutputN(n) FIO0->DIR |= n       //affect multiple pin
 #define GPIO_SetInputN(n)  FIO0->DIR &= ~n      //affect multiple pin
 
+/**
+ * @brief inicializa um pino com direcao e estado
+ * */
+void GPIO_Init(uint8_t bit, uint8_t dir, uint8_t state);
+
+/**
+ * @brief muda o estado do pino
+ * */
+void GPIO_SetPin(uint8_t bit, uint8_t state);
+
+/**
+ * @brief obtem o estado do pino
+ * */
+uint8_t GPIO_GetPin(uint8_t bit);
 #endif
 
