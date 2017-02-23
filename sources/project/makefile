@@ -16,7 +16,7 @@ LDSCRIPT_RAM= -T ../../bsp/ldscript_ram
 TARGET = proj
 LIBTARGET =
 
-OBJS = init.o $(TARGET).o system.o save.o idle.o config.o space.o
+OBJS = init.o $(TARGET).o system.o save.o idle.o config.o space.o sprites/sprites.o
 
 SYMBOLS =
 LIBS = -lled -ltimer -lbutton -lrtc -lclock -lspi -llcd -lflash -lgcc -lc
@@ -35,7 +35,7 @@ init.o:
 	$(AS) $(AFLAGS) ../../bsp/init.S -o init.o
 
 clean:
-	rm -f *.o *.obj $(TARGET).axf $(TARGET) $(TARGET).exe
+	rm -f $(OBJS) $(XOBJS) $(TARGET).axf $(TARGET) $(TARGET).exe
 	
 debug:  $(TARGET).axf
 	@$(DBG) $(TARGET).axf
@@ -55,7 +55,7 @@ lst:
 UNAME_S := $(shell uname -s)
 GPP = gcc
 
-XOBJS=$(TARGET).obj system.obj save.obj idle.obj config.obj space.obj
+XOBJS=$(TARGET).obj system.obj save.obj idle.obj config.obj space.obj sprites/sprites.obj
 
 ifeq ($(UNAME_S),Linux)
 

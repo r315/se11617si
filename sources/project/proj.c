@@ -21,21 +21,8 @@
 
 
 //---------------------------------------------------------------
-// Structures and global variables
+// global variables
 //---------------------------------------------------------------
-typedef enum Mstates{
-  IDLE,
-  CONFIG,  
-  GAME,
-  SAVE    
-}State;
-
-typedef struct _SaveData{
-    uint32_t topscores[MAX_TOP_SCORES];    
-    uint8_t checksum;
-    GameData spaceInvaders;
-    struct tm rtc;
-}SaveData;
 
 SaveData saveddata;
 
@@ -173,15 +160,15 @@ int main(void){
 State state;
 uint32_t button,res;
     
-    SYS_Init();     
+    SYS_Init();
 
     restoreData(&saveddata,sizeof(SaveData));   
     
     RTC_SetValue(&saveddata.rtc);
     
     state = switchTo(IDLE);
-    
-    //printf("SaveData Size: %u Bytes\n",sizeof(SaveData));    
+   
+    printf("SaveData Size: %u Bytes\n",sizeof(SaveData));    
     
     while(loop){
         
