@@ -22,8 +22,11 @@
 #define APBDIV_2 2
 #define APBDIV_4 0
 
+#ifdef _EMU_
+#define CLOCK_SetAPBDIV(x)
+#else
 #define CLOCK_SetAPBDIV(x) SC->APBDIV = x
-
+#endif
 uint32_t CLOCK_GetPCLK(void);
 uint32_t CLOCK_GetCCLK(void);
 void CLOCK_PllInit(uint8_t msel, uint8_t psel);

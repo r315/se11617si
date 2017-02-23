@@ -4,6 +4,13 @@
 #include "save.h"
 
 
+#ifndef _EMU_
+#define SAVE_BLOCK (uint32_t)((FLASH_LAST_SECTOR - 2) * FLASH_SECTOR_SIZE)
+#else
+static uint8_t SAVE_BLOCK[0x2000];
+#endif
+
+
 int saveData(void *data, int dataSize){    
     FLASH_WriteData((void*)SAVE_BLOCK, data, dataSize);
     return FLASH_VerifyData((void*)SAVE_BLOCK, data, dataSize); 
