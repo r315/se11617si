@@ -104,5 +104,10 @@ uint8_t LCD_GetFontWidth(void);
  **/
 uint8_t LCD_GetFontHeight(void);
 
+/**
+ * @brief Escreve size pixeis com cores indexados, é usada para desenhar sprites
+ *        onde data uma tabela de cores e uma sequencia de cores a usar
+ **/
+void LCD_IndexedColor(uint16_t *colors, uint8_t *index, uint32_t size);
 #endif
 

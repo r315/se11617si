@@ -24,6 +24,16 @@ void LCD_Fill(uint16_t data, uint32_t n){
     LCD_CS1;
 }
 
+void LCD_IndexedColor(uint16_t *colors, uint8_t *index, uint32_t size){
+	LCD_RS1;
+	LCD_CS0;
+	while(size--){
+        SPI_Send(colors[*index]);
+		index += 1;
+    }
+	LCD_CS1;
+}
+
 void LCD_Command(uint16_t data){
     LCD_RS0;
     LCD_CS0;

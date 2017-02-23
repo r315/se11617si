@@ -30,7 +30,7 @@ time_t rawtime;
 
     while(loop()){
         BUTTON_Hit();
-        switch(BUTTON_GetButtonEvents()){
+        switch(BUTTON_GetEvents()){
 
             case BUTTON_L:
                 LCD_WriteString("BUTTON_L");

@@ -10,6 +10,9 @@
 #define DBG printf
 #endif
 
+uint32_t CLOCK_GetPCLK(void){ return 0;}
+uint32_t CLOCK_GetCCLK(void){ return 0;}
+void CLOCK_PllInit(uint8_t msel, uint8_t psel){}
 //---------------------------------------------------------------------------
 void SPI_Init(int frequency, int bitData){ }
 void SPI_BeginTransfer(int csBitId){}
@@ -193,6 +196,12 @@ void BUTTON_SetHoldTime(int t){
 	__button.htime = t;
 }
 
+void BUTTON_WaitEvent(int event){
+ do{
+     BUTTON_Hit();
+ }while(__button.event != event);
+}
+
 //---------------------------------------------------------------------------
 unsigned int FLASH_EraseSectors(unsigned int startSector, unsigned int endSector){
     return CMD_SUCESS;
@@ -225,15 +234,12 @@ unsigned int TIMER0_Elapse(unsigned int lastRead){
 	return SDL_GetTicks()-lastRead;
 }
 
-unsigned int TicksToMs(unsigned int ticks){
-return  ticks;
+unsigned int TIMER0_TicksToMs(unsigned int ticks){
+	return  ticks;
 }
 
 void TIMER0_DelayMs(unsigned int ms){
     SDL_Delay(ms);
-}
-
-void PLL_Init(void){
 }
 
 

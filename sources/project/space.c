@@ -30,25 +30,9 @@ void LCD_OffsetWindow(uint32_t x, uint32_t y, uint32_t w, uint32_t h){
  /**
   * @brief draws the given sprite on is x,y coordenates
   * */
-void drawSprite(Sprite *sp){
-uint16_t i;
-uint8_t *data;
-
-    data = sp->data;                
-    LCD_OffsetWindow(sp->x, sp->y,SPRITE_W,SPRITE_H);
-
-    #ifdef _EMU_
-    for(i = 0; i < SPRITE_SIZE; i++, data+=1){       
-        LCD_Data(pal1[*data]);
-    }
-    #else
-    GPIO_Clr(3); //LCD_CS
-    GPIO_Set(9); //LCD_RS
-    for(i = 0; i < SPRITE_SIZE; i++, data+=1){
-        SPI_Send(pal1[*data]);
-    }
-    GPIO_Set(3); //LCD_CS
-    #endif
+void drawSprite(Sprite *sp){               
+    LCD_OffsetWindow(sp->x, sp->y,SPRITE_W,SPRITE_H);	
+	LCD_IndexedColor((uint16_t*)pal1, sp->data, SPRITE_SIZE);
 }
  /**
   * @brief copy bitmap data of tank from flash to sprite on ram

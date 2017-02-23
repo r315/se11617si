@@ -96,6 +96,13 @@ void LCD_Fill(uint16_t color, uint32_t n){
 		LCD_Data(color);
 }
 
+void LCD_IndexedColor(uint16_t *colors, uint8_t *index, uint32_t size){
+	while(size--){
+        LCD_Data(colors[*index]);
+		index += 1;
+    }
+}
+
 void LCD_Window(uint32_t x, uint32_t y, uint32_t w, uint32_t h)
 {
    lcd.wx = x;
